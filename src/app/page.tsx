@@ -37,7 +37,7 @@ export default function HomePage() {
       <section className="overflow-hidden bg-brand-cream">
         <Container className="grid gap-10 pb-14 pt-14 sm:pt-20">
           <div className="max-w-2xl animate-fade-up">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blush-dark">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-ink">
               {siteConfig.tagline}
             </p>
             <h1 className="mt-3 font-display text-4xl leading-[1.05] text-ink sm:text-6xl">
@@ -77,7 +77,7 @@ export default function HomePage() {
         <Container className="grid gap-8 py-14 sm:grid-cols-2 lg:grid-cols-4">
           {usps.map(({ icon: Icon, title, detail }) => (
             <div key={title}>
-              <span className="flex size-11 items-center justify-center rounded-full bg-blush-tint text-blush-dark">
+              <span className="flex size-11 items-center justify-center rounded-full bg-blush-tint text-rose-ink">
                 <Icon className="size-5" aria-hidden />
               </span>
               <h3 className="mt-4 font-display text-lg text-ink">{title}</h3>

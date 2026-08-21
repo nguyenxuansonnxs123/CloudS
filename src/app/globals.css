@@ -10,6 +10,7 @@
   --brand-blush: #e7b7ae;
   --brand-blush-dark: #c98e83;
   --brand-blush-tint: #f6e6e1;
+  --brand-rose-ink: #9c5c50;
   --brand-black: #17130f;
   --brand-cream: #faf6f0;
 }
@@ -23,6 +24,7 @@
 
   --color-blush: var(--brand-blush);
   --color-blush-dark: var(--brand-blush-dark);
+  --color-rose-ink: var(--brand-rose-ink);
   --color-blush-tint: var(--brand-blush-tint);
   --color-brand-black: var(--brand-black);
   --color-brand-cream: var(--brand-cream);

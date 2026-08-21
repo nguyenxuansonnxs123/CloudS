@@ -23,7 +23,7 @@ export default function AboutPage() {
       <section className="bg-brand-cream">
         <Container className="py-14 sm:py-20">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blush-dark">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-ink">
               Về CloudS
             </p>
             <h1 className="mt-3 font-display text-4xl leading-tight text-ink sm:text-5xl">

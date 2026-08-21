@@ -45,7 +45,7 @@ export default function ContactPage() {
   return (
     <Container className="py-14 sm:py-20">
       <div className="max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blush-dark">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-ink">
           Liên hệ
         </p>
         <h1 className="mt-3 font-display text-4xl leading-tight text-ink sm:text-5xl">
@@ -61,7 +61,7 @@ export default function ContactPage() {
       <div className="mt-10 grid gap-6 sm:grid-cols-2">
         {channels.map(({ icon: Icon, title, detail, href, cta }) => (
           <div key={title} className="rounded-3xl border border-line bg-surface p-6 sm:p-8">
-            <span className="flex size-11 items-center justify-center rounded-full bg-blush-tint text-blush-dark">
+            <span className="flex size-11 items-center justify-center rounded-full bg-blush-tint text-rose-ink">
               <Icon className="size-5" aria-hidden />
             </span>
             <h3 className="mt-4 font-display text-lg text-ink">{title}</h3>

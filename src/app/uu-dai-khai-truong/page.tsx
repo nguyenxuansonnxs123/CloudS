@@ -47,7 +47,7 @@ export default function PromoPage() {
   return (
     <Container className="py-14 sm:py-20">
       <div className="max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blush-dark">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-ink">
           Khai trương
         </p>
         <h1 className="mt-3 font-display text-4xl leading-tight text-ink sm:text-5xl">
@@ -73,11 +73,11 @@ export default function PromoPage() {
       <div className="mt-10 grid gap-6 sm:grid-cols-2">
         {programs.map(({ icon: Icon, title, period, detail }) => (
           <div key={title} className="rounded-3xl border border-line bg-surface p-6 sm:p-8">
-            <span className="flex size-11 items-center justify-center rounded-full bg-blush-tint text-blush-dark">
+            <span className="flex size-11 items-center justify-center rounded-full bg-blush-tint text-rose-ink">
               <Icon className="size-5" aria-hidden />
             </span>
             <h3 className="mt-4 font-display text-xl text-ink">{title}</h3>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-blush-dark">
+            <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-rose-ink">
               {period}
             </p>
             <p className="mt-3 text-sm leading-relaxed text-ink-soft">{detail}</p>

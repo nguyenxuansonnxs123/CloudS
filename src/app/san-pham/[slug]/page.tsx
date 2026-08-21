@@ -65,7 +65,7 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
 
           {/* Info */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blush-dark">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-ink">
               {product.shortName}
             </p>
             <h1 className="mt-2 font-display text-3xl leading-tight text-ink sm:text-4xl">
@@ -105,7 +105,7 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
             <ul className="mt-8 space-y-2.5 border-t border-line pt-6 text-sm text-ink-soft">
               {product.usps.map((usp) => (
                 <li key={usp} className="flex gap-2.5">
-                  <Check className="mt-0.5 size-4 shrink-0 text-blush-dark" aria-hidden />
+                  <Check className="mt-0.5 size-4 shrink-0 text-rose-ink" aria-hidden />
                   {usp}
                 </li>
               ))}
