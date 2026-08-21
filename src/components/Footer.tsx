@@ -6,6 +6,10 @@ import { navLinks, siteConfig } from "@/lib/site-config";
 
 const year = new Date().getFullYear();
 
+function isLegalNameSet(name: string) {
+  return Boolean(name) && !name.startsWith("[");
+}
+
 export function Footer() {
   return (
     <footer className="border-t border-line bg-surface">
@@ -99,7 +103,8 @@ export function Footer() {
       <div className="border-t border-line">
         <Container className="flex flex-col gap-2 py-6 text-xs text-ink-soft sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {siteConfig.name}. {siteConfig.business.legalName}.
+            © {year} {siteConfig.name}
+            {isLegalNameSet(siteConfig.business.legalName) && `. ${siteConfig.business.legalName}`}.
           </p>
           <p>Được xây dựng cho những bước chân nhẹ tênh mỗi ngày.</p>
         </Container>
