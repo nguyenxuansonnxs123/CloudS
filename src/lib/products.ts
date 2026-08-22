@@ -1,3 +1,5 @@
+export type SizedImage = { src: string; width: number; height: number };
+
 export type Product = {
   slug: string;
   silhouette: "cloudstride-1" | "cloud-mule-1";
@@ -15,8 +17,10 @@ export type Product = {
   features: { title: string; detail: string }[];
   images: {
     main: string;
+    /** Ảnh vuông trong gallery chính (fill + object-contain, không crop) */
     gallery: string[];
-    lifestyle: string[];
+    /** Ảnh trải nghiệm thực tế — giữ nguyên kích thước gốc để không bị crop */
+    lifestyle: SizedImage[];
   };
   care: string[];
   /** slug của các phiên bản màu khác cùng dáng giày, để hiện swatch chuyển đổi */
@@ -65,17 +69,19 @@ export const products: Product[] = [
       main: "/images/cloudstride/gallery-1.webp",
       gallery: [
         "/images/cloudstride/gallery-1.webp",
+        "/images/cloudstride/gallery-model.webp",
         "/images/cloudstride/gallery-3.webp",
         "/images/cloudstride/gallery-5.webp",
         "/images/cloudstride/gallery-6.webp",
         "/images/cloudstride/gallery-4.webp",
       ],
       lifestyle: [
-        "/images/cloudstride/lifestyle-1.webp",
-        "/images/cloudstride/lifestyle-2.webp",
-        "/images/cloudstride/lifestyle-3.webp",
-        "/images/cloudstride/lifestyle-4.webp",
-        "/images/cloudstride/lifestyle-5.webp",
+        { src: "/images/cloudstride/lifestyle-2.webp", width: 1400, height: 1400 },
+        { src: "/images/cloudstride/lifestyle-3.webp", width: 972, height: 972 },
+        { src: "/images/cloudstride/lifestyle-4.webp", width: 1024, height: 1024 },
+        { src: "/images/cloudstride/lifestyle-5.webp", width: 1400, height: 2488 },
+        { src: "/images/cloudstride/lifestyle-6.webp", width: 1400, height: 2488 },
+        { src: "/images/cloudstride/lifestyle-7.webp", width: 1400, height: 2488 },
       ],
     },
     care: [
@@ -124,12 +130,17 @@ export const products: Product[] = [
         "/images/mule-rose/gallery-2.webp",
         "/images/mule-rose/gallery-3.webp",
         "/images/mule-rose/gallery-1.webp",
+        "/images/mule-rose/gallery-model-1.webp",
+        "/images/mule-rose/gallery-model-2.webp",
+        "/images/mule-rose/gallery-model-3.webp",
       ],
       lifestyle: [
-        "/images/mule-rose/lifestyle-1.webp",
-        "/images/mule-rose/lifestyle-2.webp",
-        "/images/mule-rose/lifestyle-3.webp",
-        "/images/mule-rose/lifestyle-4.webp",
+        { src: "/images/mule-rose/lifestyle-1.webp", width: 1400, height: 1221 },
+        { src: "/images/mule-rose/lifestyle-2.webp", width: 1400, height: 1867 },
+        { src: "/images/mule-rose/lifestyle-3.webp", width: 1400, height: 1221 },
+        { src: "/images/mule-rose/lifestyle-4.webp", width: 1024, height: 1024 },
+        { src: "/images/mule-rose/lifestyle-5.webp", width: 1024, height: 1024 },
+        { src: "/images/mule-rose/lifestyle-6.webp", width: 1024, height: 1024 },
       ],
     },
     care: [
@@ -179,11 +190,14 @@ export const products: Product[] = [
         "/images/mule-vanilla/gallery-1.webp",
         "/images/mule-vanilla/gallery-2.webp",
         "/images/mule-vanilla/gallery-3.webp",
+        "/images/mule-vanilla/gallery-model.webp",
       ],
       lifestyle: [
-        "/images/mule-vanilla/lifestyle-1.webp",
-        "/images/mule-vanilla/lifestyle-2.webp",
-        "/images/mule-vanilla/lifestyle-3.webp",
+        { src: "/images/mule-vanilla/lifestyle-2.webp", width: 896, height: 1195 },
+        { src: "/images/mule-vanilla/lifestyle-3.webp", width: 896, height: 1195 },
+        { src: "/images/mule-vanilla/lifestyle-4.webp", width: 1400, height: 1867 },
+        { src: "/images/mule-vanilla/lifestyle-5.webp", width: 1400, height: 1867 },
+        { src: "/images/mule-vanilla/lifestyle-6.webp", width: 1400, height: 1867 },
       ],
     },
     care: [

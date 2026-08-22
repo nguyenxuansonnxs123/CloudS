@@ -55,7 +55,7 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
               ariaLabel={`Ảnh sản phẩm ${product.name}`}
               aspectClassName="aspect-square"
               className="overflow-hidden rounded-3xl border border-line bg-brand-cream"
-              slides={product.images.gallery.map((src) => (
+              slides={product.images.gallery.map((src, i) => (
                 <div key={src} className="relative size-full">
                   <Image
                     src={src}
@@ -63,7 +63,7 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
                     fill
                     sizes="(min-width: 1024px) 45vw, 90vw"
                     className="object-contain p-6"
-                    priority
+                    priority={i === 0}
                   />
                 </div>
               ))}
@@ -191,16 +191,17 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
           <Container className="py-14 sm:py-20">
             <SectionHeading eyebrow="Trải nghiệm thực tế" title="CloudS trong đời sống hằng ngày" />
             <ScrollRow className="mt-8">
-              {product.images.lifestyle.map((src) => (
+              {product.images.lifestyle.map((img) => (
                 <div
-                  key={src}
-                  className="relative aspect-[3/4] w-56 shrink-0 snap-start overflow-hidden rounded-3xl sm:w-72"
+                  key={img.src}
+                  className="relative h-72 shrink-0 snap-start overflow-hidden rounded-3xl sm:h-96"
+                  style={{ aspectRatio: `${img.width} / ${img.height}` }}
                 >
                   <Image
-                    src={src}
+                    src={img.src}
                     alt={`${product.name} — trải nghiệm thực tế`}
                     fill
-                    sizes="(min-width: 640px) 280px, 224px"
+                    sizes="(min-width: 640px) 400px, 300px"
                     className="object-cover"
                   />
                 </div>

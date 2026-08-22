@@ -51,12 +51,14 @@ const heroSlides = [
 ];
 
 const lifestyleGallery = [
-  "/images/cloudstride/lifestyle-1.webp",
-  "/images/mule-rose/lifestyle-1.webp",
-  "/images/cloudstride/lifestyle-4.webp",
-  "/images/mule-vanilla/lifestyle-1.webp",
-  "/images/cloudstride/lifestyle-2.webp",
-  "/images/mule-rose/lifestyle-3.webp",
+  { src: "/images/cloudstride/gallery-model.webp", width: 1400, height: 1400 },
+  { src: "/images/mule-rose/gallery-model-1.webp", width: 1024, height: 1024 },
+  { src: "/images/mule-vanilla/gallery-model.webp", width: 1400, height: 1867 },
+  { src: "/images/cloudstride/lifestyle-5.webp", width: 1400, height: 2488 },
+  { src: "/images/mule-rose/lifestyle-2.webp", width: 1400, height: 1867 },
+  { src: "/images/mule-vanilla/lifestyle-4.webp", width: 1400, height: 1867 },
+  { src: "/images/cloudstride/lifestyle-4.webp", width: 1024, height: 1024 },
+  { src: "/images/mule-rose/lifestyle-6.webp", width: 1024, height: 1024 },
 ];
 
 export default function HomePage() {
@@ -161,16 +163,17 @@ export default function HomePage() {
             description="Đi làm, đi bộ, cà phê cuối tuần — CloudS đồng hành trong mọi khoảnh khắc."
           />
           <ScrollRow className="mt-8">
-            {lifestyleGallery.map((src) => (
+            {lifestyleGallery.map((img) => (
               <div
-                key={src}
-                className="relative aspect-[3/4] w-52 shrink-0 snap-start overflow-hidden rounded-3xl sm:w-64"
+                key={img.src}
+                className="relative h-64 shrink-0 snap-start overflow-hidden rounded-3xl sm:h-80"
+                style={{ aspectRatio: `${img.width} / ${img.height}` }}
               >
                 <Image
-                  src={src}
+                  src={img.src}
                   alt="Khoảnh khắc cùng CloudS"
                   fill
-                  sizes="(min-width: 640px) 256px, 208px"
+                  sizes="(min-width: 640px) 320px, 256px"
                   className="object-cover"
                 />
               </div>
