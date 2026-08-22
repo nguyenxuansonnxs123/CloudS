@@ -35,22 +35,18 @@ const heroSlides = [
   {
     src: "/images/home/hero-grand-opening.webp",
     alt: "CloudS Grand Opening — Bước nhẹ mỗi ngày",
-    focus: "object-top",
   },
   {
     src: "/images/cloudstride/hero-banner.webp",
     alt: "CloudStride 1 — Từ sáng đến cuối ngày",
-    focus: "object-center",
   },
   {
     src: "/images/mule-rose/hero-banner.webp",
     alt: "Cloud Mule 1 Rose — Sáng vội vẫn xỏ giày kịp",
-    focus: "object-center",
   },
   {
     src: "/images/mule-vanilla/hero-banner.webp",
     alt: "Cloud Mule 1 Vanilla Cream — Sáng vội vẫn xỏ giày kịp",
-    focus: "object-center",
   },
 ];
 
@@ -75,13 +71,13 @@ export default function HomePage() {
             className="overflow-hidden rounded-3xl border border-line"
             autoPlayMs={5500}
             slides={heroSlides.map((slide) => (
-              <div key={slide.src} className="relative size-full">
+              <div key={slide.src} className="relative size-full bg-brand-cream">
                 <Image
                   src={slide.src}
                   alt={slide.alt}
                   fill
                   sizes="100vw"
-                  className={`object-cover ${slide.focus}`}
+                  className="object-contain"
                   priority={slide.src === heroSlides[0].src}
                 />
               </div>
