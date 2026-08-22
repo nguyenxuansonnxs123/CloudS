@@ -6,7 +6,7 @@ import { products } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "Sản phẩm",
-  description: "Toàn bộ sản phẩm giày CloudS — sneaker nam và nữ cho vận động hàng ngày.",
+  description: "Toàn bộ sản phẩm giày CloudS — CloudStride 1 và Cloud Mule 1 cho vận động hàng ngày.",
 };
 
 export default function ProductsPage() {
@@ -15,9 +15,9 @@ export default function ProductsPage() {
       <SectionHeading
         eyebrow="Sản phẩm"
         title="Toàn bộ sản phẩm CloudS"
-        description="Hai mẫu mở màn — mỗi đôi được thiết kế cho một nhịp sống khác nhau, cùng chung một tiêu chí: thoải mái suốt cả ngày."
+        description="CloudStride 1 cho những ngày di chuyển nhiều, Cloud Mule 1 cho buổi sáng vội vã — chọn đôi hợp với nhịp sống của bạn."
       />
-      <div className="mt-10 grid gap-6 sm:grid-cols-2">
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((product) => (
           <ProductCard key={product.slug} product={product} />
         ))}

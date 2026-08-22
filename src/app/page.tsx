@@ -4,8 +4,9 @@ import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ProductCard } from "@/components/ProductCard";
+import { Carousel } from "@/components/Carousel";
+import { ScrollRow } from "@/components/ScrollRow";
 import { products } from "@/lib/products";
-import { siteConfig } from "@/lib/site-config";
 
 const usps = [
   {
@@ -30,44 +31,81 @@ const usps = [
   },
 ];
 
+const heroSlides = [
+  {
+    src: "/images/home/hero-grand-opening.webp",
+    alt: "CloudS Grand Opening — Bước nhẹ mỗi ngày",
+    focus: "object-top",
+  },
+  {
+    src: "/images/cloudstride/hero-banner.webp",
+    alt: "CloudStride 1 — Từ sáng đến cuối ngày",
+    focus: "object-center",
+  },
+  {
+    src: "/images/mule-rose/hero-banner.webp",
+    alt: "Cloud Mule 1 Rose — Sáng vội vẫn xỏ giày kịp",
+    focus: "object-center",
+  },
+  {
+    src: "/images/mule-vanilla/hero-banner.webp",
+    alt: "Cloud Mule 1 Vanilla Cream — Sáng vội vẫn xỏ giày kịp",
+    focus: "object-center",
+  },
+];
+
+const lifestyleGallery = [
+  "/images/cloudstride/lifestyle-1.webp",
+  "/images/mule-rose/lifestyle-1.webp",
+  "/images/cloudstride/lifestyle-4.webp",
+  "/images/mule-vanilla/lifestyle-1.webp",
+  "/images/cloudstride/lifestyle-2.webp",
+  "/images/mule-rose/lifestyle-3.webp",
+];
+
 export default function HomePage() {
   return (
     <>
-      {/* Hero */}
-      <section className="overflow-hidden bg-brand-cream">
-        <Container className="grid gap-10 pb-14 pt-14 sm:pt-20">
-          <div className="max-w-2xl animate-fade-up">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-ink">
-              {siteConfig.tagline}
-            </p>
-            <h1 className="mt-3 font-display text-4xl leading-[1.05] text-ink sm:text-6xl">
-              Nhẹ như mây,
-              <br />
-              bước cả ngày.
-            </h1>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-ink-soft sm:text-lg">
-              CloudS là sneaker hiệu năng cho vận động hàng ngày — thoáng khí, êm chân,
-              dễ đi từ lúc ra khỏi nhà đến khi kết thúc một ngày dài.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/san-pham" size="lg" icon={<ArrowRight className="size-4" aria-hidden />}>
-                Khám phá sản phẩm
-              </Button>
-              <Button href="/uu-dai-khai-truong" variant="ghost" size="lg">
-                Ưu đãi khai trương
-              </Button>
-            </div>
-          </div>
-
-          <div className="relative overflow-hidden rounded-3xl border border-line">
-            <Image
-              src="/images/men/hero-banner.webp"
-              alt="CloudS — từ sáng đến cuối ngày: đi làm, đi bộ, gặp gỡ bạn bè"
-              width={1636}
-              height={785}
-              className="h-auto w-full object-cover"
-              priority
-            />
+      {/* Hero slideshow */}
+      <section className="bg-brand-cream">
+        <Container className="pb-10 pt-8 sm:pt-12">
+          <Carousel
+            ariaLabel="Bộ sưu tập CloudS"
+            aspectClassName="aspect-[4/5] sm:aspect-[16/9]"
+            className="overflow-hidden rounded-3xl border border-line"
+            autoPlayMs={5500}
+            slides={heroSlides.map((slide) => (
+              <div key={slide.src} className="relative size-full">
+                <Image
+                  src={slide.src}
+                  alt={slide.alt}
+                  fill
+                  sizes="100vw"
+                  className={`object-cover ${slide.focus}`}
+                  priority={slide.src === heroSlides[0].src}
+                />
+              </div>
+            ))}
+          />
+        </Container>
+        <Container className="pb-14 text-center sm:pb-20">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-ink">
+            Move a little. Feel a lot.
+          </p>
+          <h1 className="mx-auto mt-3 max-w-xl font-display text-4xl leading-[1.05] text-ink sm:text-5xl">
+            Nhẹ như mây, bước cả ngày.
+          </h1>
+          <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-ink-soft sm:text-lg">
+            CloudS là sneaker hiệu năng cho vận động hàng ngày — thoáng khí, êm chân, dễ đi
+            từ lúc ra khỏi nhà đến khi kết thúc một ngày dài.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button href="/san-pham" size="lg" icon={<ArrowRight className="size-4" aria-hidden />}>
+              Khám phá sản phẩm
+            </Button>
+            <Button href="/uu-dai" variant="ghost" size="lg">
+              Ưu đãi khai trương
+            </Button>
           </div>
         </Container>
       </section>
@@ -87,15 +125,30 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Featured products */}
+      {/* 3 lý do chọn CloudS — poster */}
       <section className="bg-brand-cream">
+        <Container className="py-14 sm:py-20">
+          <div className="overflow-hidden rounded-3xl border border-line">
+            <Image
+              src="/images/home/features-3-reasons.webp"
+              alt="3 lý do chọn CloudS — Bước nhẹ mỗi ngày: nhẹ & thoáng, bền & bám tốt, tối giản dễ phối"
+              width={2000}
+              height={780}
+              className="h-auto w-full object-cover"
+            />
+          </div>
+        </Container>
+      </section>
+
+      {/* Featured products */}
+      <section className="bg-surface">
         <Container className="py-16 sm:py-24">
           <SectionHeading
             eyebrow="Sản phẩm"
-            title="Hai đôi mở màn của CloudS"
+            title="Bộ sưu tập mở màn của CloudS"
             description="Mỗi mẫu là một câu trả lời cho một kiểu ngày bận rộn — chọn đôi hợp với nhịp sống của bạn."
           />
-          <div className="mt-10 grid gap-6 sm:grid-cols-2">
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => (
               <ProductCard key={product.slug} product={product} />
             ))}
@@ -103,53 +156,30 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Lifestyle / positioning */}
-      <section className="bg-surface">
-        <Container className="grid gap-10 py-16 sm:py-24 lg:grid-cols-2 lg:items-center">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="relative aspect-[3/4] overflow-hidden rounded-3xl">
-              <Image
-                src="/images/men/lifestyle-running.webp"
-                alt="Vận động cùng CloudS Performance"
-                fill
-                sizes="(min-width: 1024px) 25vw, 45vw"
-                className="object-cover"
-              />
-            </div>
-            <div className="relative mt-8 aspect-[3/4] overflow-hidden rounded-3xl">
-              <Image
-                src="/images/women/lifestyle-leg.webp"
-                alt="CloudS Mule — dễ xỏ, dễ đi mỗi ngày"
-                fill
-                sizes="(min-width: 1024px) 25vw, 45vw"
-                className="object-cover"
-              />
-            </div>
-          </div>
-          <div>
-            <SectionHeading
-              eyebrow="Định vị"
-              title="Hiệu năng cho vận động hàng ngày"
-              description="Không phải giày thời trang thuần tuý — CloudS lấy sự thoải mái khi di chuyển, đi bộ nhiều trong ngày làm gốc. Phong cách tối giản, dễ phối đồ là điểm cộng thêm."
-            />
-            <ul className="mt-6 space-y-3 text-sm text-ink-soft">
-              <li className="flex gap-2">
-                <span className="mt-1 size-1.5 shrink-0 rounded-full bg-blush-dark" />
-                Đi làm, đi học, đi bộ, gặp gỡ bạn bè — một đôi là đủ cho cả ngày.
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-1 size-1.5 shrink-0 rounded-full bg-blush-dark" />
-                Bằng chứng thực tế qua trải nghiệm thật, không chỉ lời quảng cáo.
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-1 size-1.5 shrink-0 rounded-full bg-blush-dark" />
-                Đa dạng size — Nam 41–43, Nữ 36–38.
-              </li>
-            </ul>
-            <Button href="/ve-clouds" variant="ghost" className="mt-8">
-              Tìm hiểu về CloudS
-            </Button>
-          </div>
+      {/* Lifestyle gallery strip */}
+      <section className="bg-brand-cream">
+        <Container className="py-16 sm:py-24">
+          <SectionHeading
+            eyebrow="Trải nghiệm thực tế"
+            title="CloudS trong nhịp sống hằng ngày"
+            description="Đi làm, đi bộ, cà phê cuối tuần — CloudS đồng hành trong mọi khoảnh khắc."
+          />
+          <ScrollRow className="mt-8">
+            {lifestyleGallery.map((src) => (
+              <div
+                key={src}
+                className="relative aspect-[3/4] w-52 shrink-0 snap-start overflow-hidden rounded-3xl sm:w-64"
+              >
+                <Image
+                  src={src}
+                  alt="Khoảnh khắc cùng CloudS"
+                  fill
+                  sizes="(min-width: 640px) 256px, 208px"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </ScrollRow>
         </Container>
       </section>
 
@@ -161,8 +191,8 @@ export default function HomePage() {
               Lỡ sai size cũng đừng lo.
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft sm:text-base">
-              CloudS hỗ trợ đổi size trong 5 ngày đầu nhận hàng, và chịu trách nhiệm 100%
-              nếu lỗi đến từ phía shop. Mọi yêu cầu được phản hồi trong vòng 24 giờ làm việc.
+              Chế độ An Tâm Mua Sắm: hoàn tiền 100% nếu sai mô tả, đổi màu/size miễn phí
+              trong 5 ngày, bảo hành 6 tháng lỗi keo đế. Mọi yêu cầu phản hồi trong 24 giờ.
             </p>
           </div>
           <div className="sm:justify-self-end">

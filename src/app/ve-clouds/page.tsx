@@ -45,8 +45,8 @@ export default function AboutPage() {
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div className="relative aspect-[4/3] overflow-hidden rounded-3xl">
               <Image
-                src="/images/men/detail-features.webp"
-                alt="Chi tiết chất liệu CloudS Performance"
+                src="/images/cloudstride/gallery-4.webp"
+                alt="Chi tiết CloudStride 1"
                 fill
                 sizes="(min-width: 1024px) 45vw, 90vw"
                 className="object-cover"
@@ -90,7 +90,7 @@ export default function AboutPage() {
               Một thói quen nhỏ, duy trì mỗi ngày.
             </h2>
             <p className="mt-4 leading-relaxed text-brand-cream/70">
-              Với dòng CloudS Performance, chúng tôi không chỉ bán một đôi giày — chúng tôi muốn
+              Với dòng CloudStride, chúng tôi không chỉ bán một đôi giày — chúng tôi muốn
               khuyến khích thói quen đi bộ hằng ngày. CloudS Walking Club là nơi các thành viên
               chia sẻ hành trình đi bộ, hỏi đáp về chọn giày đúng form, và cùng nhau giữ động lực
               vận động — thay vì đi một mình rồi dễ bỏ cuộc.

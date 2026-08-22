@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "",
     "/san-pham",
     "/ve-clouds",
-    "/uu-dai-khai-truong",
+    "/uu-dai",
     "/chinh-sach-doi-tra",
     "/lien-he",
   ].map((route) => ({

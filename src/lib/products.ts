@@ -1,10 +1,11 @@
 export type Product = {
   slug: string;
+  silhouette: "cloudstride-1" | "cloud-mule-1";
   name: string;
   shortName: string;
   gender: "nam" | "nu";
+  isNew?: boolean;
   price: number;
-  compareAtPrice?: number;
   sizes: string[];
   color: string;
   colorSwatch: string;
@@ -18,13 +19,16 @@ export type Product = {
     lifestyle: string[];
   };
   care: string[];
+  /** slug của các phiên bản màu khác cùng dáng giày, để hiện swatch chuyển đổi */
+  colorOptions: string[];
 };
 
 export const products: Product[] = [
   {
-    slug: "clouds-performance-nam",
-    name: "CloudS Performance — Giày thể thao Nam",
-    shortName: "Đôi 1 — Nam",
+    slug: "cloudstride-1",
+    silhouette: "cloudstride-1",
+    name: "CloudStride 1",
+    shortName: "CloudStride 1",
     gender: "nam",
     price: 360000,
     sizes: ["41", "42", "43"],
@@ -41,51 +45,62 @@ export const products: Product[] = [
     ],
     features: [
       {
-        title: "Phần đế ngoài",
-        detail: "Cao su GCR, chống mài mòn, chống trơn trượt.",
+        title: "Đế ngoài GCR",
+        detail: "Cao su GCR chống mài mòn, chống trơn trượt — an tâm khi đi bộ nhiều.",
       },
       {
-        title: "Thân giày",
-        detail: "Chất liệu sợi Poly thoáng khí, thoải mái.",
-      },
-      {
-        title: "Chất liệu upper",
-        detail: "Vải dệt + TPU ép nhiệt, chống thấm nhẹ.",
+        title: "Thân giày thoáng khí",
+        detail: "Chất liệu sợi Poly dệt thoáng khí, giữ chân khô thoáng cả ngày.",
       },
       {
         title: "Lót giày EVA",
-        detail: "Massage chân, giảm chấn hiệu quả suốt cả ngày.",
+        detail: "Massage chân, giảm chấn hiệu quả, êm suốt hành trình dài.",
+      },
+      {
+        title: "Phong cách đa dụng",
+        detail: "Đi học, đi làm, đi chơi, đi tập — một đôi cho mọi hoạt động hằng ngày.",
       },
     ],
     images: {
-      main: "/images/men/product-clean.webp",
+      main: "/images/cloudstride/gallery-1.webp",
       gallery: [
-        "/images/men/detail-sole-upper.webp",
-        "/images/men/detail-features.webp",
+        "/images/cloudstride/gallery-1.webp",
+        "/images/cloudstride/gallery-3.webp",
+        "/images/cloudstride/gallery-5.webp",
+        "/images/cloudstride/gallery-6.webp",
+        "/images/cloudstride/gallery-4.webp",
       ],
-      lifestyle: ["/images/men/lifestyle-walking.webp", "/images/men/lifestyle-running.webp"],
+      lifestyle: [
+        "/images/cloudstride/lifestyle-1.webp",
+        "/images/cloudstride/lifestyle-2.webp",
+        "/images/cloudstride/lifestyle-3.webp",
+        "/images/cloudstride/lifestyle-4.webp",
+        "/images/cloudstride/lifestyle-5.webp",
+      ],
     },
     care: [
       "Lau sạch bụi bẩn bằng khăn ẩm sau khi sử dụng ngoài trời",
       "Không giặt máy — giặt tay nhẹ nhàng và phơi nơi thoáng gió, tránh nắng gắt",
       "Nhét giấy/form giữ dáng khi không sử dụng trong thời gian dài",
     ],
+    colorOptions: [],
   },
   {
-    slug: "clouds-mule-nu",
-    name: "CloudS Mule — Sneaker Nữ",
-    shortName: "Đôi 1 — Nữ",
+    slug: "cloud-mule-1-rose",
+    silhouette: "cloud-mule-1",
+    name: "Cloud Mule 1 — Rose",
+    shortName: "Cloud Mule 1",
     gender: "nu",
     price: 260000,
     sizes: ["36", "37", "38"],
-    color: "Hồng phấn",
-    colorSwatch: "#e7b7ae",
-    tagline: "Xỏ vào là đi — dễ dàng cho mỗi buổi sáng vội vã.",
+    color: "Rose",
+    colorSwatch: "#dba3a0",
+    tagline: "Sáng vội vẫn xỏ giày kịp — đi làm, đi chơi, cà phê.",
     description:
-      "Sneaker mule phong cách tối giản, thiết kế không dây buộc gót giúp xỏ nhanh trong vài giây. Tông màu hồng phấn trung tính, dễ phối với hầu hết trang phục đi làm, đi học hay đi chơi hàng ngày.",
+      "Sneaker mule phong cách tối giản, thiết kế không dây buộc gót giúp xỏ nhanh trong vài giây. Tông hồng Rose nhẹ nhàng, dễ phối với hầu hết trang phục đi làm, đi học hay đi chơi hàng ngày.",
     usps: [
       "Dễ xỏ, dễ đi — tiết kiệm thời gian mỗi buổi sáng",
-      "Tông hồng phấn trung tính, dễ phối nhiều outfit",
+      "Tông hồng Rose nhẹ nhàng, dễ phối nhiều outfit",
       "Phong cách tối giản, gọn gàng cả khi đi làm",
       "Êm chân, phù hợp di chuyển nhiều trong ngày",
     ],
@@ -95,8 +110,8 @@ export const products: Product[] = [
         detail: "Không dây buộc gót, xỏ nhanh chỉ trong vài giây.",
       },
       {
-        title: "Tông màu trung tính",
-        detail: "Hồng phấn nhẹ nhàng, dễ phối đồ hàng ngày.",
+        title: "Tông Rose nhẹ nhàng",
+        detail: "Hồng phấn trung tính, dễ phối đồ hàng ngày.",
       },
       {
         title: "Đế êm nhẹ",
@@ -104,15 +119,79 @@ export const products: Product[] = [
       },
     ],
     images: {
-      main: "/images/women/product-pair-1.webp",
-      gallery: ["/images/women/product-pair-2.webp", "/images/women/product-pair-3.webp"],
-      lifestyle: ["/images/women/lifestyle-leg.webp"],
+      main: "/images/mule-rose/gallery-2.webp",
+      gallery: [
+        "/images/mule-rose/gallery-2.webp",
+        "/images/mule-rose/gallery-3.webp",
+        "/images/mule-rose/gallery-1.webp",
+      ],
+      lifestyle: [
+        "/images/mule-rose/lifestyle-1.webp",
+        "/images/mule-rose/lifestyle-2.webp",
+        "/images/mule-rose/lifestyle-3.webp",
+        "/images/mule-rose/lifestyle-4.webp",
+      ],
     },
     care: [
       "Lau sạch bụi bẩn bằng khăn ẩm, tránh ngâm nước",
       "Không giặt máy — giặt tay nhẹ nhàng và phơi nơi thoáng gió",
       "Bảo quản nơi khô ráo, tránh ánh nắng trực tiếp làm phai màu",
     ],
+    colorOptions: ["cloud-mule-1-vanilla-cream"],
+  },
+  {
+    slug: "cloud-mule-1-vanilla-cream",
+    silhouette: "cloud-mule-1",
+    name: "Cloud Mule 1 — Vanilla Cream",
+    shortName: "Cloud Mule 1",
+    gender: "nu",
+    isNew: true,
+    price: 260000,
+    sizes: ["36", "37", "38"],
+    color: "Vanilla Cream",
+    colorSwatch: "#efe6d8",
+    tagline: "Sáng vội vẫn xỏ giày kịp — một đôi nhẹ nhàng cho mọi lịch trình.",
+    description:
+      "Sneaker mule phong cách tối giản, thiết kế không dây buộc gót giúp xỏ nhanh trong vài giây. Tông Vanilla Cream sáng, trung tính tuyệt đối, phối được với gần như mọi trang phục hàng ngày.",
+    usps: [
+      "Dễ xỏ, dễ đi — tiết kiệm thời gian mỗi buổi sáng",
+      "Tông Vanilla Cream sáng, trung tính, dễ phối mọi outfit",
+      "Phong cách tối giản, gọn gàng cả khi đi làm",
+      "Êm chân, phù hợp di chuyển nhiều trong ngày",
+    ],
+    features: [
+      {
+        title: "Kiểu dáng mule",
+        detail: "Không dây buộc gót, xỏ nhanh chỉ trong vài giây.",
+      },
+      {
+        title: "Tông Vanilla Cream",
+        detail: "Sáng, trung tính tuyệt đối — dễ phối mọi outfit.",
+      },
+      {
+        title: "Đế êm nhẹ",
+        detail: "Thoải mái cho cả ngày di chuyển, đi làm, đi học.",
+      },
+    ],
+    images: {
+      main: "/images/mule-vanilla/gallery-1.webp",
+      gallery: [
+        "/images/mule-vanilla/gallery-1.webp",
+        "/images/mule-vanilla/gallery-2.webp",
+        "/images/mule-vanilla/gallery-3.webp",
+      ],
+      lifestyle: [
+        "/images/mule-vanilla/lifestyle-1.webp",
+        "/images/mule-vanilla/lifestyle-2.webp",
+        "/images/mule-vanilla/lifestyle-3.webp",
+      ],
+    },
+    care: [
+      "Lau sạch bụi bẩn bằng khăn ẩm, tránh ngâm nước",
+      "Không giặt máy — giặt tay nhẹ nhàng và phơi nơi thoáng gió",
+      "Bảo quản nơi khô ráo, tránh ánh nắng trực tiếp làm phai màu (đặc biệt tông sáng)",
+    ],
+    colorOptions: ["cloud-mule-1-rose"],
   },
 ];
 
@@ -120,6 +199,22 @@ export function getProductBySlug(slug: string) {
   return products.find((p) => p.slug === slug);
 }
 
+export function getSiblingColorProducts(product: Product) {
+  return product.colorOptions
+    .map((slug) => getProductBySlug(slug))
+    .filter((p): p is Product => Boolean(p));
+}
+
 export function formatPrice(price: number) {
   return price.toLocaleString("vi-VN") + "đ";
 }
+
+/** Bảng quy đổi size EU sang chiều dài chân tham khảo (không phải số đo riêng của CloudS). */
+export const sizeGuide: { size: string; footLengthCm: string }[] = [
+  { size: "36", footLengthCm: "22.5 – 23.0 cm" },
+  { size: "37", footLengthCm: "23.0 – 23.5 cm" },
+  { size: "38", footLengthCm: "23.5 – 24.0 cm" },
+  { size: "41", footLengthCm: "26.0 – 26.5 cm" },
+  { size: "42", footLengthCm: "26.5 – 27.0 cm" },
+  { size: "43", footLengthCm: "27.0 – 27.5 cm" },
+];
