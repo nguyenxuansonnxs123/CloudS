@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Percent, Truck, ShieldCheck, Users, Sparkles } from "lucide-react";
 import { Container } from "@/components/Container";
-import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/Button";
 
 export const metadata: Metadata = {

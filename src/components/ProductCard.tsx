@@ -15,7 +15,14 @@ export function ProductCard({ product }: { product: Product }) {
             alt={product.name}
             fill
             sizes="(min-width: 1024px) 30vw, (min-width: 768px) 40vw, 90vw"
-            className="object-contain p-6 transition-transform duration-500 group-hover:scale-105"
+            className="object-contain p-6 opacity-100 transition-opacity duration-300 group-hover:opacity-0"
+          />
+          <Image
+            src={product.images.hover}
+            alt={`${product.name} — người mẫu mang giày`}
+            fill
+            sizes="(min-width: 1024px) 30vw, (min-width: 768px) 40vw, 90vw"
+            className="object-contain p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           />
           <div className="absolute left-4 top-4 flex gap-2">
             <span className="rounded-full bg-brand-black px-3 py-1 text-xs font-semibold text-brand-cream">

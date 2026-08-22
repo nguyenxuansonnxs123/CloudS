@@ -17,6 +17,8 @@ export type Product = {
   features: { title: string; detail: string }[];
   images: {
     main: string;
+    /** Ảnh hiện khi hover vào thẻ sản phẩm — người mẫu đang mang giày */
+    hover: string;
     /** Ảnh vuông trong gallery chính (fill + object-contain, không crop) */
     gallery: string[];
     /** Ảnh trải nghiệm thực tế — giữ nguyên kích thước gốc để không bị crop */
@@ -67,6 +69,7 @@ export const products: Product[] = [
     ],
     images: {
       main: "/images/cloudstride/gallery-1.webp",
+      hover: "/images/cloudstride/gallery-model.webp",
       gallery: [
         "/images/cloudstride/gallery-1.webp",
         "/images/cloudstride/gallery-model.webp",
@@ -126,6 +129,7 @@ export const products: Product[] = [
     ],
     images: {
       main: "/images/mule-rose/gallery-2.webp",
+      hover: "/images/mule-rose/gallery-model-1.webp",
       gallery: [
         "/images/mule-rose/gallery-2.webp",
         "/images/mule-rose/gallery-3.webp",
@@ -186,6 +190,7 @@ export const products: Product[] = [
     ],
     images: {
       main: "/images/mule-vanilla/gallery-1.webp",
+      hover: "/images/mule-vanilla/gallery-model.webp",
       gallery: [
         "/images/mule-vanilla/gallery-1.webp",
         "/images/mule-vanilla/gallery-2.webp",
