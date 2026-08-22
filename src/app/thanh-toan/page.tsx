@@ -1,23 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { useCart } from "@/components/CartProvider";
+import { VoucherSection } from "@/components/VoucherSection";
 import { formatPrice } from "@/lib/products";
 import { siteConfig } from "@/lib/site-config";
+import { autoAppliedVoucherCodes, shippingDiscountFor } from "@/lib/vouchers";
 import { clsx } from "clsx";
+
+type VnProvince = { code: number; name: string };
+type VnWard = { code: number; name: string };
+type VnAddressData = { provinces: VnProvince[]; wardsByProvince: Record<string, VnWard[]> };
 
 type FormState = {
   name: string;
   email: string;
   phone: string;
-  address: string;
+  provinceCode: string;
+  wardCode: string;
+  addressDetail: string;
   note: string;
 };
 
-const initialForm: FormState = { name: "", email: "", phone: "", address: "", note: "" };
+const initialForm: FormState = {
+  name: "",
+  email: "",
+  phone: "",
+  provinceCode: "",
+  wardCode: "",
+  addressDetail: "",
+  note: "",
+};
 
 function validate(form: FormState) {
   const errors: Partial<Record<keyof FormState, string>> = {};
@@ -32,7 +48,9 @@ function validate(form: FormState) {
   } else if (!/^(0|\+84)[0-9]{9,10}$/.test(form.phone.replace(/[\s.-]/g, ""))) {
     errors.phone = "Số điện thoại không hợp lệ.";
   }
-  if (!form.address.trim()) errors.address = "Vui lòng nhập địa chỉ nhận hàng.";
+  if (!form.provinceCode) errors.provinceCode = "Vui lòng chọn Tỉnh/Thành phố.";
+  if (!form.wardCode) errors.wardCode = "Vui lòng chọn Phường/Xã.";
+  if (!form.addressDetail.trim()) errors.addressDetail = "Vui lòng nhập số nhà, tên đường.";
   return errors;
 }
 
@@ -42,11 +60,25 @@ export default function CheckoutPage() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "bank_transfer">("cod");
+  const [voucherCodes, setVoucherCodes] = useState<string[]>(() => autoAppliedVoucherCodes());
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [addressData, setAddressData] = useState<VnAddressData | null>(null);
+
+  useEffect(() => {
+    fetch("/data/vn-address.json")
+      .then((res) => res.json())
+      .then((data: VnAddressData) => setAddressData(data))
+      .catch(() => setAddressData(null));
+  }, []);
+
+  const wards = useMemo(() => {
+    if (!addressData || !form.provinceCode) return [];
+    return addressData.wardsByProvince[form.provinceCode] ?? [];
+  }, [addressData, form.provinceCode]);
 
   const shippingFee = siteConfig.shippingFee;
-  const shippingDiscount = siteConfig.freeShipVoucher.active ? shippingFee : 0;
+  const shippingDiscount = shippingDiscountFor(voucherCodes, shippingFee);
   const total = subtotal + shippingFee - shippingDiscount;
 
   async function handleSubmit(e: React.FormEvent) {
@@ -55,13 +87,28 @@ export default function CheckoutPage() {
     setErrors(fieldErrors);
     if (Object.keys(fieldErrors).length > 0) return;
 
+    const provinceName = addressData?.provinces.find((p) => String(p.code) === form.provinceCode)?.name ?? "";
+    const wardName = wards.find((w) => String(w.code) === form.wardCode)?.name ?? "";
+    const address = [form.addressDetail.trim(), wardName, provinceName].filter(Boolean).join(", ");
+
     setSubmitting(true);
     setSubmitError(null);
     try {
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customer: form, items, paymentMethod }),
+        body: JSON.stringify({
+          customer: {
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            address,
+            note: form.note,
+          },
+          items,
+          paymentMethod,
+          voucherCodes,
+        }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
@@ -139,18 +186,89 @@ export default function CheckoutPage() {
             />
           </Field>
 
-          <Field label="Địa chỉ nhận hàng" htmlFor="address" error={errors.address} required>
-            <textarea
-              id="address"
-              rows={3}
-              autoComplete="street-address"
-              value={form.address}
-              onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))}
-              className={inputClass(Boolean(errors.address))}
-              aria-invalid={Boolean(errors.address)}
-              aria-describedby={errors.address ? "address-error" : undefined}
-            />
-          </Field>
+          <div>
+            <p className="text-sm font-semibold text-ink">
+              Địa chỉ nhận hàng <span className="text-rose-ink">*</span>
+            </p>
+            <div className="mt-1.5 grid gap-3 sm:grid-cols-2">
+              <div>
+                <label htmlFor="provinceCode" className="sr-only">
+                  Tỉnh/Thành phố
+                </label>
+                <select
+                  id="provinceCode"
+                  value={form.provinceCode}
+                  onChange={(e) => setForm((f) => ({ ...f, provinceCode: e.target.value, wardCode: "" }))}
+                  className={inputClass(Boolean(errors.provinceCode))}
+                  aria-invalid={Boolean(errors.provinceCode)}
+                  aria-describedby={errors.provinceCode ? "provinceCode-error" : undefined}
+                >
+                  <option value="">
+                    {addressData ? "Chọn Tỉnh/Thành phố" : "Đang tải danh sách..."}
+                  </option>
+                  {addressData?.provinces.map((p) => (
+                    <option key={p.code} value={p.code}>
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.provinceCode && (
+                  <p id="provinceCode-error" className="mt-1 text-xs text-red-600">
+                    {errors.provinceCode}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="wardCode" className="sr-only">
+                  Phường/Xã
+                </label>
+                <select
+                  id="wardCode"
+                  value={form.wardCode}
+                  disabled={!form.provinceCode}
+                  onChange={(e) => setForm((f) => ({ ...f, wardCode: e.target.value }))}
+                  className={clsx(inputClass(Boolean(errors.wardCode)), "disabled:opacity-60")}
+                  aria-invalid={Boolean(errors.wardCode)}
+                  aria-describedby={errors.wardCode ? "wardCode-error" : undefined}
+                >
+                  <option value="">{form.provinceCode ? "Chọn Phường/Xã" : "Chọn tỉnh trước"}</option>
+                  {wards.map((w) => (
+                    <option key={w.code} value={w.code}>
+                      {w.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.wardCode && (
+                  <p id="wardCode-error" className="mt-1 text-xs text-red-600">
+                    {errors.wardCode}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <label htmlFor="addressDetail" className="sr-only">
+                Số nhà, tên đường
+              </label>
+              <input
+                id="addressDetail"
+                type="text"
+                placeholder="Số nhà, tên đường"
+                autoComplete="address-line1"
+                value={form.addressDetail}
+                onChange={(e) => setForm((f) => ({ ...f, addressDetail: e.target.value }))}
+                className={inputClass(Boolean(errors.addressDetail))}
+                aria-invalid={Boolean(errors.addressDetail)}
+                aria-describedby={errors.addressDetail ? "addressDetail-error" : undefined}
+              />
+              {errors.addressDetail && (
+                <p id="addressDetail-error" className="mt-1 text-xs text-red-600">
+                  {errors.addressDetail}
+                </p>
+              )}
+            </div>
+          </div>
 
           <Field label="Ghi chú (không bắt buộc)" htmlFor="note">
             <textarea
@@ -214,38 +332,42 @@ export default function CheckoutPage() {
           </button>
         </form>
 
-        <div className="h-fit rounded-3xl border border-line bg-surface p-6">
-          <h2 className="font-display text-lg text-ink">Đơn hàng của bạn</h2>
-          <ul className="mt-4 space-y-3 text-sm">
-            {items.map((item) => (
-              <li key={`${item.slug}-${item.size}`} className="flex justify-between text-ink-soft">
-                <span>
-                  {item.name} ({item.size}) x{item.quantity}
-                </span>
-                <span className="text-ink">{formatPrice(item.price * item.quantity)}</span>
-              </li>
-            ))}
-          </ul>
-          <dl className="mt-4 space-y-3 border-t border-line pt-4 text-sm">
-            <div className="flex justify-between">
-              <dt className="text-ink-soft">Tạm tính</dt>
-              <dd className="text-ink">{formatPrice(subtotal)}</dd>
-            </div>
-            <div className="flex justify-between">
-              <dt className="text-ink-soft">Phí vận chuyển</dt>
-              <dd className="text-ink">{formatPrice(shippingFee)}</dd>
-            </div>
-            {shippingDiscount > 0 && (
+        <div className="h-fit space-y-4">
+          <div className="rounded-3xl border border-line bg-surface p-6">
+            <h2 className="font-display text-lg text-ink">Đơn hàng của bạn</h2>
+            <ul className="mt-4 space-y-3 text-sm">
+              {items.map((item) => (
+                <li key={`${item.slug}-${item.size}`} className="flex justify-between text-ink-soft">
+                  <span>
+                    {item.name} ({item.size}) x{item.quantity}
+                  </span>
+                  <span className="text-ink">{formatPrice(item.price * item.quantity)}</span>
+                </li>
+              ))}
+            </ul>
+            <dl className="mt-4 space-y-3 border-t border-line pt-4 text-sm">
               <div className="flex justify-between">
-                <dt className="text-rose-ink">{siteConfig.freeShipVoucher.label}</dt>
-                <dd className="text-rose-ink">-{formatPrice(shippingDiscount)}</dd>
+                <dt className="text-ink-soft">Tạm tính</dt>
+                <dd className="text-ink">{formatPrice(subtotal)}</dd>
               </div>
-            )}
-            <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
-              <dt className="text-ink">Tổng cộng</dt>
-              <dd className="text-ink">{formatPrice(total)}</dd>
-            </div>
-          </dl>
+              <div className="flex justify-between">
+                <dt className="text-ink-soft">Phí vận chuyển</dt>
+                <dd className="text-ink">{formatPrice(shippingFee)}</dd>
+              </div>
+              {shippingDiscount > 0 && (
+                <div className="flex justify-between">
+                  <dt className="text-rose-ink">Giảm giá voucher</dt>
+                  <dd className="text-rose-ink">-{formatPrice(shippingDiscount)}</dd>
+                </div>
+              )}
+              <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
+                <dt className="text-ink">Tổng cộng</dt>
+                <dd className="text-ink">{formatPrice(total)}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <VoucherSection codes={voucherCodes} onChange={setVoucherCodes} />
         </div>
       </div>
     </Container>

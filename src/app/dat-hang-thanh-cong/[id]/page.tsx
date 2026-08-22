@@ -66,7 +66,9 @@ export default async function OrderSuccessPage(props: PageProps<"/dat-hang-thanh
           </div>
           {order.shippingDiscount > 0 && (
             <div className="flex justify-between">
-              <dt className="text-rose-ink">{siteConfig.freeShipVoucher.label}</dt>
+              <dt className="text-rose-ink">
+                Giảm giá voucher{order.appliedVouchers.length > 0 && ` (${order.appliedVouchers.join(", ")})`}
+              </dt>
               <dd className="text-rose-ink">-{formatPrice(order.shippingDiscount)}</dd>
             </div>
           )}

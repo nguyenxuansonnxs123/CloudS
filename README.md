@@ -50,8 +50,23 @@ scripts/prep-images-v3.mjs      Script gần nhất dùng để xử lý ảnh g
   ngân hàng" hiện được mã QR**. Tra mã BIN ngân hàng tại https://api.vietqr.io/v2/banks (ví dụ
   Vietcombank = `970436`, Techcombank = `970407`, ACB = `970416`...). `accountName` viết KHÔNG
   DẤU, in hoa, đúng như trên tài khoản ngân hàng.
-- `shippingFee` / `freeShipVoucher.active` — hiện đặt phí ship 35.000đ/đơn nhưng tự động miễn
-  phí nhờ voucher khai trương. Khi hết chương trình, đổi `freeShipVoucher.active` thành `false`.
+- `shippingFee` — phí ship cố định 35.000đ/đơn (mức giảm giá thực tế do voucher quyết định,
+  xem mục Voucher bên dưới).
+
+### Voucher (`src/lib/vouchers.ts`)
+
+Khách nhập mã ở mục "Voucher" trong giỏ hàng/checkout. Hiện có 1 voucher `FREESHIP` với
+`autoApply: true` — tự động áp dụng cho mọi đơn, khách không cần nhập, không thể gỡ. Khi hết
+chương trình khai trương, xoá voucher này (hoặc đổi `autoApply` thành `false`) khỏi mảng
+`vouchers`. Thêm voucher mới bằng cách thêm object vào mảng này — mã giảm giá luôn được **xác
+thực và tính lại ở server** (`/api/orders`), không tin dữ liệu từ trình duyệt.
+
+### Địa chỉ (Tỉnh/Thành phố — Phường/Xã)
+
+Form checkout dùng dữ liệu hành chính Việt Nam sau sáp nhập 1/7/2025 (2 cấp, không còn quận/
+huyện), lấy từ [provinces.open-api.vn](https://provinces.open-api.vn) và đã lưu tĩnh tại
+`public/data/vn-address.json` (không gọi API ngoài lúc chạy). Nếu sau này có thay đổi địa giới
+hành chính, chạy lại script tương tự trong lịch sử commit để cập nhật file này.
 
 Cho đến khi điền, nút "Mua trên Shopee/TikTok" và social icon tự dẫn về trang Liên hệ; đơn
 chuyển khoản chưa có QR sẽ hiển thị "CloudS sẽ gửi thông tin chuyển khoản sau" thay vì lỗi.
@@ -183,5 +198,5 @@ mục `data/` trên server.
   hoặc khởi động lại ứng dụng (production) rồi tải lại trang.
 - **Sửa chính sách/nội dung tĩnh**: sửa trực tiếp trong các file `page.tsx` tương ứng ở
   `src/app/`.
-- **Đổi phí ship / tắt voucher freeship**: sửa `shippingFee` và `freeShipVoucher` trong
-  `src/lib/site-config.ts`.
+- **Đổi phí ship**: sửa `shippingFee` trong `src/lib/site-config.ts`.
+- **Tắt voucher freeship / thêm voucher mới**: sửa mảng `vouchers` trong `src/lib/vouchers.ts`.

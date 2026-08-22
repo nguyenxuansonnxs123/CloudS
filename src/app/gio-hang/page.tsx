@@ -1,18 +1,22 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { Container } from "@/components/Container";
 import { useCart } from "@/components/CartProvider";
+import { VoucherSection } from "@/components/VoucherSection";
 import { cartItemKey } from "@/lib/cart";
 import { formatPrice } from "@/lib/products";
 import { siteConfig } from "@/lib/site-config";
+import { autoAppliedVoucherCodes, shippingDiscountFor } from "@/lib/vouchers";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, subtotal, isHydrated } = useCart();
+  const [voucherCodes, setVoucherCodes] = useState<string[]>(() => autoAppliedVoucherCodes());
   const shippingFee = siteConfig.shippingFee;
-  const shippingDiscount = siteConfig.freeShipVoucher.active ? shippingFee : 0;
+  const shippingDiscount = shippingDiscountFor(voucherCodes, shippingFee);
   const total = subtotal + shippingFee - shippingDiscount;
 
   if (!isHydrated) {
@@ -99,40 +103,44 @@ export default function CartPage() {
           })}
         </ul>
 
-        <div className="h-fit rounded-3xl border border-line bg-surface p-6">
-          <h2 className="font-display text-lg text-ink">Tóm tắt đơn hàng</h2>
-          <dl className="mt-4 space-y-3 text-sm">
-            <div className="flex justify-between">
-              <dt className="text-ink-soft">Tạm tính</dt>
-              <dd className="text-ink">{formatPrice(subtotal)}</dd>
-            </div>
-            <div className="flex justify-between">
-              <dt className="text-ink-soft">Phí vận chuyển</dt>
-              <dd className="text-ink">{formatPrice(shippingFee)}</dd>
-            </div>
-            {shippingDiscount > 0 && (
+        <div className="h-fit space-y-4">
+          <div className="rounded-3xl border border-line bg-surface p-6">
+            <h2 className="font-display text-lg text-ink">Tóm tắt đơn hàng</h2>
+            <dl className="mt-4 space-y-3 text-sm">
               <div className="flex justify-between">
-                <dt className="text-rose-ink">{siteConfig.freeShipVoucher.label}</dt>
-                <dd className="text-rose-ink">-{formatPrice(shippingDiscount)}</dd>
+                <dt className="text-ink-soft">Tạm tính</dt>
+                <dd className="text-ink">{formatPrice(subtotal)}</dd>
               </div>
-            )}
-            <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
-              <dt className="text-ink">Tổng cộng</dt>
-              <dd className="text-ink">{formatPrice(total)}</dd>
-            </div>
-          </dl>
-          <Link
-            href="/thanh-toan"
-            className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-brand-black text-sm font-semibold text-brand-cream hover:bg-ink-soft"
-          >
-            Tiến hành đặt hàng
-          </Link>
-          <Link
-            href="/san-pham"
-            className="mt-3 flex h-12 w-full items-center justify-center rounded-full border border-line text-sm font-medium text-ink hover:border-brand-black"
-          >
-            Tiếp tục mua sắm
-          </Link>
+              <div className="flex justify-between">
+                <dt className="text-ink-soft">Phí vận chuyển</dt>
+                <dd className="text-ink">{formatPrice(shippingFee)}</dd>
+              </div>
+              {shippingDiscount > 0 && (
+                <div className="flex justify-between">
+                  <dt className="text-rose-ink">Giảm giá voucher</dt>
+                  <dd className="text-rose-ink">-{formatPrice(shippingDiscount)}</dd>
+                </div>
+              )}
+              <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
+                <dt className="text-ink">Tổng cộng</dt>
+                <dd className="text-ink">{formatPrice(total)}</dd>
+              </div>
+            </dl>
+            <Link
+              href="/thanh-toan"
+              className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-brand-black text-sm font-semibold text-brand-cream hover:bg-ink-soft"
+            >
+              Tiến hành đặt hàng
+            </Link>
+            <Link
+              href="/san-pham"
+              className="mt-3 flex h-12 w-full items-center justify-center rounded-full border border-line text-sm font-medium text-ink hover:border-brand-black"
+            >
+              Tiếp tục mua sắm
+            </Link>
+          </div>
+
+          <VoucherSection codes={voucherCodes} onChange={setVoucherCodes} />
         </div>
       </div>
     </Container>

@@ -32,12 +32,9 @@ export const siteConfig = {
     address: "Việt Nam",
   },
 
-  // Phí ship cố định — hiện tự động miễn phí toàn bộ nhờ voucher khai trương (xem checkout).
+  // Phí ship cố định — mức giảm giá thực tế do voucher quyết định, xem src/lib/vouchers.ts
+  // (voucher FREESHIP đang tự động áp dụng, giảm hết phí ship cho mọi đơn).
   shippingFee: 35000,
-  freeShipVoucher: {
-    active: true,
-    label: "Miễn phí ship khai trương",
-  },
 
   // Thông tin nhận chuyển khoản để sinh mã QR (VietQR — miễn phí, không cần API key).
   // Tra mã BIN ngân hàng tại https://api.vietqr.io/v2/banks — vd Vietcombank=970436, Techcombank=970407.

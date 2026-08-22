@@ -21,6 +21,7 @@ export type Order = {
   subtotal: number;
   shippingFee: number;
   shippingDiscount: number;
+  appliedVouchers: string[];
   total: number;
   paymentMethod: PaymentMethod;
   status: OrderStatus;
@@ -61,6 +62,7 @@ export async function createOrder(input: {
   subtotal: number;
   shippingFee: number;
   shippingDiscount: number;
+  appliedVouchers: string[];
   total: number;
   paymentMethod: PaymentMethod;
 }): Promise<Order> {

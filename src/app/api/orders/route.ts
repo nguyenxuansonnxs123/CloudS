@@ -3,6 +3,7 @@ import { getProductBySlug } from "@/lib/products";
 import { siteConfig } from "@/lib/site-config";
 import { createOrder, type PaymentMethod } from "@/lib/orders-store";
 import { sendOrderNotificationEmail } from "@/lib/order-email";
+import { autoAppliedVoucherCodes, findVoucher, shippingDiscountFor } from "@/lib/vouchers";
 import type { CartItem } from "@/lib/cart";
 
 const MAX_QUANTITY_PER_ITEM = 10;
@@ -17,6 +18,7 @@ type RequestBody = {
   };
   items?: { slug?: string; size?: string; quantity?: number }[];
   paymentMethod?: string;
+  voucherCodes?: string[];
 };
 
 function isValidEmail(value: string) {
@@ -81,9 +83,15 @@ export async function POST(request: Request) {
     });
   }
 
+  // Không tin danh sách voucher/giảm giá từ client — chỉ chấp nhận mã có trong hệ thống,
+  // và luôn đảm bảo các voucher tự động áp dụng được tính dù client có gửi lên hay không.
+  const requestedCodes = Array.isArray(body.voucherCodes) ? body.voucherCodes : [];
+  const validCodes = requestedCodes.filter((c) => typeof c === "string" && findVoucher(c));
+  const appliedVouchers = Array.from(new Set([...autoAppliedVoucherCodes(), ...validCodes]));
+
   const subtotal = verifiedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shippingFee = siteConfig.shippingFee;
-  const shippingDiscount = siteConfig.freeShipVoucher.active ? shippingFee : 0;
+  const shippingDiscount = shippingDiscountFor(appliedVouchers, shippingFee);
   const total = subtotal + shippingFee - shippingDiscount;
 
   const order = await createOrder({
@@ -92,6 +100,7 @@ export async function POST(request: Request) {
     subtotal,
     shippingFee,
     shippingDiscount,
+    appliedVouchers,
     total,
     paymentMethod: paymentMethod as PaymentMethod,
   });
