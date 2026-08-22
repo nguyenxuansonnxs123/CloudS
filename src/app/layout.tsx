@@ -3,6 +3,7 @@ import { Baloo_2, Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { CartProvider } from "@/components/CartProvider";
 import { siteConfig } from "@/lib/site-config";
 
 const baloo = Baloo_2({
@@ -38,9 +39,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="vi" className={`${baloo.variable} ${beVietnam.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-background text-ink">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <CartProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

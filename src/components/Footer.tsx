@@ -59,7 +59,7 @@ export function Footer() {
             </li>
             <li>
               <Link href="/lien-he" className="hover:text-ink">
-                Đặt hàng qua Zalo
+                Tư vấn qua Zalo
               </Link>
             </li>
           </ul>

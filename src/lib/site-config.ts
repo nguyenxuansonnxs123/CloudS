@@ -31,7 +31,26 @@ export const siteConfig = {
     legalName: "[ĐIỀN SAU — tên công ty pháp lý]",
     address: "Việt Nam",
   },
+
+  // Phí ship cố định — hiện tự động miễn phí toàn bộ nhờ voucher khai trương (xem checkout).
+  shippingFee: 35000,
+  freeShipVoucher: {
+    active: true,
+    label: "Miễn phí ship khai trương",
+  },
+
+  // Thông tin nhận chuyển khoản để sinh mã QR (VietQR — miễn phí, không cần API key).
+  // Tra mã BIN ngân hàng tại https://api.vietqr.io/v2/banks — vd Vietcombank=970436, Techcombank=970407.
+  bank: {
+    bin: "", // [ĐIỀN SAU] mã BIN ngân hàng
+    accountNumber: "", // [ĐIỀN SAU] số tài khoản
+    accountName: "", // [ĐIỀN SAU] tên chủ tài khoản (KHÔNG DẤU, in hoa)
+  },
 } as const;
+
+export function isBankConfigured() {
+  return Boolean(siteConfig.bank.bin && siteConfig.bank.accountNumber && siteConfig.bank.accountName);
+}
 
 export const navLinks = [
   { href: "/san-pham", label: "Sản phẩm" },

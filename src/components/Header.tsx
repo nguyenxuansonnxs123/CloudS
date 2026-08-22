@@ -3,11 +3,31 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, ShoppingBag, X } from "lucide-react";
 import { clsx } from "clsx";
 import { Container } from "./Container";
 import { navLinks, siteConfig } from "@/lib/site-config";
 import { Button } from "./Button";
+import { useCart } from "./CartProvider";
+
+function CartLink({ onClick }: { onClick?: () => void }) {
+  const { quantity, isHydrated } = useCart();
+  return (
+    <Link
+      href="/gio-hang"
+      onClick={onClick}
+      aria-label={`Giỏ hàng${quantity > 0 ? `, ${quantity} sản phẩm` : ""}`}
+      className="relative flex size-11 items-center justify-center rounded-full border border-line text-ink hover:border-brand-black"
+    >
+      <ShoppingBag className="size-5" aria-hidden />
+      {isHydrated && quantity > 0 && (
+        <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-rose-ink text-[11px] font-semibold text-brand-cream">
+          {quantity > 9 ? "9+" : quantity}
+        </span>
+      )}
+    </Link>
+  );
+}
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -39,21 +59,25 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-3 md:flex">
+          <CartLink />
           <Button href="/san-pham" size="md">
             Mua ngay
           </Button>
         </div>
 
-        <button
-          type="button"
-          className="flex size-11 items-center justify-center rounded-full border border-line text-ink md:hidden"
-          aria-label={open ? "Đóng menu" : "Mở menu"}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <CartLink />
+          <button
+            type="button"
+            className="flex size-11 items-center justify-center rounded-full border border-line text-ink"
+            aria-label={open ? "Đóng menu" : "Mở menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+          </button>
+        </div>
       </Container>
 
       {open && (

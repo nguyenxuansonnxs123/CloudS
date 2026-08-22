@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Check, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/Container";
 import { BuyActions } from "@/components/BuyActions";
+import { AddToCartForm } from "@/components/AddToCartForm";
 import { ProductCard } from "@/components/ProductCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Carousel } from "@/components/Carousel";
@@ -127,28 +128,12 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
               </div>
             )}
 
-            <div className="mt-6">
-              <p className="text-sm font-semibold text-ink">Size có sẵn</p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {product.sizes.map((size) => (
-                  <span
-                    key={size}
-                    className="flex h-11 min-w-11 items-center justify-center rounded-full border border-line px-3 text-sm font-medium text-ink"
-                  >
-                    {size}
-                  </span>
-                ))}
-              </div>
-              <p className="mt-2 text-xs text-ink-soft">
-                Chưa chắc size của mình? Xem{" "}
-                <a href="#size" className="underline underline-offset-2">
-                  hướng dẫn chọn size
-                </a>{" "}
-                hoặc nhắn Zalo để được tư vấn.
-              </p>
-            </div>
+            <AddToCartForm product={product} />
 
-            <BuyActions size="lg" className="mt-8" />
+            <p className="mt-6 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+              Hoặc mua qua kênh khác
+            </p>
+            <BuyActions size="lg" className="mt-3" />
 
             <ul className="mt-8 space-y-2.5 border-t border-line pt-6 text-sm text-ink-soft">
               {product.usps.map((usp) => (

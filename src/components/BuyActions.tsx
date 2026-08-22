@@ -38,7 +38,7 @@ export function BuyActions({
           size={size}
           icon={<MessageCircle className="size-4" aria-hidden />}
         >
-          Đặt hàng qua Zalo
+          Tư vấn qua Zalo
         </Button>
       </div>
       {!shopee && !tiktok && !zaloNumber && (
