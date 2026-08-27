@@ -6,6 +6,8 @@ export type CartItem = {
   price: number;
   quantity: number;
   image: string;
+  /** Mã SKU quản lý kho — dùng để đối chiếu với file tồn kho nội bộ. */
+  sku?: string;
 };
 
 export function cartItemKey(slug: string, size: string) {

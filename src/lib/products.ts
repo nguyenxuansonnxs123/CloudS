@@ -14,6 +14,8 @@ export type Product = {
   shopeeUrl?: string;
   tiktokUrl?: string;
   sizes: string[];
+  /** Mã SKU quản lý kho theo từng size — khớp file tồn kho nội bộ (định dạng MÃSP-MÀU-SIZE). */
+  skuBySize?: Record<string, string>;
   color: string;
   colorSwatch: string;
   tagline: string;
@@ -43,6 +45,7 @@ export const products: Product[] = [
     gender: "nam",
     price: 360000,
     sizes: ["41", "42", "43"],
+    skuBySize: { "41": "CLSV1-Bla-41", "42": "CLSV1-Bla-42", "43": "CLSV1-Bla-43" },
     color: "Đen",
     colorSwatch: "#17130f",
     tagline: "Từ sáng đến cuối ngày — đi làm, đi bộ, gặp gỡ bạn bè.",
@@ -109,7 +112,13 @@ export const products: Product[] = [
     compareAtPrice: 280000,
     shopeeUrl: "https://vn.shp.ee/bs4fXcMs",
     tiktokUrl: "https://vt.tiktok.com/ZS9Bkg84GC48H-LGpeB/",
-    sizes: ["36", "37", "38"],
+    sizes: ["36", "37", "38", "39"],
+    skuBySize: {
+      "36": "CLSV2-P-36",
+      "37": "CLSV2-P-37",
+      "38": "CLSV2-P-38",
+      "39": "CLSV2-P-39",
+    },
     color: "Rose",
     colorSwatch: "#dba3a0",
     tagline: "Sáng vội vẫn xỏ giày kịp — đi làm, đi chơi, cà phê.",
@@ -174,6 +183,7 @@ export const products: Product[] = [
     shopeeUrl: "https://vn.shp.ee/bs4fXcMs",
     tiktokUrl: "https://vt.tiktok.com/ZS9Bkg84GC48H-LGpeB/",
     sizes: ["36", "37", "38"],
+    skuBySize: { "36": "CLSV2-W-36", "37": "CLSV2-W-37", "38": "CLSV2-W-38" },
     color: "Vanilla Cream",
     colorSwatch: "#efe6d8",
     tagline: "Sáng vội vẫn xỏ giày kịp — một đôi nhẹ nhàng cho mọi lịch trình.",
@@ -244,6 +254,7 @@ export const sizeGuide: { size: string; footLengthCm: string }[] = [
   { size: "36", footLengthCm: "22.5 – 23.0 cm" },
   { size: "37", footLengthCm: "23.0 – 23.5 cm" },
   { size: "38", footLengthCm: "23.5 – 24.0 cm" },
+  { size: "39", footLengthCm: "24.0 – 24.5 cm" },
   { size: "41", footLengthCm: "26.0 – 26.5 cm" },
   { size: "42", footLengthCm: "26.5 – 27.0 cm" },
   { size: "43", footLengthCm: "27.0 – 27.5 cm" },

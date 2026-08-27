@@ -80,6 +80,7 @@ export async function POST(request: Request) {
       price: product.price,
       quantity,
       image: product.images.main,
+      sku: product.skuBySize?.[size],
     });
   }
 

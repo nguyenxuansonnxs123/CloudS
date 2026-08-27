@@ -28,6 +28,7 @@ export function AddToCartForm({ product }: { product: Product }) {
       price: product.price,
       quantity,
       image: product.images.main,
+      sku: product.skuBySize?.[size],
     });
     setAdded(true);
     setError(false);
@@ -47,6 +48,7 @@ export function AddToCartForm({ product }: { product: Product }) {
       price: product.price,
       quantity,
       image: product.images.main,
+      sku: product.skuBySize?.[size],
     });
     router.push("/gio-hang");
   }
