@@ -93,7 +93,19 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
             <h1 className="mt-2 font-display text-3xl leading-tight text-ink sm:text-4xl">
               {product.name}
             </h1>
-            <p className="mt-3 text-lg font-semibold text-ink">{formatPrice(product.price)}</p>
+            <p className="mt-3 flex items-baseline gap-3">
+              <span className="text-lg font-semibold text-ink">{formatPrice(product.price)}</span>
+              {product.compareAtPrice && (
+                <>
+                  <span className="text-base text-ink-soft line-through">
+                    {formatPrice(product.compareAtPrice)}
+                  </span>
+                  <span className="rounded-full bg-rose-ink px-2.5 py-0.5 text-xs font-semibold text-brand-cream">
+                    Giảm giá khai trương
+                  </span>
+                </>
+              )}
+            </p>
             <p className="mt-4 leading-relaxed text-ink-soft">{product.description}</p>
 
             {siblingColors.length > 0 && (
@@ -133,7 +145,12 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
             <p className="mt-6 text-xs font-semibold uppercase tracking-wide text-ink-soft">
               Hoặc mua qua kênh khác
             </p>
-            <BuyActions size="lg" className="mt-3" />
+            <BuyActions
+              size="lg"
+              className="mt-3"
+              shopeeUrl={product.shopeeUrl}
+              tiktokUrl={product.tiktokUrl}
+            />
 
             <ul className="mt-8 space-y-2.5 border-t border-line pt-6 text-sm text-ink-soft">
               {product.usps.map((usp) => (

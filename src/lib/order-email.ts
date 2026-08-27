@@ -2,13 +2,18 @@ import nodemailer from "nodemailer";
 import type { Order } from "./orders-store";
 import { formatPrice } from "./products";
 
+// Email nhận báo đơn hàng mặc định — dùng khi chưa cấu hình biến môi trường
+// ORDER_NOTIFICATION_EMAIL trên server. Vẫn cần cấu hình SMTP_HOST/USER/PASS để gửi được.
+const DEFAULT_NOTIFICATION_EMAIL = "cloudsco2026@gmail.com";
+
 // Gửi email báo đơn hàng mới cho CloudS — cần cấu hình biến môi trường SMTP
 // (xem .env.example). Nếu chưa cấu hình, hàm này sẽ bỏ qua và chỉ ghi log,
 // KHÔNG làm hỏng luồng đặt hàng của khách (đơn vẫn được lưu vào /admin/orders).
 export async function sendOrderNotificationEmail(order: Order) {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, ORDER_NOTIFICATION_EMAIL } = process.env;
+  const notifyEmail = ORDER_NOTIFICATION_EMAIL || DEFAULT_NOTIFICATION_EMAIL;
 
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !ORDER_NOTIFICATION_EMAIL) {
+  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
     console.warn(
       `[order-email] Chưa cấu hình SMTP — bỏ qua gửi email cho đơn ${order.code}. Xem .env.example.`
     );
@@ -32,7 +37,7 @@ export async function sendOrderNotificationEmail(order: Order) {
 
     await transporter.sendMail({
       from: `"CloudS Website" <${SMTP_USER}>`,
-      to: ORDER_NOTIFICATION_EMAIL,
+      to: notifyEmail,
       subject: `Đơn hàng mới ${order.code} — ${order.customer.name}`,
       html: `
         <h2>Đơn hàng mới: ${order.code}</h2>

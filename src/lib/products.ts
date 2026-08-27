@@ -8,6 +8,11 @@ export type Product = {
   gender: "nam" | "nu";
   isNew?: boolean;
   price: number;
+  /** Giá gốc trước giảm — nếu có, hiển thị gạch ngang bên cạnh giá bán (ưu đãi khai trương). */
+  compareAtPrice?: number;
+  /** Link Shopee/TikTok riêng cho sản phẩm này — nếu trống, dùng link shop chung ở site-config. */
+  shopeeUrl?: string;
+  tiktokUrl?: string;
   sizes: string[];
   color: string;
   colorSwatch: string;
@@ -97,10 +102,13 @@ export const products: Product[] = [
   {
     slug: "cloud-mule-1-rose",
     silhouette: "cloud-mule-1",
-    name: "Cloud Mule 1 — Rose",
+    name: "Giày Sục Đạp Gót Nữ Mule Sneaker GGOBK CloudS Vải Lưới Thoáng Khí, Êm Chân, Thời Trang – Màu Hồng Rose",
     shortName: "Cloud Mule 1",
     gender: "nu",
-    price: 260000,
+    price: 230000,
+    compareAtPrice: 280000,
+    shopeeUrl: "https://vn.shp.ee/bs4fXcMs",
+    tiktokUrl: "https://vt.tiktok.com/ZS9Bkg84GC48H-LGpeB/",
     sizes: ["36", "37", "38"],
     color: "Rose",
     colorSwatch: "#dba3a0",
@@ -157,11 +165,14 @@ export const products: Product[] = [
   {
     slug: "cloud-mule-1-vanilla-cream",
     silhouette: "cloud-mule-1",
-    name: "Cloud Mule 1 — Vanilla Cream",
+    name: "Giày Sục Đạp Gót Nữ Mule Sneaker GGOBK CloudS Vải Lưới Thoáng Khí, Êm Chân, Thời Trang – Trắng Vanilla Cream",
     shortName: "Cloud Mule 1",
     gender: "nu",
     isNew: true,
-    price: 260000,
+    price: 230000,
+    compareAtPrice: 280000,
+    shopeeUrl: "https://vn.shp.ee/bs4fXcMs",
+    tiktokUrl: "https://vt.tiktok.com/ZS9Bkg84GC48H-LGpeB/",
     sizes: ["36", "37", "38"],
     color: "Vanilla Cream",
     colorSwatch: "#efe6d8",

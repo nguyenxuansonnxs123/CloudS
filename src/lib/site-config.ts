@@ -40,9 +40,9 @@ export const siteConfig = {
   // Thông tin nhận chuyển khoản để sinh mã QR (VietQR — miễn phí, không cần API key).
   // Tra mã BIN ngân hàng tại https://api.vietqr.io/v2/banks — vd Vietcombank=970436, Techcombank=970407.
   bank: {
-    bin: "", // [ĐIỀN SAU] mã BIN ngân hàng
-    accountNumber: "", // [ĐIỀN SAU] số tài khoản
-    accountName: "", // [ĐIỀN SAU] tên chủ tài khoản (KHÔNG DẤU, in hoa)
+    bin: "970436", // Vietcombank
+    accountNumber: "1065877399",
+    accountName: "HKD BON MUA AN YEN",
   },
 } as const;
 

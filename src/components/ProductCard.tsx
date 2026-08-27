@@ -44,7 +44,14 @@ export function ProductCard({ product }: { product: Product }) {
           <p className="mt-1 text-sm text-ink-soft">
             {product.color} · Size {product.sizes[0]}–{product.sizes[product.sizes.length - 1]}
           </p>
-          <p className="mt-2 font-semibold text-ink">{formatPrice(product.price)}</p>
+          <p className="mt-2 flex items-baseline gap-2">
+            <span className="font-semibold text-ink">{formatPrice(product.price)}</span>
+            {product.compareAtPrice && (
+              <span className="text-sm text-ink-soft line-through">
+                {formatPrice(product.compareAtPrice)}
+              </span>
+            )}
+          </p>
 
           {siblings.length > 0 && (
             <div className="mt-3 flex items-center gap-1.5">

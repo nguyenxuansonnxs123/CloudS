@@ -3,12 +3,17 @@ import { siteConfig } from "@/lib/site-config";
 import { Button } from "./Button";
 
 // Nút mua hàng dùng chung: dẫn sang Shopee/TikTok Shop, hoặc nhắn Zalo nếu chưa có link sàn.
+// shopeeUrl/tiktokUrl: link riêng của một sản phẩm — nếu có sẽ ưu tiên hơn link shop chung.
 export function BuyActions({
   size = "md",
   className,
+  shopeeUrl,
+  tiktokUrl,
 }: {
   size?: "md" | "lg";
   className?: string;
+  shopeeUrl?: string;
+  tiktokUrl?: string;
 }) {
   const { shopee, tiktok } = siteConfig.shops;
   const { zaloLink, zaloNumber } = siteConfig.contact;
@@ -17,7 +22,7 @@ export function BuyActions({
     <div className={className}>
       <div className="flex flex-wrap gap-3">
         <Button
-          href={shopee || "#"}
+          href={shopeeUrl || shopee || "#"}
           variant="primary"
           size={size}
           icon={<ShoppingBag className="size-4" aria-hidden />}
@@ -25,7 +30,7 @@ export function BuyActions({
           Mua trên Shopee
         </Button>
         <Button
-          href={tiktok || "#"}
+          href={tiktokUrl || tiktok || "#"}
           variant="secondary"
           size={size}
           icon={<ShoppingBag className="size-4" aria-hidden />}
@@ -41,7 +46,7 @@ export function BuyActions({
           Tư vấn qua Zalo
         </Button>
       </div>
-      {!shopee && !tiktok && !zaloNumber && (
+      {!shopeeUrl && !shopee && !tiktokUrl && !tiktok && !zaloNumber && (
         <p className="mt-2 text-xs text-ink-soft">
           * Link mua hàng sẽ được cập nhật khi CloudS cung cấp — hiện đang dẫn tới trang Liên hệ.
         </p>

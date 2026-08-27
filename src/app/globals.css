@@ -72,12 +72,6 @@ body {
   font-weight: 400;
 }
 
-/* Chỉ dùng cho wordmark "CloudS" — giữ đúng kiểu chữ tròn trong bộ nhận diện gốc của CloudS,
-   tách riêng khỏi cặp font UI (Fraunces/Archivo) đang dùng để khớp giao diện Wilson.com. */
-.font-logo {
-  font-family: var(--font-baloo), sans-serif;
-}
-
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

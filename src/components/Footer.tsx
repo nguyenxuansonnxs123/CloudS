@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Mail, MessageCircle } from "lucide-react";
 import { Container } from "./Container";
@@ -15,7 +16,13 @@ export function Footer() {
     <footer className="border-t border-line bg-surface">
       <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="lg:col-span-1">
-          <p className="font-logo text-3xl text-ink">{siteConfig.name}</p>
+          <Image
+            src="/images/logo-cloudS.png"
+            alt={siteConfig.name}
+            width={624}
+            height={143}
+            className="h-8 w-auto"
+          />
           <p className="mt-3 text-sm leading-relaxed text-ink-soft">
             {siteConfig.description}
           </p>

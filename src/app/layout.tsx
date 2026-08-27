@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Baloo_2, Fraunces } from "next/font/google";
+import { Archivo, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -20,13 +20,6 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin", "vietnamese"],
   weight: ["300", "400", "500", "600"],
-});
-
-// Chỉ dùng riêng cho wordmark "CloudS" — giữ đúng kiểu chữ tròn trong bộ nhận diện gốc.
-const baloo = Baloo_2({
-  variable: "--font-baloo",
-  subsets: ["latin", "vietnamese"],
-  weight: ["700"],
 });
 
 export const metadata: Metadata = {
@@ -50,7 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="vi"
-      className={`${archivo.variable} ${fraunces.variable} ${baloo.variable} h-full antialiased`}
+      className={`${archivo.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-ink">
         <CartProvider>

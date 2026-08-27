@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -36,12 +37,15 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-brand-cream/90 backdrop-blur">
       <Container className="flex h-18 items-center justify-between py-3">
-        <Link
-          href="/"
-          className="font-logo text-3xl leading-none text-ink"
-          onClick={() => setOpen(false)}
-        >
-          {siteConfig.name}
+        <Link href="/" onClick={() => setOpen(false)} aria-label={siteConfig.name}>
+          <Image
+            src="/images/logo-cloudS.png"
+            alt={siteConfig.name}
+            width={624}
+            height={143}
+            priority
+            className="h-8 w-auto sm:h-9"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
