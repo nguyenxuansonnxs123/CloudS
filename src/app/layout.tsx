@@ -1,18 +1,25 @@
 import type { Metadata } from "next";
-import { Baloo_2, Inter } from "next/font/google";
+import { Archivo, Baloo_2, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/components/CartProvider";
 import { siteConfig } from "@/lib/site-config";
 
-// Font UI chính toàn site — khớp Discovery Expedition (bản thân họ dùng Pretendard, vốn lấy
-// phần Latin từ Inter). Dùng thẳng Inter để nhìn giống hệt nhưng đảm bảo dấu tiếng Việt hiển
-// thị đúng (Pretendard thiếu khối Latin Extended Additional mà tiếng Việt cần).
-const inter = Inter({
-  variable: "--font-inter",
+// Font phần chữ nội dung/UI — khớp Wilson.com (bản thân họ dùng GT America, một font trả phí).
+// Archivo là grotesque sans cùng nhóm phong cách, có sẵn subset "vietnamese" đầy đủ dấu.
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin", "vietnamese"],
   weight: ["400", "500", "600", "700", "800"],
+});
+
+// Font tiêu đề lớn — khớp Wilson.com (bản thân họ dùng Argent CF, serif mảnh trả phí).
+// Fraunces là serif editorial cùng tinh thần, hỗ trợ dải weight mảnh và subset "vietnamese".
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin", "vietnamese"],
+  weight: ["300", "400", "500", "600"],
 });
 
 // Chỉ dùng riêng cho wordmark "CloudS" — giữ đúng kiểu chữ tròn trong bộ nhận diện gốc.
@@ -41,7 +48,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="vi" className={`${inter.variable} ${baloo.variable} h-full antialiased`}>
+    <html
+      lang="vi"
+      className={`${archivo.variable} ${fraunces.variable} ${baloo.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col bg-background text-ink">
         <CartProvider>
           <Header />

@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  /* Bảng màu tối giản đen/trắng/xám — theo phong cách Discovery Expedition */
+  /* Bảng màu tối giản trắng/xám/xanh than-đen — theo phong cách Wilson.com */
   --background: #ffffff;
-  --surface: #f7f7f7;
-  --ink: #111111;
-  --ink-soft: #6b6b6b;
-  --line: #e5e5e5;
+  --surface: #f0f0f0;
+  --ink: #15191d;
+  --ink-soft: #666666;
+  --line: #dddddd;
 
   --brand-blush: #f0f0f0;
-  --brand-blush-dark: #1a1a1a;
+  --brand-blush-dark: #15191d;
   --brand-blush-tint: #f7f7f7;
-  --brand-rose-ink: #6b6b6b;
-  --brand-black: #000000;
+  --brand-rose-ink: #666666;
+  --brand-black: #15191d;
   --brand-cream: #ffffff;
 }
 
@@ -30,9 +30,10 @@
   --color-brand-black: var(--brand-black);
   --color-brand-cream: var(--brand-cream);
 
-  /* Cùng một họ font cho toàn bộ site (Inter) — logo dùng riêng --font-baloo qua .font-logo */
-  --font-display: var(--font-inter), sans-serif;
-  --font-sans: var(--font-inter), sans-serif;
+  /* Cặp font khớp Wilson.com: Fraunces (serif mảnh) cho tiêu đề, Archivo (grotesque) cho phần
+     chữ còn lại — logo dùng riêng --font-baloo qua .font-logo */
+  --font-display: var(--font-fraunces), serif;
+  --font-sans: var(--font-archivo), sans-serif;
 
   --animate-fade-up: fade-up 0.6s ease-out both;
   --animate-marquee: marquee 24s linear infinite;
@@ -64,14 +65,15 @@ body {
   font-family: var(--font-sans);
 }
 
-/* font-display trước đây "trông đậm" nhờ đặc tính riêng của Baloo 2; giờ dùng chung Inter với
-   body nên cần khai báo weight tường minh để tiêu đề không bị mảnh/yếu. */
+/* Wilson.com dùng Argent CF ở weight 100 cho tiêu đề lớn; .font-display ở đây còn được dùng cho
+   tiêu đề nhỏ (thẻ sản phẩm, trang quản trị) nên chọn weight 400 (regular) của Fraunces để vẫn
+   giữ tinh thần serif mảnh mà không mất khả năng đọc ở cỡ chữ nhỏ. */
 .font-display {
-  font-weight: 700;
+  font-weight: 400;
 }
 
 /* Chỉ dùng cho wordmark "CloudS" — giữ đúng kiểu chữ tròn trong bộ nhận diện gốc của CloudS,
-   tách riêng khỏi font UI chung (Inter) đang dùng để khớp giao diện Discovery Expedition. */
+   tách riêng khỏi cặp font UI (Fraunces/Archivo) đang dùng để khớp giao diện Wilson.com. */
 .font-logo {
   font-family: var(--font-baloo), sans-serif;
 }
