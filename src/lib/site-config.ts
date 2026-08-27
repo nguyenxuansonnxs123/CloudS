@@ -10,21 +10,22 @@ export const siteConfig = {
   url: "https://clouds.vn", // [ĐIỀN SAU] domain thật khi đã mua trên Hostinger
 
   contact: {
-    zaloNumber: "", // [ĐIỀN SAU] số Zalo/hotline, vd: "0901234567"
-    zaloLink: "", // [ĐIỀN SAU] vd: "https://zalo.me/0901234567"
-    email: "cskh@clouds.vn", // [ĐIỀN SAU]
+    zaloNumber: "0969 699 297 hoặc 0854 125 647",
+    zaloLink: "https://zalo.me/84969699297", // số chính, dùng cho nút "Tư vấn qua Zalo"
+    zaloLink2: "https://zalo.me/84854125647", // số phụ — chỉ hiện thêm ở trang Liên hệ
+    email: "cloudsco2026@gmail.com",
   },
 
   shops: {
-    shopee: "", // [ĐIỀN SAU] link gian hàng Shopee
-    tiktok: "", // [ĐIỀN SAU] link TikTok Shop
+    shopee: "https://shopee.vn/shop/1817956475",
+    tiktok: "https://www.tiktok.com/@clouds9544", // trang TikTok chung — cập nhật thành link TikTok Shop riêng nếu có sau này
   },
 
   social: {
     threads: "", // [ĐIỀN SAU]
     instagram: "", // [ĐIỀN SAU]
     facebook: "", // [ĐIỀN SAU]
-    tiktok: "", // [ĐIỀN SAU] link trang TikTok (khác TikTok Shop)
+    tiktok: "https://www.tiktok.com/@clouds9544",
   },
 
   business: {
