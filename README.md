@@ -165,6 +165,14 @@ thật, nếu không giỏ hàng/trang quản trị sẽ không hoạt động �
    `PORT` mà Hostinger cấp — không cần chỉnh gì thêm.
 8. Bấm **Restart** — Hostinger sẽ tự giữ ứng dụng chạy (tương đương một process manager).
 
+> **Lưu ý CDN cache (đã gặp thực tế)**: Hostinger tự bật một lớp CDN (`hcdn`) phía trước domain,
+> cache HTML tới 1 năm (`Cache-Control: s-maxage=31536000`) và **không tự xoá khi deploy code
+> mới** — sau khi build xong vẫn có thể thấy bản cũ trên `https://<domain>/`. Vào **hPanel →
+> Websites → chọn domain → Hiệu suất → CDN → Xóa bộ nhớ đệm** sau mỗi lần deploy có thay đổi
+> hiển thị (đổi text, ảnh, style...) để chắc chắn khách thấy bản mới ngay. Có thể kiểm tra
+> nhanh bằng `curl -sD - https://<domain>/ | grep -i "x-hcdn-cache-status\|age:"` — nếu thấy
+> `HIT` kèm `age` lớn thì đang dính cache cũ.
+
 ### Cách 2 — VPS Hostinger + PM2
 
 ```bash
