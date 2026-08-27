@@ -15,7 +15,7 @@ export function Footer() {
     <footer className="border-t border-line bg-surface">
       <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="lg:col-span-1">
-          <p className="font-display text-3xl text-ink">{siteConfig.name}</p>
+          <p className="font-logo text-3xl text-ink">{siteConfig.name}</p>
           <p className="mt-3 text-sm leading-relaxed text-ink-soft">
             {siteConfig.description}
           </p>

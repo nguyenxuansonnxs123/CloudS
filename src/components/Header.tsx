@@ -38,7 +38,7 @@ export function Header() {
       <Container className="flex h-18 items-center justify-between py-3">
         <Link
           href="/"
-          className="font-display text-3xl leading-none text-ink"
+          className="font-logo text-3xl leading-none text-ink"
           onClick={() => setOpen(false)}
         >
           {siteConfig.name}

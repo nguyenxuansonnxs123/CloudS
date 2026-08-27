@@ -16,7 +16,7 @@ const base =
 
 const variants = {
   primary: "bg-brand-black text-brand-cream hover:bg-ink-soft",
-  secondary: "bg-blush text-brand-black hover:bg-blush-dark",
+  secondary: "bg-blush text-brand-black hover:bg-blush-dark hover:text-brand-cream",
   ghost: "border border-line bg-transparent text-ink hover:border-ink hover:bg-surface",
 };
 

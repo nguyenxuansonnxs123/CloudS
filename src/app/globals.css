@@ -1,18 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf6f0;
-  --surface: #ffffff;
-  --ink: #17130f;
-  --ink-soft: #57504a;
-  --line: #e8e0d6;
+  /* Bảng màu tối giản đen/trắng/xám — theo phong cách Discovery Expedition */
+  --background: #ffffff;
+  --surface: #f7f7f7;
+  --ink: #111111;
+  --ink-soft: #6b6b6b;
+  --line: #e5e5e5;
 
-  --brand-blush: #e7b7ae;
-  --brand-blush-dark: #c98e83;
-  --brand-blush-tint: #f6e6e1;
-  --brand-rose-ink: #9c5c50;
-  --brand-black: #17130f;
-  --brand-cream: #faf6f0;
+  --brand-blush: #f0f0f0;
+  --brand-blush-dark: #1a1a1a;
+  --brand-blush-tint: #f7f7f7;
+  --brand-rose-ink: #6b6b6b;
+  --brand-black: #000000;
+  --brand-cream: #ffffff;
 }
 
 @theme inline {
@@ -29,8 +30,9 @@
   --color-brand-black: var(--brand-black);
   --color-brand-cream: var(--brand-cream);
 
-  --font-display: var(--font-baloo), sans-serif;
-  --font-sans: var(--font-be-vietnam), sans-serif;
+  /* Cùng một họ font cho toàn bộ site (Inter) — logo dùng riêng --font-baloo qua .font-logo */
+  --font-display: var(--font-inter), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
 
   --animate-fade-up: fade-up 0.6s ease-out both;
   --animate-marquee: marquee 24s linear infinite;
@@ -60,6 +62,18 @@ body {
   background: var(--background);
   color: var(--ink);
   font-family: var(--font-sans);
+}
+
+/* font-display trước đây "trông đậm" nhờ đặc tính riêng của Baloo 2; giờ dùng chung Inter với
+   body nên cần khai báo weight tường minh để tiêu đề không bị mảnh/yếu. */
+.font-display {
+  font-weight: 700;
+}
+
+/* Chỉ dùng cho wordmark "CloudS" — giữ đúng kiểu chữ tròn trong bộ nhận diện gốc của CloudS,
+   tách riêng khỏi font UI chung (Inter) đang dùng để khớp giao diện Discovery Expedition. */
+.font-logo {
+  font-family: var(--font-baloo), sans-serif;
 }
 
 @media (prefers-reduced-motion: reduce) {
