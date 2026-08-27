@@ -22,7 +22,7 @@ export const siteConfig = {
   },
 
   social: {
-    threads: "", // [ĐIỀN SAU]
+    threads: "https://www.threads.com/@clouds_vn_store",
     instagram: "", // [ĐIỀN SAU]
     facebook: "", // [ĐIỀN SAU]
     tiktok: "https://www.tiktok.com/@clouds9544",

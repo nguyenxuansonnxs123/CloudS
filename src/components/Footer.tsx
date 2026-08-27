@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Mail, MessageCircle } from "lucide-react";
 import { Container } from "./Container";
-import { FacebookIcon, InstagramIcon } from "./SocialIcons";
+import { FacebookIcon, InstagramIcon, ThreadsIcon } from "./SocialIcons";
 import { navLinks, siteConfig } from "@/lib/site-config";
 
 const year = new Date().getFullYear();
@@ -81,6 +81,15 @@ export function Footer() {
               className="flex size-10 items-center justify-center rounded-full border border-line text-ink-soft hover:border-ink hover:text-ink"
             >
               <InstagramIcon className="size-4" />
+            </a>
+            <a
+              href={siteConfig.social.threads || "#"}
+              aria-label="Threads CloudS"
+              target={siteConfig.social.threads ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              className="flex size-10 items-center justify-center rounded-full border border-line text-ink-soft hover:border-ink hover:text-ink"
+            >
+              <ThreadsIcon className="size-4" />
             </a>
             <a
               href={siteConfig.contact.zaloLink || "/lien-he"}
