@@ -30,7 +30,13 @@ export type Order = {
   paymentConfirmed: boolean;
 };
 
-const DATA_DIR = path.join(process.cwd(), "data");
+// QUAN TRỌNG: Hostinger Node.js App deploy vào một thư mục phiên bản MỚI mỗi lần (kiểu
+// symlink "current" trỏ sang thư mục versions/<id>), nên bất kỳ file nào không nằm trong Git
+// (như data/orders.json) sẽ bị mất trắng sau mỗi lần deploy nếu ghi trong process.cwd(). Đặt
+// biến môi trường ORDERS_DATA_DIR trỏ tới một thư mục NẰM NGOÀI vùng deploy (vd thư mục
+// "persistent-data" cùng cấp với "hbuilds" trên server) để dữ liệu đơn hàng sống sót qua các
+// lần deploy. Khi chưa đặt biến này (vd chạy dev cục bộ), vẫn dùng ./data như trước.
+const DATA_DIR = process.env.ORDERS_DATA_DIR || path.join(process.cwd(), "data");
 const ORDERS_FILE = path.join(DATA_DIR, "orders.json");
 
 // Hàng đợi ghi tuần tự để tránh 2 request ghi đè lẫn nhau khi xử lý đồng thời.

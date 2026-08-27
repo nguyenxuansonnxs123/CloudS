@@ -80,7 +80,8 @@ trong hPanel (Node.js App → Environment Variables) khi deploy:
 |---|---|---|
 | `ADMIN_PASSWORD` | Có | Mật khẩu đăng nhập `/admin/orders`. Không đặt thì trang quản trị sẽ luôn từ chối đăng nhập. |
 | `ADMIN_SESSION_SECRET` | Có (production) | Chuỗi ngẫu nhiên dài, dùng ký phiên đăng nhập. |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `ORDER_NOTIFICATION_EMAIL` | Không | Nếu điền đủ, mỗi đơn hàng mới sẽ gửi email báo về `ORDER_NOTIFICATION_EMAIL`. Có thể dùng Gmail + [Mật khẩu ứng dụng](https://myaccount.google.com/apppasswords). Nếu bỏ trống, đơn hàng vẫn được lưu bình thường ở `/admin/orders`, chỉ là không gửi email. |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `ORDER_NOTIFICATION_EMAIL` | Không | Nếu điền đủ, mỗi đơn hàng mới sẽ gửi email báo về `ORDER_NOTIFICATION_EMAIL`, và email cảm ơn tự động gửi cho khách khi đơn được tính là thành công (COD ngay lập tức, chuyển khoản sau khi admin xác nhận đã nhận tiền). Có thể dùng Gmail + [Mật khẩu ứng dụng](https://myaccount.google.com/apppasswords). Nếu bỏ trống, đơn hàng vẫn được lưu bình thường ở `/admin/orders`, chỉ là không gửi email. |
+| `ORDERS_DATA_DIR` | **Có trên Hostinger** | Đường dẫn tuyệt đối tới thư mục lưu `orders.json`, phải nằm **ngoài** vùng deploy — xem mục "Lưu ý thư mục dữ liệu đơn hàng" bên dưới. Bỏ trống khi chạy dev cục bộ. |
 
 ### 3. Trang Ưu đãi
 
@@ -153,8 +154,8 @@ thật, nếu không giỏ hàng/trang quản trị sẽ không hoạt động �
 2. Bấm **Create Application**, chọn phiên bản Node.js ≥ 20.9, đặt **Application root** là thư
    mục bạn sẽ deploy code vào (vd: `clouds-website`), **Application startup file** đặt là
    `node_modules/next/dist/bin/next` với **Application mode**: production.
-3. Trong mục **Environment Variables**, thêm `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, và các
-   biến SMTP nếu dùng.
+3. Trong mục **Environment Variables**, thêm `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`,
+   `ORDERS_DATA_DIR` (bắt buộc — xem lưu ý bên dưới), và các biến SMTP nếu dùng.
 4. Kết nối domain với Application root ở bước trên.
 5. Đưa code lên server: dùng Git (hPanel có tính năng "Deploy from Git" — trỏ vào repo GitHub
    vừa tạo ở trên) hoặc upload qua File Manager/FTP.
@@ -172,6 +173,20 @@ thật, nếu không giỏ hàng/trang quản trị sẽ không hoạt động �
 > hiển thị (đổi text, ảnh, style...) để chắc chắn khách thấy bản mới ngay. Có thể kiểm tra
 > nhanh bằng `curl -sD - https://<domain>/ | grep -i "x-hcdn-cache-status\|age:"` — nếu thấy
 > `HIT` kèm `age` lớn thì đang dính cache cũ.
+
+> **Lưu ý thư mục dữ liệu đơn hàng — QUAN TRỌNG, đã gây mất dữ liệu thật (đã gặp thực tế)**:
+> Node.js App của Hostinger deploy vào một thư mục phiên bản MỚI mỗi lần (symlink
+> `hbuilds/current` trỏ sang `hbuilds/versions/<id>` mới), nên bất kỳ file nào không nằm trong
+> Git — như `data/orders.json` — sẽ **mất trắng sau lần deploy tiếp theo**. CloudS đã từng mất
+> 3 đơn hàng thật khỏi `/admin/orders` vì lý do này (may mắn vẫn còn trong Google Sheet do
+> `submitOrderToSheet` chạy độc lập). Bắt buộc phải:
+> 1. Vào **File Manager** trên hPanel, tạo 1 thư mục nằm **cùng cấp với `hbuilds`** (KHÔNG nằm
+>    trong `hbuilds`), vd `persistent-data`.
+> 2. Đặt biến môi trường `ORDERS_DATA_DIR` = đường dẫn tuyệt đối tới thư mục đó, vd
+>    `/home/<user>/domains/<domain>/persistent-data` (xem đường dẫn thật trong log build hoặc
+>    thanh địa chỉ File Manager).
+> 3. Restart ứng dụng sau khi đặt biến. Kiểm tra bằng cách đặt 1 đơn test, xác nhận file
+>    `orders.json` trong `persistent-data/` (không phải trong `hbuilds/current/...`) có dữ liệu.
 
 ### Cách 2 — VPS Hostinger + PM2
 
