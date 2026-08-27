@@ -2,7 +2,7 @@
 // Các giá trị đánh dấu "[ĐIỀN SAU]" là placeholder — cập nhật trước khi ra mắt chính thức.
 
 export const siteConfig = {
-  name: "CloudS",
+  name: "CloudS (Spirit)",
   tagline: "Move a little. Feel a lot.",
   taglineVi: "Nhẹ như mây, bước cả ngày",
   description:

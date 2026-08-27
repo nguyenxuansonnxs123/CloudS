@@ -19,9 +19,9 @@ export function Footer() {
           <Image
             src="/images/logo-cloudS.png"
             alt={siteConfig.name}
-            width={624}
-            height={143}
-            className="h-8 w-auto"
+            width={1135}
+            height={189}
+            className="h-7 w-auto"
           />
           <p className="mt-3 text-sm leading-relaxed text-ink-soft">
             {siteConfig.description}

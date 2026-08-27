@@ -9,6 +9,7 @@ import type { Product } from "@/lib/products";
 
 export function AddToCartForm({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const outOfStock = product.inStock === false;
   const router = useRouter();
   const [size, setSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -51,6 +52,25 @@ export function AddToCartForm({ product }: { product: Product }) {
       sku: product.skuBySize?.[size],
     });
     router.push("/gio-hang");
+  }
+
+  if (outOfStock) {
+    return (
+      <div className="mt-6">
+        <span className="inline-flex items-center rounded-full bg-surface px-3 py-1 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+          Hết hàng
+        </span>
+        <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+          Sản phẩm này tạm hết hàng. Nhắn Zalo để CloudS báo khi có hàng trở lại.
+        </p>
+        <a
+          href="/lien-he"
+          className="mt-4 flex h-13 w-full items-center justify-center rounded-full border border-brand-black text-base font-semibold text-ink transition-colors hover:bg-brand-black hover:text-brand-cream"
+        >
+          Nhắn Zalo khi có hàng
+        </a>
+      </div>
+    );
   }
 
   return (

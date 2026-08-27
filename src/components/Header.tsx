@@ -41,10 +41,10 @@ export function Header() {
           <Image
             src="/images/logo-cloudS.png"
             alt={siteConfig.name}
-            width={624}
-            height={143}
+            width={1135}
+            height={189}
             priority
-            className="h-8 w-auto sm:h-9"
+            className="h-7 w-auto sm:h-8"
           />
         </Link>
 

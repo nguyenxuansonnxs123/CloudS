@@ -7,6 +7,8 @@ export type Product = {
   shortName: string;
   gender: "nam" | "nu";
   isNew?: boolean;
+  /** false = tạm hết hàng — ẩn nút thêm giỏ hàng/mua ngay, hiện nhãn "Hết hàng". Mặc định true. */
+  inStock?: boolean;
   price: number;
   /** Giá gốc trước giảm — nếu có, hiển thị gạch ngang bên cạnh giá bán (ưu đãi khai trương). */
   compareAtPrice?: number;
@@ -43,6 +45,7 @@ export const products: Product[] = [
     name: "CloudStride 1",
     shortName: "CloudStride 1",
     gender: "nam",
+    inStock: false,
     price: 360000,
     sizes: ["41", "42", "43"],
     skuBySize: { "41": "CLSV1-Bla-41", "42": "CLSV1-Bla-42", "43": "CLSV1-Bla-43" },

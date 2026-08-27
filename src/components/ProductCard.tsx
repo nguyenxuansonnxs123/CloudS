@@ -33,6 +33,11 @@ export function ProductCard({ product }: { product: Product }) {
                 Mới
               </span>
             )}
+            {product.inStock === false && (
+              <span className="rounded-full bg-ink-soft px-3 py-1 text-xs font-semibold text-brand-cream">
+                Hết hàng
+              </span>
+            )}
           </div>
         </div>
       </Link>
