@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getProductBySlug } from "@/lib/products";
 import { siteConfig } from "@/lib/site-config";
 import { createOrder, type PaymentMethod } from "@/lib/orders-store";
-import { sendOrderNotificationEmail } from "@/lib/order-email";
+import { sendOrderNotificationEmail, sendCustomerThankYouEmail } from "@/lib/order-email";
 import { submitOrderToSheet } from "@/lib/order-sheet";
 import { autoAppliedVoucherCodes, findVoucher, shippingDiscountFor } from "@/lib/vouchers";
 import type { CartItem } from "@/lib/cart";
@@ -107,10 +107,17 @@ export async function POST(request: Request) {
     paymentMethod: paymentMethod as PaymentMethod,
   });
 
-  // Gửi email + ghi Google Sheet không chặn phản hồi cho khách — lỗi ở 2 bước này không làm
-  // hỏng đơn hàng đã lưu.
+  // Email báo cho CloudS luôn gửi ngay để chủ shop biết có đơn mới (kể cả đơn chuyển khoản
+  // chưa nhận được tiền) — không chặn phản hồi cho khách, lỗi ở đây không làm hỏng đơn đã lưu.
   void sendOrderNotificationEmail(order);
-  void submitOrderToSheet(order);
+
+  // Ghi Google Sheet + gửi email cảm ơn khách chỉ khi đơn đã "thành công": COD thì ngay lập tức
+  // (paymentConfirmed đã true từ createOrder), chuyển khoản thì chờ admin xác nhận đã nhận tiền
+  // qua /api/admin/orders/[id]/confirm-payment.
+  if (order.paymentConfirmed) {
+    void submitOrderToSheet(order);
+    void sendCustomerThankYouEmail(order);
+  }
 
   return NextResponse.json(order, { status: 201 });
 }

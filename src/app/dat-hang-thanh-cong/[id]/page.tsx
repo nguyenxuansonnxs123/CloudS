@@ -115,6 +115,9 @@ export default async function OrderSuccessPage(props: PageProps<"/dat-hang-thanh
               </div>
               <p className="mt-4 text-sm font-semibold text-ink">{formatPrice(order.total)}</p>
               <p className="text-xs text-ink-soft">Nội dung chuyển khoản: {order.code}</p>
+              <p className="mt-3 text-xs text-ink-soft">
+                Sau khi CloudS xác nhận đã nhận được tiền, bạn sẽ nhận email cảm ơn kèm xác nhận đơn hàng.
+              </p>
             </>
           ) : (
             <p className="text-sm text-ink-soft">

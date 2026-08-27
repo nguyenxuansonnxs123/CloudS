@@ -25,6 +25,9 @@ export type Order = {
   total: number;
   paymentMethod: PaymentMethod;
   status: OrderStatus;
+  /** Đơn COD coi như xác nhận ngay (thu tiền khi giao); đơn chuyển khoản chờ admin xác nhận đã
+   * nhận được tiền trước khi tính là thành công (ghi Google Sheet + gửi email cảm ơn khách). */
+  paymentConfirmed: boolean;
 };
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -71,6 +74,8 @@ export async function createOrder(input: {
     code: generateOrderCode(),
     createdAt: new Date().toISOString(),
     status: "moi",
+    // COD thu tiền khi giao nên coi như đã xác nhận ngay; chuyển khoản chờ admin xác nhận.
+    paymentConfirmed: input.paymentMethod === "cod",
     ...input,
   };
 
@@ -101,4 +106,21 @@ export async function updateOrderStatus(id: string, status: OrderStatus): Promis
     await fs.writeFile(ORDERS_FILE, JSON.stringify(all, null, 2), "utf8");
   });
   await writeQueue;
+}
+
+// Admin bấm xác nhận sau khi tự kiểm tra đã nhận được tiền chuyển khoản trong tài khoản ngân
+// hàng — trả về order đã cập nhật để gọi tiếp Google Sheet + email cảm ơn khách.
+export async function confirmOrderPayment(id: string): Promise<Order | undefined> {
+  let updated: Order | undefined;
+  writeQueue = writeQueue.then(async () => {
+    const all = await readAll();
+    const order = all.find((o) => o.id === id);
+    if (order) {
+      order.paymentConfirmed = true;
+      updated = order;
+    }
+    await fs.writeFile(ORDERS_FILE, JSON.stringify(all, null, 2), "utf8");
+  });
+  await writeQueue;
+  return updated;
 }

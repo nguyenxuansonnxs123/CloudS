@@ -3,6 +3,7 @@ import { Container } from "@/components/Container";
 import { listOrders } from "@/lib/orders-store";
 import { formatPrice } from "@/lib/products";
 import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
+import { PaymentConfirmButton } from "@/components/admin/PaymentConfirmButton";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 
 export const metadata: Metadata = {
@@ -68,7 +69,19 @@ export default async function AdminOrdersPage() {
                       </div>
                     ))}
                   </td>
-                  <td className="px-4 py-3 text-ink-soft">{paymentLabels[order.paymentMethod]}</td>
+                  <td className="px-4 py-3 text-ink-soft">
+                    <div>{paymentLabels[order.paymentMethod]}</div>
+                    {order.paymentMethod === "bank_transfer" &&
+                      (order.paymentConfirmed ? (
+                        <span className="mt-1 inline-block rounded-full bg-surface px-2.5 py-0.5 text-xs font-medium text-ink">
+                          Đã nhận tiền
+                        </span>
+                      ) : (
+                        <div className="mt-1">
+                          <PaymentConfirmButton orderId={order.id} />
+                        </div>
+                      ))}
+                  </td>
                   <td className="px-4 py-3 text-right font-medium text-ink">{formatPrice(order.total)}</td>
                   <td className="px-4 py-3">
                     <OrderStatusSelect orderId={order.id} status={order.status} />
