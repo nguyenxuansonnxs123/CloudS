@@ -139,6 +139,14 @@ Hostinger hỗ trợ chạy ứng dụng Node.js thật qua hPanel (gói Busines
 VPS. Chọn 1 trong 2 cách sau. **Nhớ khai báo biến môi trường ở mục 2 phía trên** trước khi chạy
 thật, nếu không giỏ hàng/trang quản trị sẽ không hoạt động đầy đủ.
 
+> **Lưu ý nền tảng (đã gặp thực tế)**: hạ tầng Node.js App của hPanel dùng glibc cũ hơn mức
+> Next.js 16 cần cho binary gốc (native) của Turbopack/SWC, nên `next build` mặc định (Turbopack)
+> sẽ báo lỗi kiểu `GLIBC_2.29' not found` rồi `Turbopack is not supported on this platform`. Vì
+> vậy script `build` trong `package.json` đã cố định dùng `next build --webpack` (webpack vẫn
+> chạy được qua SWC bản WASM dự phòng). Không cần chỉnh gì thêm, chỉ cần biết lý do nếu thấy build
+> log nhắc tới Turbopack/GLIBC. `next.config.ts` cũng được đổi thành `next.config.mjs` (JavaScript
+> thuần) vì bản TypeScript cần SWC để đọc, dễ lỗi thêm ở đúng bước nạp config trên nền tảng này.
+
 ### Cách 1 — Node.js App trên hPanel (đơn giản, khuyến nghị)
 
 1. Vào **hPanel → Websites → chọn domain → Advanced → Node.js**.
