@@ -3,6 +3,7 @@ import { getProductBySlug } from "@/lib/products";
 import { siteConfig } from "@/lib/site-config";
 import { createOrder, type PaymentMethod } from "@/lib/orders-store";
 import { sendOrderNotificationEmail } from "@/lib/order-email";
+import { submitOrderToSheet } from "@/lib/order-sheet";
 import { autoAppliedVoucherCodes, findVoucher, shippingDiscountFor } from "@/lib/vouchers";
 import type { CartItem } from "@/lib/cart";
 
@@ -106,8 +107,10 @@ export async function POST(request: Request) {
     paymentMethod: paymentMethod as PaymentMethod,
   });
 
-  // Gửi email không chặn phản hồi cho khách — lỗi gửi email không làm hỏng đơn hàng đã lưu.
+  // Gửi email + ghi Google Sheet không chặn phản hồi cho khách — lỗi ở 2 bước này không làm
+  // hỏng đơn hàng đã lưu.
   void sendOrderNotificationEmail(order);
+  void submitOrderToSheet(order);
 
   return NextResponse.json(order, { status: 201 });
 }
