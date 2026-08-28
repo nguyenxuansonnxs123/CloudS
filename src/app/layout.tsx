@@ -52,28 +52,48 @@ export const metadata: Metadata = {
   },
 };
 
-// Organization schema (JSON-LD) — chưa dùng LocalBusiness/địa chỉ vì hiện chưa có địa chỉ cửa
-// hàng vật lý xác thực; thêm sau khi có địa chỉ thật để tránh khai báo sai lệch với Google.
+// Organization + ShoeStore (LocalBusiness) schema (JSON-LD) cho 3 địa điểm cửa hàng CloudS tại Hà Nội.
 const organizationJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: siteConfig.name,
-  url: siteConfig.url,
-  logo: `${siteConfig.url}/images/logo-cloudS.png`,
-  description: seoDescription,
-  sameAs: [
-    siteConfig.social.threads,
-    siteConfig.social.tiktok,
-    siteConfig.shops.shopee,
-    siteConfig.social.facebook,
-    siteConfig.social.instagram,
-  ].filter(Boolean),
-  contactPoint: {
-    "@type": "ContactPoint",
-    contactType: "customer service",
-    email: siteConfig.contact.email,
-    url: `${siteConfig.url}/lien-he`,
-  },
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteConfig.url}/#organization`,
+      name: siteConfig.name,
+      url: siteConfig.url,
+      logo: `${siteConfig.url}/images/logo-cloudS.png`,
+      description: seoDescription,
+      sameAs: [
+        siteConfig.social.threads,
+        siteConfig.social.tiktok,
+        siteConfig.shops.shopee,
+        siteConfig.social.facebook,
+        siteConfig.social.instagram,
+      ].filter(Boolean),
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer service",
+        email: siteConfig.contact.email,
+        url: `${siteConfig.url}/lien-he`,
+      },
+    },
+    ...siteConfig.storeLocations.map((store, i) => ({
+      "@type": "ShoeStore",
+      "@id": `${siteConfig.url}/#store-${i + 1}`,
+      name: store.name,
+      image: `${siteConfig.url}/images/store/cua-hang-clouds.webp`,
+      url: `${siteConfig.url}/lien-he`,
+      telephone: siteConfig.contact.zaloNumber.split(" hoặc ")[0],
+      parentOrganization: { "@id": `${siteConfig.url}/#organization` },
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: store.streetAddress,
+        addressLocality: store.district,
+        addressRegion: "Hà Nội",
+        addressCountry: "VN",
+      },
+    })),
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

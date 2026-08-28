@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, ShieldCheck, Wind, Footprints, Wallet } from "lucide-react";
 import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
@@ -164,6 +165,13 @@ export default function HomePage() {
               <ProductCard key={product.slug} product={product} />
             ))}
           </div>
+          <p className="mt-8 text-sm text-ink-soft">
+            Sắp có thêm giày búp bê, giày chạy bộ, giày đi bộ, giày tennis —{" "}
+            <Link href="/san-pham#sap-ra-mat" className="font-semibold text-ink underline underline-offset-4">
+              xem trước tại đây
+            </Link>
+            .
+          </p>
         </Container>
       </section>
 

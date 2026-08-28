@@ -33,6 +33,25 @@ export const siteConfig = {
     address: "Việt Nam",
   },
 
+  // 3 địa điểm cửa hàng CloudS tại Hà Nội — dùng cho LocalBusiness schema (SEO local) và trang Liên hệ.
+  storeLocations: [
+    {
+      name: "CloudS Hoàng Quốc Việt",
+      streetAddress: "Số 47, Ngõ 5 Hoàng Quốc Việt",
+      district: "Cầu Giấy",
+    },
+    {
+      name: "CloudS Xuân Diệu",
+      streetAddress: "Số nhà 53E, Ngõ 31 Xuân Diệu",
+      district: "Tây Hồ",
+    },
+    {
+      name: "CloudS Nguyễn Ngọc Vũ",
+      streetAddress: "Số nhà 25A, Ngách 103/Ngõ 189 Nguyễn Ngọc Vũ",
+      district: "Cầu Giấy",
+    },
+  ],
+
   // Phí ship cố định — mức giảm giá thực tế do voucher quyết định, xem src/lib/vouchers.ts
   // (voucher FREESHIP đang tự động áp dụng, giảm hết phí ship cho mọi đơn).
   shippingFee: 35000,
