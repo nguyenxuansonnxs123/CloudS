@@ -81,7 +81,6 @@ const organizationJsonLd = {
       "@type": "ShoeStore",
       "@id": `${siteConfig.url}/#store-${i + 1}`,
       name: store.name,
-      image: `${siteConfig.url}/images/store/cua-hang-clouds.webp`,
       url: `${siteConfig.url}/lien-he`,
       telephone: siteConfig.contact.zaloNumber.split(" hoặc ")[0],
       parentOrganization: { "@id": `${siteConfig.url}/#organization` },

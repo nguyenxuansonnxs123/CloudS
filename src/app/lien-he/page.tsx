@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Mail, MapPin, MessageCircle, ShoppingBag } from "lucide-react";
 import { Container } from "@/components/Container";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -92,37 +91,26 @@ export default function ContactPage() {
 
       <section className="mt-14">
         <SectionHeading
-          eyebrow="Cửa hàng"
-          title="Ghé cửa hàng CloudS tại Hà Nội"
-          description="3 điểm bán CloudS tại Cầu Giấy và Tây Hồ — ghé thử giày trực tiếp trước khi mua."
+          eyebrow="Chi nhánh"
+          title="Chi nhánh CloudS (Spirit) tại Hà Nội"
+          description="3 chi nhánh của CloudS (Spirit) tại Cầu Giấy và Tây Hồ, Hà Nội."
         />
-        <div className="mt-8 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
-          <div className="overflow-hidden rounded-3xl border border-line">
-            <Image
-              src="/images/store/cua-hang-clouds.webp"
-              alt="Không gian cửa hàng CloudS"
-              width={1600}
-              height={1000}
-              className="h-auto w-full object-cover"
-            />
-          </div>
-          <ul className="space-y-4">
-            {siteConfig.storeLocations.map((store) => (
-              <li
-                key={store.name}
-                className="flex gap-3 rounded-2xl border border-line bg-surface p-5"
-              >
-                <MapPin className="mt-0.5 size-5 shrink-0 text-rose-ink" aria-hidden />
-                <div>
-                  <p className="font-display text-base text-ink">{store.name}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-ink-soft">
-                    {store.streetAddress}, {store.district}, Hà Nội
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {siteConfig.storeLocations.map((store) => (
+            <li
+              key={store.name}
+              className="flex gap-3 rounded-2xl border border-line bg-surface p-5"
+            >
+              <MapPin className="mt-0.5 size-5 shrink-0 text-rose-ink" aria-hidden />
+              <div>
+                <p className="font-display text-base text-ink">{store.name}</p>
+                <p className="mt-1 text-sm leading-relaxed text-ink-soft">
+                  {store.streetAddress}, {store.district}, Hà Nội
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="mt-14">
