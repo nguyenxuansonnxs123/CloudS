@@ -10,14 +10,18 @@ import { VoucherSection } from "@/components/VoucherSection";
 import { cartItemKey } from "@/lib/cart";
 import { formatPrice } from "@/lib/products";
 import { siteConfig } from "@/lib/site-config";
-import { autoAppliedVoucherCodes, shippingDiscountFor } from "@/lib/vouchers";
+import { autoAppliedResolvedVouchers, shippingDiscountFor, type ResolvedVoucher } from "@/lib/vouchers";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, subtotal, isHydrated } = useCart();
-  const [voucherCodes, setVoucherCodes] = useState<string[]>(() => autoAppliedVoucherCodes());
+  const [vouchers, setVouchers] = useState<ResolvedVoucher[]>(() => autoAppliedResolvedVouchers());
   const shippingFee = siteConfig.shippingFee;
-  const shippingDiscount = shippingDiscountFor(voucherCodes, shippingFee);
-  const total = subtotal + shippingFee - shippingDiscount;
+  const shippingDiscount = shippingDiscountFor(vouchers.map((v) => v.code), shippingFee);
+  const affiliateDiscount = vouchers.reduce(
+    (sum, v) => sum + (v.kind === "affiliate_discount" ? v.amount : 0),
+    0
+  );
+  const total = subtotal + shippingFee - shippingDiscount - affiliateDiscount;
 
   if (!isHydrated) {
     return <div className="py-20" />;
@@ -121,6 +125,12 @@ export default function CartPage() {
                   <dd className="text-rose-ink">-{formatPrice(shippingDiscount)}</dd>
                 </div>
               )}
+              {affiliateDiscount > 0 && (
+                <div className="flex justify-between">
+                  <dt className="text-rose-ink">Giảm giá mã giới thiệu</dt>
+                  <dd className="text-rose-ink">-{formatPrice(affiliateDiscount)}</dd>
+                </div>
+              )}
               <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
                 <dt className="text-ink">Tổng cộng</dt>
                 <dd className="text-ink">{formatPrice(total)}</dd>
@@ -140,7 +150,7 @@ export default function CartPage() {
             </Link>
           </div>
 
-          <VoucherSection codes={voucherCodes} onChange={setVoucherCodes} />
+          <VoucherSection vouchers={vouchers} onChange={setVouchers} />
         </div>
       </div>
     </Container>

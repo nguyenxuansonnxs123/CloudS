@@ -41,3 +41,14 @@ export function verifySessionToken(token: string | undefined): boolean {
   if (!Number.isFinite(expires) || Date.now() > expires) return false;
   return true;
 }
+
+/** Kiểm tra request có cookie phiên admin hợp lệ không — dùng trong các API route /api/admin/*. */
+export function isAuthorizedRequest(request: Request): boolean {
+  const token = request.headers
+    .get("cookie")
+    ?.split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${ADMIN_COOKIE_NAME}=`))
+    ?.split("=")[1];
+  return verifySessionToken(token);
+}

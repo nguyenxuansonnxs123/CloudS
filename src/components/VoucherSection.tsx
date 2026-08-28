@@ -2,41 +2,58 @@
 
 import { useState } from "react";
 import { Tag, X } from "lucide-react";
-import { autoAppliedVoucherCodes, findVoucher } from "@/lib/vouchers";
+import type { ResolvedVoucher } from "@/lib/vouchers";
 
-// Lưu ý: nơi gọi component này phải khởi tạo `codes` bằng
-// `autoAppliedVoucherCodes()` (vd: useState(() => autoAppliedVoucherCodes()))
-// để voucher tự động luôn có mặt ngay từ lần render đầu — không dùng effect
-// để "vá" sau, tránh setState trong effect và tránh lệch hydrate.
+// Lưu ý: nơi gọi component này phải khởi tạo `vouchers` bằng danh sách voucher tự động (vd
+// `useState(() => autoAppliedResolvedVouchers())`) để voucher tự động luôn có mặt ngay từ lần
+// render đầu — không dùng effect để "vá" sau, tránh setState trong effect và tránh lệch hydrate.
 export function VoucherSection({
-  codes,
+  vouchers,
   onChange,
 }: {
-  codes: string[];
-  onChange: (codes: string[]) => void;
+  vouchers: ResolvedVoucher[];
+  onChange: (vouchers: ResolvedVoucher[]) => void;
 }) {
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const autoApplied = autoAppliedVoucherCodes();
+  const [checking, setChecking] = useState(false);
 
-  function handleApply() {
-    const voucher = findVoucher(input);
-    if (!voucher) {
-      setError("Mã giảm giá không hợp lệ.");
-      return;
-    }
-    if (codes.includes(voucher.code)) {
+  async function handleApply() {
+    const code = input.trim();
+    if (!code) return;
+    if (vouchers.some((v) => v.code === code.toUpperCase())) {
       setError("Mã này đã được áp dụng.");
       return;
     }
-    onChange([...codes, voucher.code]);
-    setInput("");
+
+    setChecking(true);
     setError(null);
+    try {
+      const res = await fetch(`/api/vouchers/resolve?code=${encodeURIComponent(code)}`);
+      if (!res.ok) {
+        setError("Mã giảm giá không hợp lệ.");
+        return;
+      }
+      const resolved: ResolvedVoucher = await res.json();
+
+      if (resolved.kind === "affiliate_discount" && vouchers.some((v) => v.kind === "affiliate_discount")) {
+        setError("Chỉ áp dụng được 1 mã giới thiệu mỗi đơn.");
+        return;
+      }
+
+      onChange([...vouchers, resolved]);
+      setInput("");
+    } catch {
+      setError("Không kiểm tra được mã lúc này, thử lại sau.");
+    } finally {
+      setChecking(false);
+    }
   }
 
   function handleRemove(code: string) {
-    if (autoApplied.includes(code)) return; // voucher tự động không thể gỡ
-    onChange(codes.filter((c) => c !== code));
+    const voucher = vouchers.find((v) => v.code === code);
+    if (voucher?.kind === "free_shipping") return; // voucher tự động không thể gỡ
+    onChange(vouchers.filter((v) => v.code !== code));
   }
 
   return (
@@ -46,27 +63,26 @@ export function VoucherSection({
         Voucher
       </p>
 
-      {codes.length > 0 && (
+      {vouchers.length > 0 && (
         <ul className="mt-3 space-y-2">
-          {codes.map((code) => {
-            const voucher = findVoucher(code);
-            const isAuto = autoApplied.includes(code);
+          {vouchers.map((voucher) => {
+            const isAuto = voucher.kind === "free_shipping";
             return (
               <li
-                key={code}
+                key={voucher.code}
                 className="flex items-center justify-between gap-3 rounded-xl border border-dashed border-rose-ink/40 bg-blush-tint px-3 py-2 text-sm"
               >
                 <span className="text-ink">
-                  <span className="font-semibold">{code}</span>
-                  {voucher && <span className="text-ink-soft"> — {voucher.label}</span>}
+                  <span className="font-semibold">{voucher.code}</span>
+                  <span className="text-ink-soft"> — {voucher.label}</span>
                 </span>
                 {isAuto ? (
                   <span className="shrink-0 text-xs font-medium text-rose-ink">Tự động áp dụng</span>
                 ) : (
                   <button
                     type="button"
-                    onClick={() => handleRemove(code)}
-                    aria-label={`Gỡ mã ${code}`}
+                    onClick={() => handleRemove(voucher.code)}
+                    aria-label={`Gỡ mã ${voucher.code}`}
                     className="flex size-6 shrink-0 items-center justify-center rounded-full text-ink-soft hover:bg-surface hover:text-ink"
                   >
                     <X className="size-3.5" aria-hidden />
@@ -92,9 +108,10 @@ export function VoucherSection({
         <button
           type="button"
           onClick={handleApply}
-          className="shrink-0 rounded-xl border border-brand-black px-4 py-2 text-sm font-semibold text-ink hover:bg-brand-black hover:text-brand-cream"
+          disabled={checking}
+          className="shrink-0 rounded-xl border border-brand-black px-4 py-2 text-sm font-semibold text-ink hover:bg-brand-black hover:text-brand-cream disabled:opacity-60"
         >
-          Áp dụng
+          {checking ? "Đang kiểm tra..." : "Áp dụng"}
         </button>
       </div>
       {error && <p className="mt-1.5 text-xs text-red-600">{error}</p>}

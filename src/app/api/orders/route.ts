@@ -2,9 +2,11 @@ import { NextResponse } from "next/server";
 import { getProductBySlug } from "@/lib/products";
 import { siteConfig } from "@/lib/site-config";
 import { createOrder, type PaymentMethod } from "@/lib/orders-store";
+import { findAffiliateByCode } from "@/lib/affiliates-store";
 import { sendOrderNotificationEmail, sendCustomerThankYouEmail } from "@/lib/order-email";
 import { submitOrderToSheet } from "@/lib/order-sheet";
-import { autoAppliedVoucherCodes, findVoucher, shippingDiscountFor } from "@/lib/vouchers";
+import { autoAppliedVoucherCodes, shippingDiscountFor } from "@/lib/vouchers";
+import { resolveVoucherCode } from "@/lib/voucher-resolve";
 import type { CartItem } from "@/lib/cart";
 
 const MAX_QUANTITY_PER_ITEM = 10;
@@ -85,16 +87,29 @@ export async function POST(request: Request) {
     });
   }
 
-  // Không tin danh sách voucher/giảm giá từ client — chỉ chấp nhận mã có trong hệ thống,
-  // và luôn đảm bảo các voucher tự động áp dụng được tính dù client có gửi lên hay không.
+  // Không tin danh sách voucher/giảm giá từ client — tra lại từng mã trên server (voucher tĩnh
+  // hoặc mã affiliate), và luôn đảm bảo các voucher tự động áp dụng được tính dù client có gửi
+  // lên hay không. Chỉ tính TỐI ĐA 1 mã affiliate mỗi đơn (khách chỉ do 1 người giới thiệu).
   const requestedCodes = Array.isArray(body.voucherCodes) ? body.voucherCodes : [];
-  const validCodes = requestedCodes.filter((c) => typeof c === "string" && findVoucher(c));
+  const resolvedCodes = await Promise.all(
+    requestedCodes.filter((c) => typeof c === "string").map((c) => resolveVoucherCode(c))
+  );
+  const validCodes = resolvedCodes.filter((r): r is NonNullable<typeof r> => r !== null).map((r) => r.code);
   const appliedVouchers = Array.from(new Set([...autoAppliedVoucherCodes(), ...validCodes]));
+
+  const affiliateVoucher = resolvedCodes.find((r) => r?.kind === "affiliate_discount");
+  const affiliateDiscount = affiliateVoucher?.kind === "affiliate_discount" ? affiliateVoucher.amount : 0;
 
   const subtotal = verifiedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shippingFee = siteConfig.shippingFee;
   const shippingDiscount = shippingDiscountFor(appliedVouchers, shippingFee);
-  const total = subtotal + shippingFee - shippingDiscount;
+  const total = subtotal + shippingFee - shippingDiscount - affiliateDiscount;
+
+  let affiliateCommission: number | undefined;
+  if (affiliateVoucher) {
+    const affiliate = await findAffiliateByCode(affiliateVoucher.code);
+    affiliateCommission = affiliate?.commissionPerOrder;
+  }
 
   const order = await createOrder({
     customer: { name, email, phone, address, note },
@@ -105,6 +120,9 @@ export async function POST(request: Request) {
     appliedVouchers,
     total,
     paymentMethod: paymentMethod as PaymentMethod,
+    affiliateCode: affiliateVoucher?.code,
+    affiliateDiscount: affiliateVoucher ? affiliateDiscount : undefined,
+    affiliateCommission,
   });
 
   // Email báo cho CloudS luôn gửi ngay để chủ shop biết có đơn mới (kể cả đơn chuyển khoản

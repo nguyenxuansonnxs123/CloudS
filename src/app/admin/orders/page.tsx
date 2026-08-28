@@ -4,6 +4,8 @@ import { listOrders } from "@/lib/orders-store";
 import { formatPrice } from "@/lib/products";
 import { OrderStatusSelect } from "@/components/admin/OrderStatusSelect";
 import { PaymentConfirmButton } from "@/components/admin/PaymentConfirmButton";
+import { CommissionPaidButton } from "@/components/admin/CommissionPaidButton";
+import { AdminNav } from "@/components/admin/AdminNav";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 
 export const metadata: Metadata = {
@@ -29,14 +31,17 @@ export default async function AdminOrdersPage() {
           <h1 className="font-display text-2xl text-ink sm:text-3xl">Đơn hàng ({orders.length})</h1>
           <p className="mt-1 text-sm text-ink-soft">Danh sách đơn đặt qua website, mới nhất trước.</p>
         </div>
-        <LogoutButton />
+        <div className="flex items-center gap-3">
+          <AdminNav active="orders" />
+          <LogoutButton />
+        </div>
       </div>
 
       {orders.length === 0 ? (
         <p className="mt-10 text-sm text-ink-soft">Chưa có đơn hàng nào.</p>
       ) : (
         <div className="mt-8 overflow-x-auto rounded-2xl border border-line">
-          <table className="w-full min-w-[860px] text-sm">
+          <table className="w-full min-w-[1020px] text-sm">
             <thead>
               <tr className="border-b border-line bg-surface text-left">
                 <th className="px-4 py-3 font-semibold text-ink">Mã đơn</th>
@@ -44,6 +49,7 @@ export default async function AdminOrdersPage() {
                 <th className="px-4 py-3 font-semibold text-ink">Khách hàng</th>
                 <th className="px-4 py-3 font-semibold text-ink">Sản phẩm</th>
                 <th className="px-4 py-3 font-semibold text-ink">Thanh toán</th>
+                <th className="px-4 py-3 font-semibold text-ink">Affiliate</th>
                 <th className="px-4 py-3 text-right font-semibold text-ink">Tổng tiền</th>
                 <th className="px-4 py-3 font-semibold text-ink">Trạng thái</th>
               </tr>
@@ -81,6 +87,25 @@ export default async function AdminOrdersPage() {
                           <PaymentConfirmButton orderId={order.id} />
                         </div>
                       ))}
+                  </td>
+                  <td className="px-4 py-3 text-ink-soft">
+                    {order.affiliateCode ? (
+                      <div className="space-y-1">
+                        <div className="text-ink">
+                          {order.affiliateCode} — {formatPrice(order.affiliateCommission ?? 0)}
+                        </div>
+                        {order.paymentConfirmed ? (
+                          <CommissionPaidButton
+                            orderId={order.id}
+                            paid={Boolean(order.affiliateCommissionPaid)}
+                          />
+                        ) : (
+                          <span className="text-xs">Chờ xác nhận thanh toán</span>
+                        )}
+                      </div>
+                    ) : (
+                      "—"
+                    )}
                   </td>
                   <td className="px-4 py-3 text-right font-medium text-ink">{formatPrice(order.total)}</td>
                   <td className="px-4 py-3">

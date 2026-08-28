@@ -72,6 +72,12 @@ export default async function OrderSuccessPage(props: PageProps<"/dat-hang-thanh
               <dd className="text-rose-ink">-{formatPrice(order.shippingDiscount)}</dd>
             </div>
           )}
+          {!!order.affiliateDiscount && order.affiliateDiscount > 0 && (
+            <div className="flex justify-between">
+              <dt className="text-rose-ink">Giảm giá mã giới thiệu ({order.affiliateCode})</dt>
+              <dd className="text-rose-ink">-{formatPrice(order.affiliateDiscount)}</dd>
+            </div>
+          )}
           <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
             <dt className="text-ink">Tổng cộng</dt>
             <dd className="text-ink">{formatPrice(order.total)}</dd>

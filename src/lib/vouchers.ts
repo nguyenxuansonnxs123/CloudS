@@ -30,3 +30,15 @@ export function shippingDiscountFor(codes: string[], shippingFee: number): numbe
   const hasFreeShip = vouchers.some((v) => v.kind === "free_shipping" && applied.has(v.code));
   return hasFreeShip ? shippingFee : 0;
 }
+
+export type ResolvedVoucher =
+  | { code: string; label: string; kind: "free_shipping" }
+  | { code: string; label: string; kind: "affiliate_discount"; amount: number };
+
+/** Voucher tự động áp dụng, ở dạng ResolvedVoucher — dùng để khởi tạo state ban đầu của
+ * VoucherSection mà không cần gọi API (voucher tĩnh nên tra được ngay, đồng bộ). */
+export function autoAppliedResolvedVouchers(): ResolvedVoucher[] {
+  return vouchers
+    .filter((v) => v.autoApply)
+    .map((v) => ({ code: v.code, label: v.label, kind: v.kind }));
+}

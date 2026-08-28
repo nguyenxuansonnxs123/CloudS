@@ -8,7 +8,7 @@ import { useCart } from "@/components/CartProvider";
 import { VoucherSection } from "@/components/VoucherSection";
 import { formatPrice } from "@/lib/products";
 import { siteConfig } from "@/lib/site-config";
-import { autoAppliedVoucherCodes, shippingDiscountFor } from "@/lib/vouchers";
+import { autoAppliedResolvedVouchers, shippingDiscountFor, type ResolvedVoucher } from "@/lib/vouchers";
 import { clsx } from "clsx";
 
 type VnProvince = { code: number; name: string };
@@ -60,7 +60,7 @@ export default function CheckoutPage() {
   const [form, setForm] = useState<FormState>(initialForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "bank_transfer">("cod");
-  const [voucherCodes, setVoucherCodes] = useState<string[]>(() => autoAppliedVoucherCodes());
+  const [vouchers, setVouchers] = useState<ResolvedVoucher[]>(() => autoAppliedResolvedVouchers());
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [addressData, setAddressData] = useState<VnAddressData | null>(null);
@@ -78,8 +78,12 @@ export default function CheckoutPage() {
   }, [addressData, form.provinceCode]);
 
   const shippingFee = siteConfig.shippingFee;
-  const shippingDiscount = shippingDiscountFor(voucherCodes, shippingFee);
-  const total = subtotal + shippingFee - shippingDiscount;
+  const shippingDiscount = shippingDiscountFor(vouchers.map((v) => v.code), shippingFee);
+  const affiliateDiscount = vouchers.reduce(
+    (sum, v) => sum + (v.kind === "affiliate_discount" ? v.amount : 0),
+    0
+  );
+  const total = subtotal + shippingFee - shippingDiscount - affiliateDiscount;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -107,7 +111,7 @@ export default function CheckoutPage() {
           },
           items,
           paymentMethod,
-          voucherCodes,
+          voucherCodes: vouchers.map((v) => v.code),
         }),
       });
       if (!res.ok) {
@@ -360,6 +364,12 @@ export default function CheckoutPage() {
                   <dd className="text-rose-ink">-{formatPrice(shippingDiscount)}</dd>
                 </div>
               )}
+              {affiliateDiscount > 0 && (
+                <div className="flex justify-between">
+                  <dt className="text-rose-ink">Giảm giá mã giới thiệu</dt>
+                  <dd className="text-rose-ink">-{formatPrice(affiliateDiscount)}</dd>
+                </div>
+              )}
               <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
                 <dt className="text-ink">Tổng cộng</dt>
                 <dd className="text-ink">{formatPrice(total)}</dd>
@@ -367,7 +377,7 @@ export default function CheckoutPage() {
             </dl>
           </div>
 
-          <VoucherSection codes={voucherCodes} onChange={setVoucherCodes} />
+          <VoucherSection vouchers={vouchers} onChange={setVouchers} />
         </div>
       </div>
     </Container>
