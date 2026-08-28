@@ -5,8 +5,9 @@ import { ProductCard } from "@/components/ProductCard";
 import { products } from "@/lib/products";
 
 export const metadata: Metadata = {
-  title: "Sản phẩm",
-  description: "Toàn bộ sản phẩm giày CloudS — CloudStride 1 và Cloud Mule 1 cho vận động hàng ngày.",
+  title: "Giày Thể Thao, Sneaker & Mule Nữ — Toàn Bộ Sản Phẩm",
+  description:
+    "Toàn bộ giày thể thao, giày sneaker, giày mule nữ CloudS — CloudStride 1 và Cloud Mule 1, phù hợp sinh viên khu vực Cầu Giấy, Hà Nội cho vận động hàng ngày.",
 };
 
 export default function ProductsPage() {

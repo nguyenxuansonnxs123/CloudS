@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
 import { products } from "@/lib/products";
+import { newsPosts } from "@/lib/news";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -8,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/san-pham",
     "/ve-clouds",
     "/uu-dai",
+    "/tin-tuc",
     "/chinh-sach-doi-tra",
     "/lien-he",
   ].map((route) => ({
@@ -20,5 +22,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
-  return [...staticRoutes, ...productRoutes];
+  const newsRoutes = newsPosts.map((p) => ({
+    url: `${siteConfig.url}/tin-tuc/${p.slug}`,
+    lastModified: new Date(p.date),
+  }));
+
+  return [...staticRoutes, ...productRoutes, ...newsRoutes];
 }

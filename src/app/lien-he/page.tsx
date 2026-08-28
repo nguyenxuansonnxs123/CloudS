@@ -6,8 +6,9 @@ import { FacebookIcon, InstagramIcon, ThreadsIcon, TikTokIcon } from "@/componen
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "Liên hệ",
-  description: "Liên hệ CloudS qua Zalo, Shopee, TikTok Shop hoặc mạng xã hội để được tư vấn đặt hàng.",
+  title: "Liên Hệ CloudS — Tư Vấn Giày Tại Cầu Giấy, Hà Nội",
+  description:
+    "Liên hệ CloudS qua Zalo, Shopee, TikTok Shop hoặc mạng xã hội để được tư vấn chọn giày thể thao, sneaker, mule — giao hàng nhanh khu vực Cầu Giấy, Hà Nội.",
 };
 
 const channels = [

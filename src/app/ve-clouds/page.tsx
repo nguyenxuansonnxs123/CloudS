@@ -5,9 +5,9 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/Button";
 
 export const metadata: Metadata = {
-  title: "Về CloudS",
+  title: "Về CloudS — Giày Thể Thao, Sneaker Cho Sinh Viên Hà Nội",
   description:
-    "CloudS là thương hiệu giày thể thao & sneaker tập trung vào performance daily walking — hiệu năng cho vận động hàng ngày.",
+    "CloudS là thương hiệu giày thể thao & sneaker tập trung vào performance daily walking, đồng hành cùng sinh viên và giới trẻ khu vực Cầu Giấy, các trường đại học Hà Nội.",
 };
 
 const forYou = [

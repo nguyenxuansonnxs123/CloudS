@@ -22,20 +22,57 @@ const fraunces = Fraunces({
   weight: ["300", "400", "500", "600"],
 });
 
+const seoTitle = "Giày Sneaker & Mule Nữ, Nam CloudS — Cầu Giấy, Hà Nội";
+const seoDescription =
+  "CloudS — giày thể thao, giày sneaker, giày mule cho sinh viên & giới trẻ khu vực Cầu Giấy và các trường đại học Hà Nội. Thoáng khí, êm chân, giá sinh viên, ship nhanh trong ngày.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} — ${siteConfig.tagline}`,
+    default: seoTitle,
     template: `%s — ${siteConfig.name}`,
   },
-  description: siteConfig.description,
+  description: seoDescription,
+  keywords: [
+    "giày thể thao",
+    "giày sneaker",
+    "giày mule",
+    "giày sục nữ",
+    "giày thể thao Cầu Giấy",
+    "giày sneaker sinh viên Hà Nội",
+    "giày mule nữ giá rẻ",
+  ],
   openGraph: {
-    title: `${siteConfig.name} — ${siteConfig.tagline}`,
-    description: siteConfig.description,
+    title: seoTitle,
+    description: seoDescription,
     url: siteConfig.url,
     siteName: siteConfig.name,
     locale: "vi_VN",
     type: "website",
+  },
+};
+
+// Organization schema (JSON-LD) — chưa dùng LocalBusiness/địa chỉ vì hiện chưa có địa chỉ cửa
+// hàng vật lý xác thực; thêm sau khi có địa chỉ thật để tránh khai báo sai lệch với Google.
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: siteConfig.name,
+  url: siteConfig.url,
+  logo: `${siteConfig.url}/images/logo-cloudS.png`,
+  description: seoDescription,
+  sameAs: [
+    siteConfig.social.threads,
+    siteConfig.social.tiktok,
+    siteConfig.shops.shopee,
+    siteConfig.social.facebook,
+    siteConfig.social.instagram,
+  ].filter(Boolean),
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer service",
+    email: siteConfig.contact.email,
+    url: `${siteConfig.url}/lien-he`,
   },
 };
 
@@ -46,6 +83,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${archivo.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-ink">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <CartProvider>
           <Header />
           <main className="flex-1">{children}</main>

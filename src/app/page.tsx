@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowRight, ShieldCheck, Wind, Footprints, Wallet } from "lucide-react";
 import { Container } from "@/components/Container";
@@ -6,7 +7,15 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { ProductCard } from "@/components/ProductCard";
 import { Carousel } from "@/components/Carousel";
 import { ScrollRow } from "@/components/ScrollRow";
+import { siteConfig } from "@/lib/site-config";
 import { products } from "@/lib/products";
+
+export const metadata: Metadata = {
+  title: "Giày Thể Thao, Sneaker & Mule Nữ Nam Cầu Giấy, Hà Nội",
+  description:
+    "CloudS bán giày thể thao, giày sneaker, giày mule nữ chính hãng cho sinh viên và giới trẻ khu vực Cầu Giấy, các trường đại học Hà Nội. Thoáng khí, êm chân, giá sinh viên, ship nhanh trong ngày.",
+  alternates: { canonical: siteConfig.url },
+};
 
 const usps = [
   {
@@ -96,6 +105,10 @@ export default function HomePage() {
           <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-ink-soft sm:text-lg">
             CloudS là sneaker hiệu năng cho vận động hàng ngày — thoáng khí, êm chân, dễ đi
             từ lúc ra khỏi nhà đến khi kết thúc một ngày dài.
+          </p>
+          <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-ink-soft/80">
+            Giày thể thao, giày sneaker, giày mule nữ dành cho sinh viên và giới trẻ khu vực
+            Cầu Giấy, các trường đại học Hà Nội.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button href="/san-pham" size="lg" icon={<ArrowRight className="size-4" aria-hidden />}>

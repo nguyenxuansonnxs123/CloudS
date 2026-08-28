@@ -9,6 +9,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Carousel } from "@/components/Carousel";
 import { ScrollRow } from "@/components/ScrollRow";
+import { siteConfig } from "@/lib/site-config";
 import {
   formatPrice,
   getProductBySlug,
@@ -25,9 +26,18 @@ export async function generateMetadata(props: PageProps<"/san-pham/[slug]">): Pr
   const { slug } = await props.params;
   const product = getProductBySlug(slug);
   if (!product) return {};
+  const url = `${siteConfig.url}/san-pham/${product.slug}`;
   return {
     title: product.name,
     description: product.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      url,
+      images: [{ url: product.images.gallery[0] }],
+      type: "website",
+    },
   };
 }
 
@@ -46,8 +56,31 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
   const otherProducts = products.filter((p) => p.silhouette !== product.silhouette);
   const productSizeGuide = sizeGuide.filter((s) => product.sizes.includes(s.size));
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: product.images.gallery.map((src) => `${siteConfig.url}${src}`),
+    brand: { "@type": "Brand", name: siteConfig.name },
+    offers: {
+      "@type": "Offer",
+      url: `${siteConfig.url}/san-pham/${product.slug}`,
+      priceCurrency: "VND",
+      price: product.price,
+      availability:
+        product.inStock === false
+          ? "https://schema.org/OutOfStock"
+          : "https://schema.org/InStock",
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <Container className="py-8 sm:py-14">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           {/* Gallery */}

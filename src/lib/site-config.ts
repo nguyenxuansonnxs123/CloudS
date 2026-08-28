@@ -7,7 +7,7 @@ export const siteConfig = {
   taglineVi: "Nhẹ như mây, bước cả ngày",
   description:
     "CloudS — sneaker hiệu năng cho vận động hàng ngày. Nhẹ, êm, dễ đi từ sáng đến cuối ngày.",
-  url: "https://clouds.vn", // [ĐIỀN SAU] domain thật khi đã mua trên Hostinger
+  url: "https://cloudsvn.net",
 
   contact: {
     zaloNumber: "0969 699 297 hoặc 0854 125 647",
