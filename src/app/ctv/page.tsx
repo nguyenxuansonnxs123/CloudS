@@ -3,8 +3,9 @@ import { Camera, MessageCircle, ShieldCheck, ShoppingBag, TrendingUp, Users } fr
 import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
 import { SectionHeading } from "@/components/SectionHeading";
-import { getProductBySlug, formatPrice } from "@/lib/products";
+import { getProductBySlug, formatPrice, products } from "@/lib/products";
 import { siteConfig } from "@/lib/site-config";
+import { ProductCard } from "@/components/ProductCard";
 
 export const metadata: Metadata = {
   title: "Chương Trình Cộng Tác Viên (CTV) — Hoa Hồng Mỗi Đôi Giày",
@@ -41,7 +42,8 @@ const platformSupport = [
 
 export default function CtvPage() {
   const muleProduct = getProductBySlug("cloud-mule-1-rose");
-  const listedPrice = muleProduct?.price ?? 230000;
+  const muleProducts = products.filter((p) => p.silhouette === "cloud-mule-1");
+  const listedPrice = muleProduct?.price ?? 229000;
   const ctvDiscount = 10000;
   const ctvPrice = listedPrice - ctvDiscount;
   const shopeeTiktokPrice = 260000;
@@ -56,7 +58,7 @@ export default function CtvPage() {
       {/* Hero */}
       <div className="max-w-2xl">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-ink">
-          Cộng tác viên
+          Chương trình Cộng tác viên
         </p>
         <h1 className="mt-3 font-display text-4xl leading-tight text-ink sm:text-5xl">
           Chương trình Cộng Tác Viên CloudS Mule
@@ -64,6 +66,10 @@ export default function CtvPage() {
         <p className="mt-4 text-base leading-relaxed text-ink-soft">
           Không cần vốn, không cần ôm hàng — chỉ cần giới thiệu, mỗi đôi giày bán được bạn nhận
           hoa hồng ngay.
+        </p>
+        <p className="mt-2 text-sm text-ink-soft">
+          Chương trình hiện áp dụng cho dòng Cloud Mule 1 — các dòng sản phẩm khác sẽ có chương
+          trình riêng, cập nhật sau.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Button href={siteConfig.contact.zaloLink} size="lg" external>
@@ -74,6 +80,23 @@ export default function CtvPage() {
           </Button>
         </div>
       </div>
+
+      {/* Giới thiệu sản phẩm */}
+      <section className="mt-14 sm:mt-20">
+        <SectionHeading
+          eyebrow="Sản phẩm"
+          title="Đôi giày bạn sẽ giới thiệu"
+          description="Cloud Mule 1 — sneaker mule không dây buộc gót, xỏ nhanh trong vài giây, đang có 2 màu."
+        />
+        <div className="mt-8 grid gap-6 sm:grid-cols-2">
+          {muleProducts.map((product) => (
+            <ProductCard key={product.slug} product={product} />
+          ))}
+        </div>
+        <Button href="/san-pham/cloud-mule-1-rose" variant="ghost" className="mt-8">
+          Xem chi tiết sản phẩm Cloud Mule 1
+        </Button>
+      </section>
 
       {/* Cách 1 */}
       <section id="cach-1" className="mt-14 scroll-mt-24 sm:mt-20">
