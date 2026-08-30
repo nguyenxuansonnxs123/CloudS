@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/san-pham",
     "/ve-clouds",
     "/uu-dai",
+    "/ctv",
     "/tin-tuc",
     "/chinh-sach-doi-tra",
     "/lien-he",

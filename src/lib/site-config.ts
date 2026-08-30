@@ -73,6 +73,7 @@ export const navLinks = [
   { href: "/san-pham", label: "Sản phẩm" },
   { href: "/ve-clouds", label: "Về CloudS" },
   { href: "/uu-dai", label: "Ưu đãi" },
+  { href: "/ctv", label: "CTV" },
   { href: "/tin-tuc", label: "Tin tức" },
   { href: "/chinh-sach-doi-tra", label: "Chính sách đổi trả" },
   { href: "/lien-he", label: "Liên hệ" },
