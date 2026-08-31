@@ -7,17 +7,20 @@ import { useState } from "react";
 import { Menu, ShoppingBag, X } from "lucide-react";
 import { clsx } from "clsx";
 import { Container } from "./Container";
-import { navLinks, siteConfig } from "@/lib/site-config";
+import { siteConfig } from "@/lib/site-config";
 import { Button } from "./Button";
 import { useCart } from "./CartProvider";
+import { useDictionary } from "./LocaleProvider";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { getNavLinks } from "@/lib/nav";
 
-function CartLink({ onClick }: { onClick?: () => void }) {
+function CartLink({ onClick, label }: { onClick?: () => void; label: string }) {
   const { quantity, isHydrated } = useCart();
   return (
     <Link
       href="/gio-hang"
       onClick={onClick}
-      aria-label={`Giỏ hàng${quantity > 0 ? `, ${quantity} sản phẩm` : ""}`}
+      aria-label={`${label}${quantity > 0 ? `, ${quantity}` : ""}`}
       className="relative flex size-11 items-center justify-center rounded-full border border-line text-ink hover:border-brand-black"
     >
       <ShoppingBag className="size-5" aria-hidden />
@@ -33,6 +36,8 @@ function CartLink({ onClick }: { onClick?: () => void }) {
 export function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const t = useDictionary();
+  const navLinks = getNavLinks(t);
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-brand-cream/90 backdrop-blur">
@@ -64,18 +69,19 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <CartLink />
+          <LanguageSwitcher />
+          <CartLink label={t.nav.cart} />
           <Button href="/san-pham" size="md">
-            Mua ngay
+            {t.nav.buyNow}
           </Button>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          <CartLink />
+          <CartLink label={t.nav.cart} />
           <button
             type="button"
             className="flex size-11 items-center justify-center rounded-full border border-line text-ink"
-            aria-label={open ? "Đóng menu" : "Mở menu"}
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
@@ -97,8 +103,11 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
+            <div className="mt-2 flex items-center justify-between px-3">
+              <LanguageSwitcher />
+            </div>
             <Button href="/san-pham" size="md" className="mt-2 w-full">
-              Mua ngay
+              {t.nav.buyNow}
             </Button>
           </Container>
         </div>

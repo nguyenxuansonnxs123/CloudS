@@ -1,9 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MessageCircle } from "lucide-react";
 import { Container } from "./Container";
 import { FacebookIcon, InstagramIcon, ThreadsIcon } from "./SocialIcons";
-import { navLinks, siteConfig } from "@/lib/site-config";
+import { siteConfig } from "@/lib/site-config";
+import { getNavLinks } from "@/lib/nav";
+import { useDictionary } from "./LocaleProvider";
 
 const year = new Date().getFullYear();
 
@@ -12,6 +16,8 @@ function isLegalNameSet(name: string) {
 }
 
 export function Footer() {
+  const t = useDictionary();
+  const navLinks = getNavLinks(t);
   return (
     <footer className="border-t border-line bg-surface">
       <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
@@ -24,12 +30,12 @@ export function Footer() {
             className="h-7 w-auto"
           />
           <p className="mt-3 text-sm leading-relaxed text-ink-soft">
-            {siteConfig.description}
+            {t.common.brandTagline}
           </p>
         </div>
 
         <div>
-          <p className="text-sm font-semibold text-ink">Điều hướng</p>
+          <p className="text-sm font-semibold text-ink">{t.footer.navigation}</p>
           <ul className="mt-4 space-y-2.5">
             {navLinks.map((link) => (
               <li key={link.href}>
@@ -42,7 +48,7 @@ export function Footer() {
         </div>
 
         <div>
-          <p className="text-sm font-semibold text-ink">Kênh mua hàng</p>
+          <p className="text-sm font-semibold text-ink">{t.footer.shopChannels}</p>
           <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
             <li>
               <a
@@ -51,7 +57,7 @@ export function Footer() {
                 target={siteConfig.shops.shopee ? "_blank" : undefined}
                 rel="noopener noreferrer"
               >
-                Shopee
+                {t.footer.shopee}
               </a>
             </li>
             <li>
@@ -61,19 +67,19 @@ export function Footer() {
                 target={siteConfig.shops.tiktok ? "_blank" : undefined}
                 rel="noopener noreferrer"
               >
-                TikTok Shop
+                {t.footer.tiktokShop}
               </a>
             </li>
             <li>
               <Link href="/lien-he" className="hover:text-ink">
-                Tư vấn qua Zalo
+                {t.footer.zaloConsult}
               </Link>
             </li>
           </ul>
         </div>
 
         <div>
-          <p className="text-sm font-semibold text-ink">Kết nối</p>
+          <p className="text-sm font-semibold text-ink">{t.footer.connect}</p>
           <div className="mt-4 flex gap-3">
             <a
               href={siteConfig.social.facebook || "#"}
@@ -122,7 +128,7 @@ export function Footer() {
             © {year} {siteConfig.name}
             {isLegalNameSet(siteConfig.business.legalName) && `. ${siteConfig.business.legalName}`}.
           </p>
-          <p>Được xây dựng cho những bước chân nhẹ tênh mỗi ngày.</p>
+          <p>{t.footer.builtFor}</p>
         </Container>
       </div>
     </footer>

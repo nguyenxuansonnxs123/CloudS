@@ -3,6 +3,7 @@
 // GET /api/vouchers/resolve thay vì gọi thẳng hàm này.
 import { findAffiliateByCode } from "./affiliates-store";
 import { findVoucher, type ResolvedVoucher } from "./vouchers";
+import type { Locale } from "./locale";
 
 /**
  * Tra một mã bất kỳ khách nhập ở ô voucher — kiểm tra voucher tĩnh (FREESHIP...) trước, nếu
@@ -10,10 +11,11 @@ import { findVoucher, type ResolvedVoucher } from "./vouchers";
  * cho khách + ghi nhận hoa hồng cho affiliate đó khi đơn được xác nhận). Đây là nguồn tin cậy
  * duy nhất khi tạo đơn thật trên server — không tin dữ liệu voucher client tự tính.
  */
-export async function resolveVoucherCode(code: string): Promise<ResolvedVoucher | null> {
+export async function resolveVoucherCode(code: string, locale: Locale = "vi"): Promise<ResolvedVoucher | null> {
   const staticVoucher = findVoucher(code);
   if (staticVoucher) {
-    return { code: staticVoucher.code, label: staticVoucher.label, kind: "free_shipping" };
+    const label = locale === "en" && staticVoucher.labelEn ? staticVoucher.labelEn : staticVoucher.label;
+    return { code: staticVoucher.code, label, kind: "free_shipping" };
   }
 
   const affiliate = await findAffiliateByCode(code);

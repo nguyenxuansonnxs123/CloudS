@@ -7,14 +7,17 @@ import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { Container } from "@/components/Container";
 import { useCart } from "@/components/CartProvider";
 import { VoucherSection } from "@/components/VoucherSection";
+import { useDictionary, useLocale } from "@/components/LocaleProvider";
 import { cartItemKey } from "@/lib/cart";
 import { formatPrice } from "@/lib/products";
 import { siteConfig } from "@/lib/site-config";
 import { autoAppliedResolvedVouchers, shippingDiscountFor, type ResolvedVoucher } from "@/lib/vouchers";
 
 export default function CartPage() {
+  const t = useDictionary();
+  const locale = useLocale();
   const { items, updateQuantity, removeItem, subtotal, isHydrated } = useCart();
-  const [vouchers, setVouchers] = useState<ResolvedVoucher[]>(() => autoAppliedResolvedVouchers());
+  const [vouchers, setVouchers] = useState<ResolvedVoucher[]>(() => autoAppliedResolvedVouchers(locale));
   const shippingFee = siteConfig.shippingFee;
   const shippingDiscount = shippingDiscountFor(vouchers.map((v) => v.code), shippingFee);
   const affiliateDiscount = vouchers.reduce(
@@ -31,15 +34,13 @@ export default function CartPage() {
     return (
       <Container className="flex flex-col items-center gap-4 py-24 text-center">
         <ShoppingBag className="size-10 text-ink-soft" aria-hidden />
-        <h1 className="font-display text-2xl text-ink">Giỏ hàng đang trống</h1>
-        <p className="max-w-sm text-sm text-ink-soft">
-          Khám phá sản phẩm CloudS và thêm đôi giày yêu thích vào giỏ hàng của bạn.
-        </p>
+        <h1 className="font-display text-2xl text-ink">{t.cart.empty}</h1>
+        <p className="max-w-sm text-sm text-ink-soft">{t.cart.emptyDetail}</p>
         <Link
           href="/san-pham"
           className="mt-2 inline-flex h-11 items-center justify-center rounded-full bg-brand-black px-6 text-sm font-semibold text-brand-cream hover:bg-ink-soft"
         >
-          Xem sản phẩm
+          {t.cart.browseProducts}
         </Link>
       </Container>
     );
@@ -47,7 +48,7 @@ export default function CartPage() {
 
   return (
     <Container className="py-14 sm:py-20">
-      <h1 className="font-display text-3xl text-ink sm:text-4xl">Giỏ hàng của bạn</h1>
+      <h1 className="font-display text-3xl text-ink sm:text-4xl">{t.cart.title}</h1>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_360px]">
         <ul className="space-y-6">
@@ -71,7 +72,7 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={() => removeItem(item.slug, item.size)}
-                      aria-label={`Xoá ${item.name} khỏi giỏ hàng`}
+                      aria-label={t.cart.removeItem(item.name)}
                       className="flex size-9 shrink-0 items-center justify-center rounded-full text-ink-soft hover:bg-surface hover:text-ink"
                     >
                       <Trash2 className="size-4" aria-hidden />
@@ -82,7 +83,7 @@ export default function CartPage() {
                       <button
                         type="button"
                         onClick={() => updateQuantity(item.slug, item.size, item.quantity - 1)}
-                        aria-label="Giảm số lượng"
+                        aria-label={t.cart.decreaseQty}
                         className="flex size-9 items-center justify-center text-ink"
                       >
                         <Minus className="size-3.5" aria-hidden />
@@ -93,7 +94,7 @@ export default function CartPage() {
                       <button
                         type="button"
                         onClick={() => updateQuantity(item.slug, item.size, item.quantity + 1)}
-                        aria-label="Tăng số lượng"
+                        aria-label={t.cart.increaseQty}
                         className="flex size-9 items-center justify-center text-ink"
                       >
                         <Plus className="size-3.5" aria-hidden />
@@ -109,30 +110,30 @@ export default function CartPage() {
 
         <div className="h-fit space-y-4">
           <div className="rounded-3xl border border-line bg-surface p-6">
-            <h2 className="font-display text-lg text-ink">Tóm tắt đơn hàng</h2>
+            <h2 className="font-display text-lg text-ink">{t.cart.summary}</h2>
             <dl className="mt-4 space-y-3 text-sm">
               <div className="flex justify-between">
-                <dt className="text-ink-soft">Tạm tính</dt>
+                <dt className="text-ink-soft">{t.cart.subtotal}</dt>
                 <dd className="text-ink">{formatPrice(subtotal)}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-ink-soft">Phí vận chuyển</dt>
+                <dt className="text-ink-soft">{t.cart.shippingFee}</dt>
                 <dd className="text-ink">{formatPrice(shippingFee)}</dd>
               </div>
               {shippingDiscount > 0 && (
                 <div className="flex justify-between">
-                  <dt className="text-rose-ink">Giảm giá voucher</dt>
+                  <dt className="text-rose-ink">{t.cart.voucherDiscount}</dt>
                   <dd className="text-rose-ink">-{formatPrice(shippingDiscount)}</dd>
                 </div>
               )}
               {affiliateDiscount > 0 && (
                 <div className="flex justify-between">
-                  <dt className="text-rose-ink">Giảm giá mã giới thiệu</dt>
+                  <dt className="text-rose-ink">{t.cart.referralDiscount}</dt>
                   <dd className="text-rose-ink">-{formatPrice(affiliateDiscount)}</dd>
                 </div>
               )}
               <div className="flex justify-between border-t border-line pt-3 text-base font-semibold">
-                <dt className="text-ink">Tổng cộng</dt>
+                <dt className="text-ink">{t.cart.total}</dt>
                 <dd className="text-ink">{formatPrice(total)}</dd>
               </div>
             </dl>
@@ -140,13 +141,13 @@ export default function CartPage() {
               href="/thanh-toan"
               className="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-brand-black text-sm font-semibold text-brand-cream hover:bg-ink-soft"
             >
-              Tiến hành đặt hàng
+              {t.cart.checkout}
             </Link>
             <Link
               href="/san-pham"
               className="mt-3 flex h-12 w-full items-center justify-center rounded-full border border-line text-sm font-medium text-ink hover:border-brand-black"
             >
-              Tiếp tục mua sắm
+              {t.cart.continueShopping}
             </Link>
           </div>
 

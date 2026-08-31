@@ -3,6 +3,26 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { clsx } from "clsx";
+import { useLocale } from "./LocaleProvider";
+
+const labels = {
+  vi: {
+    prev: "Ảnh trước",
+    next: "Ảnh tiếp theo",
+    goTo: (i: number) => `Đến ảnh ${i}`,
+    pause: "Tạm dừng trình chiếu",
+    play: "Tiếp tục trình chiếu",
+    viewImage: (i: number) => `Xem ảnh ${i}`,
+  },
+  en: {
+    prev: "Previous image",
+    next: "Next image",
+    goTo: (i: number) => `Go to image ${i}`,
+    pause: "Pause slideshow",
+    play: "Resume slideshow",
+    viewImage: (i: number) => `View image ${i}`,
+  },
+};
 
 type CarouselProps = {
   slides: React.ReactNode[];
@@ -23,6 +43,7 @@ export function Carousel({
   slideClassName,
   ariaLabel,
 }: CarouselProps) {
+  const t = labels[useLocale()];
   const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(Boolean(autoPlayMs));
@@ -90,7 +111,7 @@ export function Carousel({
           <button
             type="button"
             onClick={() => scrollToIndex(index - 1)}
-            aria-label="Ảnh trước"
+            aria-label={t.prev}
             className="absolute left-3 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-surface/90 text-ink opacity-0 shadow-sm transition-opacity focus-visible:opacity-100 group-hover:opacity-100"
           >
             <ChevronLeft className="size-5" aria-hidden />
@@ -98,7 +119,7 @@ export function Carousel({
           <button
             type="button"
             onClick={() => scrollToIndex(index + 1)}
-            aria-label="Ảnh tiếp theo"
+            aria-label={t.next}
             className="absolute right-3 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-surface/90 text-ink opacity-0 shadow-sm transition-opacity focus-visible:opacity-100 group-hover:opacity-100"
           >
             <ChevronRight className="size-5" aria-hidden />
@@ -110,7 +131,7 @@ export function Carousel({
                 key={i}
                 type="button"
                 onClick={() => scrollToIndex(i)}
-                aria-label={`Đến ảnh ${i + 1}`}
+                aria-label={t.goTo(i + 1)}
                 aria-current={i === index}
                 className={clsx(
                   "h-2 rounded-full transition-all",
@@ -122,7 +143,7 @@ export function Carousel({
               <button
                 type="button"
                 onClick={() => setPlaying((p) => !p)}
-                aria-label={playing ? "Tạm dừng trình chiếu" : "Tiếp tục trình chiếu"}
+                aria-label={playing ? t.pause : t.play}
                 className="ml-2 flex size-7 items-center justify-center rounded-full bg-surface/90 text-ink"
               >
                 {playing ? <Pause className="size-3.5" aria-hidden /> : <Play className="size-3.5" aria-hidden />}
@@ -139,7 +160,7 @@ export function Carousel({
               key={i}
               type="button"
               onClick={() => scrollToIndex(i)}
-              aria-label={`Xem ảnh ${i + 1}`}
+              aria-label={t.viewImage(i + 1)}
               aria-current={i === index}
               className={clsx(
                 "size-16 shrink-0 overflow-hidden rounded-xl border-2 transition-colors sm:size-20",

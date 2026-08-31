@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# Claude Code agent worktree scratch dirs
+/.claude/worktrees/
+
 # production
 /build
 

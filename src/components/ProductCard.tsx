@@ -1,10 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { Product, formatPrice, getSiblingColorProducts } from "@/lib/products";
+import { Product, formatPrice, getLocalizedProduct, getSiblingColorProducts } from "@/lib/products";
+import { getLocale } from "@/lib/i18n";
 
-export function ProductCard({ product }: { product: Product }) {
+const badges = {
+  vi: { new: "Mới", outOfStock: "Hết hàng" },
+  en: { new: "New", outOfStock: "Out of stock" },
+};
+
+export async function ProductCard({ product: rawProduct }: { product: Product }) {
+  const locale = await getLocale();
+  const product = getLocalizedProduct(rawProduct, locale);
   const siblings = getSiblingColorProducts(product);
+  const b = badges[locale];
 
   return (
     <div className="group overflow-hidden rounded-3xl border border-line bg-surface transition-shadow duration-300 hover:shadow-[0_20px_50px_-25px_rgba(23,19,15,0.35)]">
@@ -30,12 +39,12 @@ export function ProductCard({ product }: { product: Product }) {
             </span>
             {product.isNew && (
               <span className="rounded-full bg-rose-ink px-3 py-1 text-xs font-semibold text-brand-cream">
-                Mới
+                {b.new}
               </span>
             )}
             {product.inStock === false && (
               <span className="rounded-full bg-ink-soft px-3 py-1 text-xs font-semibold text-brand-cream">
-                Hết hàng
+                {b.outOfStock}
               </span>
             )}
           </div>

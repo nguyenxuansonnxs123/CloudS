@@ -4,23 +4,42 @@ import Link from "next/link";
 import { Container } from "@/components/Container";
 import { SectionHeading } from "@/components/SectionHeading";
 import { newsPosts, formatNewsDate } from "@/lib/news";
+import { getLocale } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title: "Tin tức",
-  description: "Tin tức và thông tin mới nhất từ CloudS.",
+const content = {
+  vi: {
+    title: "Tin tức",
+    description: "Tin tức và thông tin mới nhất từ CloudS.",
+    eyebrow: "Chia sẻ",
+    heading: "Tin tức từ CloudS",
+    headingDesc: "Cập nhật mới nhất về sản phẩm, ưu đãi và các hoạt động của CloudS.",
+    empty: "Chưa có tin tức nào — quay lại sau nhé.",
+  },
+  en: {
+    title: "News",
+    description: "The latest news and updates from CloudS.",
+    eyebrow: "Updates",
+    heading: "News from CloudS",
+    headingDesc: "The latest updates on products, offers, and CloudS activities.",
+    empty: "No news yet — check back soon.",
+  },
 };
 
-export default function NewsPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return { title: content[locale].title, description: content[locale].description };
+}
+
+export default async function NewsPage() {
+  const locale = await getLocale();
+  const t = content[locale];
+
   return (
     <Container className="py-14 sm:py-20">
-      <SectionHeading
-        eyebrow="Chia sẻ"
-        title="Tin tức từ CloudS"
-        description="Cập nhật mới nhất về sản phẩm, ưu đãi và các hoạt động của CloudS."
-      />
+      <SectionHeading eyebrow={t.eyebrow} title={t.heading} description={t.headingDesc} />
 
       {newsPosts.length === 0 ? (
-        <p className="mt-10 text-sm text-ink-soft">Chưa có tin tức nào — quay lại sau nhé.</p>
+        <p className="mt-10 text-sm text-ink-soft">{t.empty}</p>
       ) : (
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {newsPosts.map((post) => (

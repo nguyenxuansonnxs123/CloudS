@@ -1,6 +1,10 @@
+import type { Locale } from "./locale";
+
 export type Voucher = {
   code: string;
   label: string;
+  /** Nhãn tiếng Anh — nếu bỏ trống thì dùng luôn `label` (tiếng Việt) cho cả 2 locale. */
+  labelEn?: string;
   kind: "free_shipping";
   /** Tự động áp dụng cho mọi đơn hàng, khách không cần nhập mã. */
   autoApply?: boolean;
@@ -10,10 +14,15 @@ export const vouchers: Voucher[] = [
   {
     code: "FREESHIP",
     label: "Miễn phí vận chuyển — ưu đãi khai trương",
+    labelEn: "Free shipping — opening offer",
     kind: "free_shipping",
     autoApply: true,
   },
 ];
+
+function localizedLabel(voucher: Voucher, locale: Locale) {
+  return locale === "en" && voucher.labelEn ? voucher.labelEn : voucher.label;
+}
 
 export function findVoucher(code: string): Voucher | undefined {
   const normalized = code.trim().toUpperCase();
@@ -37,8 +46,8 @@ export type ResolvedVoucher =
 
 /** Voucher tự động áp dụng, ở dạng ResolvedVoucher — dùng để khởi tạo state ban đầu của
  * VoucherSection mà không cần gọi API (voucher tĩnh nên tra được ngay, đồng bộ). */
-export function autoAppliedResolvedVouchers(): ResolvedVoucher[] {
+export function autoAppliedResolvedVouchers(locale: Locale = "vi"): ResolvedVoucher[] {
   return vouchers
     .filter((v) => v.autoApply)
-    .map((v) => ({ code: v.code, label: v.label, kind: v.kind }));
+    .map((v) => ({ code: v.code, label: localizedLabel(v, locale), kind: v.kind }));
 }

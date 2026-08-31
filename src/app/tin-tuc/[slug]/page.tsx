@@ -4,6 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/Container";
 import { newsPosts, getNewsPostBySlug, formatNewsDate } from "@/lib/news";
+import { getLocale } from "@/lib/i18n";
+
+const backLabel = { vi: "← Tin tức", en: "← News" };
 
 export function generateStaticParams() {
   return newsPosts.map((p) => ({ slug: p.slug }));
@@ -23,12 +26,13 @@ export default async function NewsPostPage(props: PageProps<"/tin-tuc/[slug]">) 
   const { slug } = await props.params;
   const post = getNewsPostBySlug(slug);
   if (!post) notFound();
+  const locale = await getLocale();
 
   return (
     <Container className="py-14 sm:py-20">
       <div className="mx-auto max-w-2xl">
         <Link href="/tin-tuc" className="text-sm text-ink-soft hover:text-ink">
-          ← Tin tức
+          {backLabel[locale]}
         </Link>
         <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-rose-ink">
           {formatNewsDate(post.date)}

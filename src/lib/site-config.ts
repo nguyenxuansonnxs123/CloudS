@@ -68,13 +68,3 @@ export const siteConfig = {
 export function isBankConfigured() {
   return Boolean(siteConfig.bank.bin && siteConfig.bank.accountNumber && siteConfig.bank.accountName);
 }
-
-export const navLinks = [
-  { href: "/san-pham", label: "Sản phẩm" },
-  { href: "/ve-clouds", label: "Về CloudS" },
-  { href: "/uu-dai", label: "Ưu đãi & Đổi trả" },
-  { href: "/ctv", label: "Cộng tác viên" },
-  { href: "/tin-tuc", label: "Tin tức" },
-  { href: "/lien-he", label: "Liên hệ" },
-  { href: "/sd-housing", label: "SD Housing" },
-] as const;

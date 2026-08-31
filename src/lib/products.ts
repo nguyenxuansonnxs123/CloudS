@@ -1,3 +1,5 @@
+import type { Locale } from "@/lib/locale";
+
 export type SizedImage = { src: string; width: number; height: number };
 
 export type Product = {
@@ -36,6 +38,19 @@ export type Product = {
   care: string[];
   /** slug của các phiên bản màu khác cùng dáng giày, để hiện swatch chuyển đổi */
   colorOptions: string[];
+  /** Bản dịch tiếng Anh cho các trường nội dung — name/shortName giữ nguyên (tên thương hiệu/SKU). */
+  translations?: {
+    en: {
+      tagline: string;
+      description: string;
+      usps: string[];
+      features: { title: string; detail: string }[];
+      care: string[];
+      /** Chỉ cần khi color là từ tiếng Việt thường (vd "Đen") — màu kiểu tên riêng như "Rose",
+       * "Vanilla Cream" thì bỏ trống, giữ nguyên. */
+      colorEn?: string;
+    };
+  };
 };
 
 export const products: Product[] = [
@@ -104,6 +119,43 @@ export const products: Product[] = [
       "Nhét giấy/form giữ dáng khi không sử dụng trong thời gian dài",
     ],
     colorOptions: [],
+    translations: {
+      en: {
+        colorEn: "Black",
+        tagline: "From morning to night — for work, walking, and hanging out with friends.",
+        description:
+          "A performance sneaker built for everyday movement. The GCR rubber outsole resists wear and slipping, the breathable poly-mesh upper keeps your feet dry, and the cushioned EVA insole stays comfortable through a long day on your feet.",
+        usps: [
+          "Breathable poly-mesh upper keeps you comfortable all day",
+          "Durable GCR outsole resists wear and slipping",
+          "Cushioned EVA insole massages your feet and absorbs impact",
+          "Minimalist style — for school, work, hanging out, or workouts",
+        ],
+        features: [
+          {
+            title: "GCR outsole",
+            detail: "Wear-resistant, slip-resistant GCR rubber — walk with confidence, however far.",
+          },
+          {
+            title: "Breathable upper",
+            detail: "Breathable woven poly-mesh keeps your feet dry all day long.",
+          },
+          {
+            title: "EVA insole",
+            detail: "Massages your feet and cushions every step, comfortable mile after mile.",
+          },
+          {
+            title: "Versatile style",
+            detail: "School, work, hangouts, workouts — one pair for everything you do.",
+          },
+        ],
+        care: [
+          "Wipe off dirt with a damp cloth after wearing outdoors",
+          "Do not machine wash — hand wash gently and air-dry in the shade, away from direct sun",
+          "Stuff with paper or a shoe form to keep their shape during long-term storage",
+        ],
+      },
+    },
   },
   {
     slug: "cloud-mule-1-rose",
@@ -172,6 +224,38 @@ export const products: Product[] = [
       "Bảo quản nơi khô ráo, tránh ánh nắng trực tiếp làm phai màu",
     ],
     colorOptions: ["cloud-mule-1-vanilla-cream"],
+    translations: {
+      en: {
+        tagline: "Even a rushed morning, you'll still make it out the door — for work, outings, and coffee runs.",
+        description:
+          "A minimalist mule sneaker with a backless, laceless design you can slip on in seconds. The soft Rose tone pairs easily with almost anything you wear to work, school, or a day out.",
+        usps: [
+          "Slip on in seconds — saves you time every morning",
+          "Soft Rose tone pairs easily with a wide range of outfits",
+          "Minimalist, polished style — works even for the office",
+          "Comfortable underfoot, made for a day full of moving around",
+        ],
+        features: [
+          {
+            title: "Mule silhouette",
+            detail: "Backless and laceless — on your feet in seconds.",
+          },
+          {
+            title: "Soft Rose tone",
+            detail: "A neutral blush pink that pairs easily with everyday outfits.",
+          },
+          {
+            title: "Light, cushioned sole",
+            detail: "Comfortable for a full day on your feet, at work or school.",
+          },
+        ],
+        care: [
+          "Wipe off dirt with a damp cloth — avoid soaking in water",
+          "Do not machine wash — hand wash gently and air-dry in a well-ventilated spot",
+          "Store somewhere dry, away from direct sunlight, to prevent fading",
+        ],
+      },
+    },
   },
   {
     slug: "cloud-mule-1-vanilla-cream",
@@ -234,11 +318,62 @@ export const products: Product[] = [
       "Bảo quản nơi khô ráo, tránh ánh nắng trực tiếp làm phai màu (đặc biệt tông sáng)",
     ],
     colorOptions: ["cloud-mule-1-rose"],
+    translations: {
+      en: {
+        tagline: "Even a rushed morning, you'll still make it out the door — an easygoing pair for any schedule.",
+        description:
+          "A minimalist mule sneaker with a backless, laceless design you can slip on in seconds. The light, perfectly neutral Vanilla Cream tone goes with almost anything in your everyday wardrobe.",
+        usps: [
+          "Slip on in seconds — saves you time every morning",
+          "Light, neutral Vanilla Cream tone pairs with any outfit",
+          "Minimalist, polished style — works even for the office",
+          "Comfortable underfoot, made for a day full of moving around",
+        ],
+        features: [
+          {
+            title: "Mule silhouette",
+            detail: "Backless and laceless — on your feet in seconds.",
+          },
+          {
+            title: "Vanilla Cream tone",
+            detail: "Light and perfectly neutral — pairs with any outfit.",
+          },
+          {
+            title: "Light, cushioned sole",
+            detail: "Comfortable for a full day on your feet, at work or school.",
+          },
+        ],
+        care: [
+          "Wipe off dirt with a damp cloth — avoid soaking in water",
+          "Do not machine wash — hand wash gently and air-dry in a well-ventilated spot",
+          "Store somewhere dry, away from direct sunlight, to prevent fading (especially on light tones)",
+        ],
+      },
+    },
   },
 ];
 
 export function getProductBySlug(slug: string) {
   return products.find((p) => p.slug === slug);
+}
+
+/**
+ * Trả về sản phẩm với các trường nội dung (tagline/description/usps/features/care) được thay
+ * bằng bản dịch tiếng Anh khi locale là "en" — name/shortName/color giữ nguyên. Nếu chưa có bản
+ * dịch, giữ nguyên nội dung tiếng Việt gốc (không throw/break).
+ */
+export function getLocalizedProduct(product: Product, locale: Locale): Product {
+  const en = product.translations?.en;
+  if (locale !== "en" || !en) return product;
+  return {
+    ...product,
+    tagline: en.tagline,
+    description: en.description,
+    usps: en.usps,
+    features: en.features,
+    care: en.care,
+    color: en.colorEn ?? product.color,
+  };
 }
 
 export function getSiblingColorProducts(product: Product) {

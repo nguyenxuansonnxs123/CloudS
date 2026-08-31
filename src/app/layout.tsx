@@ -4,7 +4,9 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CartProvider } from "@/components/CartProvider";
+import { LocaleProvider } from "@/components/LocaleProvider";
 import { siteConfig } from "@/lib/site-config";
+import { getLocale } from "@/lib/i18n";
 
 // Font phần chữ nội dung/UI — khớp Wilson.com (bản thân họ dùng GT America, một font trả phí).
 // Archivo là grotesque sans cùng nhóm phong cách, có sẵn subset "vietnamese" đầy đủ dấu.
@@ -22,35 +24,52 @@ const fraunces = Fraunces({
   weight: ["300", "400", "500", "600"],
 });
 
-const seoTitle = "Giày Sneaker & Mule Nữ, Nam CloudS — Cầu Giấy, Hà Nội";
-const seoDescription =
-  "CloudS — giày thể thao, giày sneaker, giày mule cho sinh viên & giới trẻ khu vực Cầu Giấy và các trường đại học Hà Nội. Thoáng khí, êm chân, giá sinh viên, ship nhanh trong ngày.";
-
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
-  title: {
-    default: seoTitle,
-    template: `%s — ${siteConfig.name}`,
+const seoContent = {
+  vi: {
+    title: "Giày Sneaker & Mule Nữ, Nam CloudS — Cầu Giấy, Hà Nội",
+    description:
+      "CloudS — giày thể thao, giày sneaker, giày mule cho sinh viên & giới trẻ khu vực Cầu Giấy và các trường đại học Hà Nội. Thoáng khí, êm chân, giá sinh viên, ship nhanh trong ngày.",
+    keywords: [
+      "giày thể thao",
+      "giày sneaker",
+      "giày mule",
+      "giày sục nữ",
+      "giày thể thao Cầu Giấy",
+      "giày sneaker sinh viên Hà Nội",
+      "giày mule nữ giá rẻ",
+    ],
+    ogLocale: "vi_VN",
   },
-  description: seoDescription,
-  keywords: [
-    "giày thể thao",
-    "giày sneaker",
-    "giày mule",
-    "giày sục nữ",
-    "giày thể thao Cầu Giấy",
-    "giày sneaker sinh viên Hà Nội",
-    "giày mule nữ giá rẻ",
-  ],
-  openGraph: {
-    title: seoTitle,
-    description: seoDescription,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    locale: "vi_VN",
-    type: "website",
+  en: {
+    title: "CloudS Sneakers & Mules — Cau Giay, Hanoi",
+    description:
+      "CloudS — sneakers and mules for students & young people around Cau Giay and Hanoi's university area. Breathable, comfortable, student-friendly prices, same-day shipping.",
+    keywords: ["sneakers", "mules", "CloudS shoes", "sneakers Hanoi", "mules for women", "Cau Giay shoes"],
+    ogLocale: "en_US",
   },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = seoContent[locale];
+  return {
+    metadataBase: new URL(siteConfig.url),
+    title: {
+      default: t.title,
+      template: `%s — ${siteConfig.name}`,
+    },
+    description: t.description,
+    keywords: t.keywords,
+    openGraph: {
+      title: t.title,
+      description: t.description,
+      url: siteConfig.url,
+      siteName: siteConfig.name,
+      locale: t.ogLocale,
+      type: "website",
+    },
+  };
+}
 
 // Organization + ShoeStore (LocalBusiness) schema (JSON-LD) cho 3 địa điểm cửa hàng CloudS tại Hà Nội.
 const organizationJsonLd = {
@@ -62,7 +81,7 @@ const organizationJsonLd = {
       name: siteConfig.name,
       url: siteConfig.url,
       logo: `${siteConfig.url}/images/logo-cloudS.png`,
-      description: seoDescription,
+      description: seoContent.vi.description,
       sameAs: [
         siteConfig.social.threads,
         siteConfig.social.tiktok,
@@ -95,10 +114,11 @@ const organizationJsonLd = {
   ],
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const locale = await getLocale();
   return (
     <html
-      lang="vi"
+      lang={locale}
       className={`${archivo.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-ink">
@@ -106,11 +126,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
-        <CartProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </CartProvider>
+        <LocaleProvider locale={locale}>
+          <CartProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </CartProvider>
+        </LocaleProvider>
       </body>
     </html>
   );
