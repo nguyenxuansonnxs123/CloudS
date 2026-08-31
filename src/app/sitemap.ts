@@ -13,6 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/tin-tuc",
     "/chinh-sach-doi-tra",
     "/lien-he",
+    "/sd-housing",
+    "/sd-housing/neighborhood-guide",
   ].map((route) => ({
     url: `${siteConfig.url}${route}`,
     lastModified: new Date(),

@@ -72,9 +72,9 @@ export function isBankConfigured() {
 export const navLinks = [
   { href: "/san-pham", label: "Sản phẩm" },
   { href: "/ve-clouds", label: "Về CloudS" },
-  { href: "/uu-dai", label: "Ưu đãi" },
+  { href: "/uu-dai", label: "Ưu đãi & Đổi trả" },
   { href: "/ctv", label: "Cộng tác viên" },
   { href: "/tin-tuc", label: "Tin tức" },
-  { href: "/chinh-sach-doi-tra", label: "Chính sách đổi trả" },
   { href: "/lien-he", label: "Liên hệ" },
+  { href: "/sd-housing", label: "SD Housing" },
 ] as const;

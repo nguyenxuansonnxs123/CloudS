@@ -5,8 +5,9 @@ import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
 
 export const metadata: Metadata = {
-  title: "Ưu đãi",
-  description: "Toàn bộ ưu đãi tại CloudS — khai trương, giới thiệu bạn bè, và chế độ An Tâm Mua Sắm.",
+  title: "Ưu đãi & Đổi trả",
+  description:
+    "Toàn bộ ưu đãi tại CloudS — khai trương, giới thiệu bạn bè — và chính sách đổi trả, Chế độ An Tâm Mua Sắm.",
 };
 
 // Lưu ý: "Ưu đãi khai trương" bên dưới mang tính thời điểm (tuần 20–26/8).
@@ -19,11 +20,11 @@ export default function PromotionsPage() {
           Ưu đãi
         </p>
         <h1 className="mt-3 font-display text-4xl leading-tight text-ink sm:text-5xl">
-          Ưu đãi tại CloudS
+          Ưu đãi & Đổi trả tại CloudS
         </h1>
         <p className="mt-4 text-base leading-relaxed text-ink-soft">
-          Từ ưu đãi khai trương cho những khách hàng đầu tiên, đến các quyền lợi CloudS duy
-          trì lâu dài — tất cả ở một chỗ.
+          Từ ưu đãi khai trương cho những khách hàng đầu tiên, đến chính sách đổi trả và các
+          quyền lợi CloudS duy trì lâu dài — tất cả ở một chỗ.
         </p>
       </div>
 
