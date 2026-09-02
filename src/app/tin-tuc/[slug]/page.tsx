@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/Container";
-import { newsPosts, getNewsPostBySlug, formatNewsDate } from "@/lib/news";
+import { newsPosts, getNewsPostBySlug, getLocalizedPost, formatNewsDate, type NewsBlock } from "@/lib/news";
 import { getLocale } from "@/lib/i18n";
 
 const backLabel = { vi: "← Tin tức", en: "← News" };
@@ -14,19 +14,79 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: PageProps<"/tin-tuc/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
-  const post = getNewsPostBySlug(slug);
-  if (!post) return {};
+  const raw = getNewsPostBySlug(slug);
+  if (!raw) return {};
+  const locale = await getLocale();
+  const post = getLocalizedPost(raw, locale);
   return {
     title: post.title,
     description: post.excerpt,
   };
 }
 
+function Block({ block }: { block: NewsBlock }) {
+  switch (block.type) {
+    case "heading": {
+      const Tag = block.level === 3 ? "h3" : "h2";
+      return (
+        <Tag
+          className={
+            block.level === 3
+              ? "mt-8 font-display text-xl text-ink"
+              : "mt-10 font-display text-2xl text-ink"
+          }
+        >
+          {block.text}
+        </Tag>
+      );
+    }
+    case "paragraph":
+      return (
+        <p>
+          {block.text}
+          {block.linkHref && block.linkText && (
+            <>
+              {" "}
+              <Link
+                href={block.linkHref}
+                className="font-semibold text-ink underline underline-offset-4"
+              >
+                {block.linkText}
+              </Link>
+            </>
+          )}
+        </p>
+      );
+    case "note":
+      return (
+        <div className="rounded-2xl border border-dashed border-rose-ink/40 bg-blush-tint px-5 py-4 text-sm text-ink">
+          {block.text}
+        </div>
+      );
+    case "list":
+      return (
+        <ul className="space-y-3">
+          {block.items.map((item, i) => (
+            <li key={i} className="flex gap-2.5">
+              <span className="mt-2 size-1.5 shrink-0 rounded-full bg-rose-ink" />
+              <span>
+                {item.title && <span className="font-semibold text-ink">{item.title}</span>}
+                {item.title && item.text && " — "}
+                {item.text}
+              </span>
+            </li>
+          ))}
+        </ul>
+      );
+  }
+}
+
 export default async function NewsPostPage(props: PageProps<"/tin-tuc/[slug]">) {
   const { slug } = await props.params;
-  const post = getNewsPostBySlug(slug);
-  if (!post) notFound();
+  const raw = getNewsPostBySlug(slug);
+  if (!raw) notFound();
   const locale = await getLocale();
+  const post = getLocalizedPost(raw, locale);
 
   return (
     <Container className="py-14 sm:py-20">
@@ -35,7 +95,7 @@ export default async function NewsPostPage(props: PageProps<"/tin-tuc/[slug]">) 
           {backLabel[locale]}
         </Link>
         <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-rose-ink">
-          {formatNewsDate(post.date)}
+          {formatNewsDate(post.date, locale)}
         </p>
         <h1 className="mt-2 font-display text-3xl leading-tight text-ink sm:text-4xl">
           {post.title}
@@ -54,8 +114,8 @@ export default async function NewsPostPage(props: PageProps<"/tin-tuc/[slug]">) 
         )}
 
         <div className="mt-8 space-y-4 text-base leading-relaxed text-ink-soft">
-          {post.content.map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
+          {post.content.map((block, i) => (
+            <Block key={i} block={block} />
           ))}
         </div>
       </div>
