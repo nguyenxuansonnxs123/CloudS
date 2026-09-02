@@ -3,10 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/Container";
+import { Carousel } from "@/components/Carousel";
 import { newsPosts, getNewsPostBySlug, getLocalizedPost, formatNewsDate, type NewsBlock } from "@/lib/news";
 import { getLocale } from "@/lib/i18n";
 
 const backLabel = { vi: "← Tin tức", en: "← News" };
+const galleryLabel = { vi: "Ảnh sự kiện", en: "Event photos" };
 
 export function generateStaticParams() {
   return newsPosts.map((p) => ({ slug: p.slug }));
@@ -24,7 +26,7 @@ export async function generateMetadata(props: PageProps<"/tin-tuc/[slug]">): Pro
   };
 }
 
-function Block({ block }: { block: NewsBlock }) {
+function Block({ block, locale }: { block: NewsBlock; locale: "vi" | "en" }) {
   switch (block.type) {
     case "heading": {
       const Tag = block.level === 3 ? "h3" : "h2";
@@ -66,17 +68,56 @@ function Block({ block }: { block: NewsBlock }) {
     case "list":
       return (
         <ul className="space-y-3">
-          {block.items.map((item, i) => (
-            <li key={i} className="flex gap-2.5">
-              <span className="mt-2 size-1.5 shrink-0 rounded-full bg-rose-ink" />
-              <span>
-                {item.title && <span className="font-semibold text-ink">{item.title}</span>}
-                {item.title && item.text && " — "}
-                {item.text}
-              </span>
-            </li>
-          ))}
+          {block.items.map((item, i) =>
+            item.image ? (
+              <li
+                key={i}
+                className="flex gap-4 overflow-hidden rounded-2xl border border-line bg-surface p-3"
+              >
+                <div className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-brand-cream sm:size-24">
+                  <Image src={item.image} alt={item.title ?? ""} fill sizes="96px" className="object-cover" />
+                </div>
+                <span className="self-center">
+                  {item.title && <span className="font-semibold text-ink">{item.title}</span>}
+                  {item.title && item.text && " — "}
+                  {item.text}
+                </span>
+              </li>
+            ) : (
+              <li key={i} className="flex gap-2.5">
+                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-rose-ink" />
+                <span>
+                  {item.title && <span className="font-semibold text-ink">{item.title}</span>}
+                  {item.title && item.text && " — "}
+                  {item.text}
+                </span>
+              </li>
+            )
+          )}
         </ul>
+      );
+    case "gallery":
+      return (
+        <div>
+          <Carousel
+            ariaLabel={galleryLabel[locale]}
+            aspectClassName="aspect-[4/3]"
+            className="overflow-hidden rounded-3xl border border-line"
+            autoPlayMs={4500}
+            slides={block.images.map((img) => (
+              <div key={img.src} className="relative size-full bg-brand-cream">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(min-width: 768px) 700px, 90vw"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          />
+          {block.credit && <p className="mt-2 text-xs text-ink-soft/70">{block.credit}</p>}
+        </div>
       );
   }
 }
@@ -115,7 +156,7 @@ export default async function NewsPostPage(props: PageProps<"/tin-tuc/[slug]">) 
 
         <div className="mt-8 space-y-4 text-base leading-relaxed text-ink-soft">
           {post.content.map((block, i) => (
-            <Block key={i} block={block} />
+            <Block key={i} block={block} locale={locale} />
           ))}
         </div>
       </div>

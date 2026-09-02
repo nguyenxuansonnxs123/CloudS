@@ -1,12 +1,14 @@
 import type { Locale } from "./locale";
 
-export type NewsListItem = { title?: string; text: string };
+export type NewsListItem = { title?: string; text: string; image?: string };
+export type NewsGalleryImage = { src: string; alt: string; credit?: string };
 
 export type NewsBlock =
   | { type: "paragraph"; text: string; linkText?: string; linkHref?: string }
   | { type: "heading"; level?: 2 | 3; text: string }
   | { type: "note"; text: string }
-  | { type: "list"; items: NewsListItem[] };
+  | { type: "list"; items: NewsListItem[] }
+  | { type: "gallery"; images: NewsGalleryImage[]; credit?: string };
 
 export type NewsPost = {
   slug: string;
@@ -56,6 +58,18 @@ export const newsPosts: NewsPost[] = [
             ],
           },
           {
+            type: "gallery",
+            images: [
+              { src: "/images/news/hoang-thanh-thang-long.webp", alt: "Đoan Môn, Hoàng thành Thăng Long" },
+              { src: "/images/news/van-mieu.webp", alt: "Khuê Văn Các, Văn Miếu – Quốc Tử Giám" },
+              { src: "/images/news/bao-tang-ha-noi.webp", alt: "Bảo tàng Hà Nội" },
+              { src: "/images/news/dong-kinh-nghia-thuc.webp", alt: "Khu vực Hồ Gươm về đêm, gần Quảng trường Đông Kinh Nghĩa Thục" },
+              { src: "/images/news/bat-trang.webp", alt: "Làng gốm Bát Tràng" },
+            ],
+            credit:
+              "Ảnh: Phan Minh Tuấn, Edgardo W. Olivera, Grenouille vert, Adam Jones, Steven C. Price — Wikimedia Commons (CC BY-SA)",
+          },
+          {
             type: "note",
             text: "Đây là dịp lý tưởng để giới thiệu khách thuê ngắn hạn hoặc khách quốc tế đang lưu trú tại Hà Nội về trải nghiệm văn hóa bản địa.",
           },
@@ -90,10 +104,12 @@ export const newsPosts: NewsPost[] = [
               {
                 title: "Bún chả Hương Liên (\"Bún chả Obama\")",
                 text: "Món bún chả từng được cựu Tổng thống Mỹ Barack Obama thưởng thức cùng đầu bếp Anthony Bourdain năm 2016, nay được vinh danh trong Michelin Guide. 24 Lê Văn Hưu, Hai Bà Trưng, Hà Nội.",
+                image: "/images/news/bun-cha-huong-lien.webp",
               },
               {
                 title: "Cà phê Giang",
                 text: "Nơi khai sinh món cà phê trứng (egg coffee) trứ danh của Hà Nội từ năm 1946. Nằm sâu trong ngõ nhỏ, tìm tường vàng bạc màu và biển gỗ. 39 Nguyễn Hữu Huân, Hoàn Kiếm, Hà Nội.",
+                image: "/images/news/ca-phe-giang.webp",
               },
               {
                 title: "Bánh Mì 25",
@@ -120,6 +136,7 @@ export const newsPosts: NewsPost[] = [
               {
                 title: "Phở Gà Nguyệt",
                 text: "Phở gà nổi tiếng trong giới sành ăn địa phương, được Michelin Guide khen suốt 4 năm liền, gần Hồ Hoàn Kiếm nhưng vẫn giữ không khí quán ăn đường phố đúng chất. 5B Phủ Doãn, Hàng Trống, Hoàn Kiếm, Hà Nội.",
+                image: "/images/news/pho-ga-nguyet.webp",
               },
               {
                 title: "Tranquil Books & Coffee",
@@ -128,6 +145,7 @@ export const newsPosts: NewsPost[] = [
               {
                 title: "Habakuk Fine Coffee & Bistro",
                 text: "Mang hơi hướng hiện đại, sáng tạo nhưng vẫn giữ giá cả dễ tiếp cận, ít xuất hiện trên các app du lịch phổ biến. 4 Phan Huy Chú, Hoàn Kiếm, Hà Nội.",
+                image: "/images/news/habakuk.webp",
               },
               {
                 title: "MÀU Gastro Wine Bar",
@@ -249,6 +267,18 @@ export const newsPosts: NewsPost[] = [
             ],
           },
           {
+            type: "gallery",
+            images: [
+              { src: "/images/news/hoang-thanh-thang-long.webp", alt: "Doan Mon gate, Thang Long Imperial Citadel" },
+              { src: "/images/news/van-mieu.webp", alt: "Khue Van Cac pavilion, Temple of Literature" },
+              { src: "/images/news/bao-tang-ha-noi.webp", alt: "Hanoi Museum" },
+              { src: "/images/news/dong-kinh-nghia-thuc.webp", alt: "Hoan Kiem Lake at night, near Dong Kinh Nghia Thuc Square" },
+              { src: "/images/news/bat-trang.webp", alt: "Bat Trang pottery village" },
+            ],
+            credit:
+              "Photos: Phan Minh Tuan, Edgardo W. Olivera, Grenouille vert, Adam Jones, Steven C. Price — Wikimedia Commons (CC BY-SA)",
+          },
+          {
             type: "note",
             text: "A great moment to point short-stay or international guests toward an authentic local cultural experience.",
           },
@@ -283,10 +313,12 @@ export const newsPosts: NewsPost[] = [
               {
                 title: "Bun Cha Huong Lien (\"Obama Bun Cha\")",
                 text: "The bun cha spot where former US President Barack Obama dined with chef Anthony Bourdain in 2016, now recognized in the Michelin Guide. 24 Le Van Huu, Hai Ba Trung, Hanoi.",
+                image: "/images/news/bun-cha-huong-lien.webp",
               },
               {
                 title: "Cafe Giang",
                 text: "The birthplace of Hanoi's famous egg coffee, since 1946. Tucked down a narrow alley — look for the faded yellow walls and wooden sign. 39 Nguyen Huu Huan, Hoan Kiem, Hanoi.",
+                image: "/images/news/ca-phe-giang.webp",
               },
               {
                 title: "Banh Mi 25",
@@ -313,6 +345,7 @@ export const newsPosts: NewsPost[] = [
               {
                 title: "Pho Ga Nguyet",
                 text: "A chicken pho spot beloved by local food lovers, Michelin-recognized four years running, near Hoan Kiem Lake but still full street-food character. 5B Phu Doan, Hang Trong, Hoan Kiem, Hanoi.",
+                image: "/images/news/pho-ga-nguyet.webp",
               },
               {
                 title: "Tranquil Books & Coffee",
@@ -321,6 +354,7 @@ export const newsPosts: NewsPost[] = [
               {
                 title: "Habakuk Fine Coffee & Bistro",
                 text: "Modern, creative, and still reasonably priced — rarely shows up on the popular travel apps. 4 Phan Huy Chu, Hoan Kiem, Hanoi.",
+                image: "/images/news/habakuk.webp",
               },
               {
                 title: "MAU Gastro Wine Bar",
