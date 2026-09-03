@@ -2,13 +2,15 @@ import type { Locale } from "./locale";
 
 export type NewsListItem = { title?: string; text: string; image?: string };
 export type NewsGalleryImage = { src: string; alt: string; credit?: string };
+export type NewsProductItem = { name: string; image: string; href: string };
 
 export type NewsBlock =
   | { type: "paragraph"; text: string; links?: { text: string; href: string }[] }
   | { type: "heading"; level?: 2 | 3; text: string }
   | { type: "note"; text: string }
   | { type: "list"; items: NewsListItem[] }
-  | { type: "gallery"; images: NewsGalleryImage[]; credit?: string };
+  | { type: "gallery"; images: NewsGalleryImage[]; credit?: string }
+  | { type: "products"; items: NewsProductItem[] };
 
 export type NewsPost = {
   slug: string;
@@ -243,6 +245,14 @@ export const newsPosts: NewsPost[] = [
             ],
           },
           {
+            type: "products",
+            items: [
+              { name: "CloudStride 1", image: "/images/cloudstride/gallery-model.webp", href: "/san-pham/cloudstride-1" },
+              { name: "Mule Rose", image: "/images/mule-rose/gallery-model-1.webp", href: "/san-pham/cloud-mule-1-rose" },
+              { name: "Mule Vanilla Cream", image: "/images/mule-vanilla/gallery-model.webp", href: "/san-pham/cloud-mule-1-vanilla-cream" },
+            ],
+          },
+          {
             type: "paragraph",
             text: "Tháng 9 này, Hà Nội có đủ mọi lý do để bạn xuống phố: một lễ hội văn hóa quy mô, hàng loạt quán ăn – quán cà phê đáng thử (cả nổi tiếng lẫn \"bí mật\"), những hoạt động ngoài trời thú vị, một chỗ ở tiện nghi và một đôi giày thoải mái để đồng hành suốt hành trình. Theo dõi chúng tôi để cập nhật thêm nhiều gợi ý mới mỗi tháng!",
           },
@@ -459,6 +469,14 @@ export const newsPosts: NewsPost[] = [
               { text: "CloudStride 1", href: "/san-pham/cloudstride-1" },
               { text: "Mule Rose", href: "/san-pham/cloud-mule-1-rose" },
               { text: "Mule Vanilla Cream", href: "/san-pham/cloud-mule-1-vanilla-cream" },
+            ],
+          },
+          {
+            type: "products",
+            items: [
+              { name: "CloudStride 1", image: "/images/cloudstride/gallery-model.webp", href: "/san-pham/cloudstride-1" },
+              { name: "Mule Rose", image: "/images/mule-rose/gallery-model-1.webp", href: "/san-pham/cloud-mule-1-rose" },
+              { name: "Mule Vanilla Cream", image: "/images/mule-vanilla/gallery-model.webp", href: "/san-pham/cloud-mule-1-vanilla-cream" },
             ],
           },
           {

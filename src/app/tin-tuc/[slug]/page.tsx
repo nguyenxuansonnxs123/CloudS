@@ -126,6 +126,29 @@ function Block({ block, locale }: { block: NewsBlock; locale: "vi" | "en" }) {
           {block.credit && <p className="mt-2 text-xs text-ink-soft/70">{block.credit}</p>}
         </div>
       );
+    case "products":
+      return (
+        <div className="grid grid-cols-3 gap-3">
+          {block.items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="group overflow-hidden rounded-2xl border border-line bg-surface"
+            >
+              <div className="relative aspect-[3/4] w-full bg-white">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  sizes="(min-width: 640px) 220px, 33vw"
+                  className="object-contain transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <p className="p-2 text-center text-xs font-semibold text-ink sm:text-sm">{item.name}</p>
+            </Link>
+          ))}
+        </div>
+      );
   }
 }
 
