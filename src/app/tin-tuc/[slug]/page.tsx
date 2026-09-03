@@ -72,10 +72,10 @@ function Block({ block, locale }: { block: NewsBlock; locale: "vi" | "en" }) {
             item.image ? (
               <li
                 key={i}
-                className="flex gap-4 overflow-hidden rounded-2xl border border-line bg-surface p-3"
+                className="flex gap-4 overflow-hidden rounded-2xl border border-line bg-surface p-3 sm:gap-5 sm:p-4"
               >
-                <div className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-brand-cream sm:size-24">
-                  <Image src={item.image} alt={item.title ?? ""} fill sizes="96px" className="object-cover" />
+                <div className="relative size-28 shrink-0 overflow-hidden rounded-xl bg-brand-cream sm:size-40">
+                  <Image src={item.image} alt={item.title ?? ""} fill sizes="(min-width: 640px) 160px, 112px" className="object-cover" />
                 </div>
                 <span className="self-center">
                   {item.title && <span className="font-semibold text-ink">{item.title}</span>}
