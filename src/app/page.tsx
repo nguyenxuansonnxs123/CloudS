@@ -12,6 +12,10 @@ import { siteConfig } from "@/lib/site-config";
 import { products } from "@/lib/products";
 import { getLocale } from "@/lib/i18n";
 
+type HeroSlide =
+  | { type?: "image"; src: string; alt: string }
+  | { type: "video"; src: string; poster: string; alt: string };
+
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   const seo = {
@@ -84,6 +88,30 @@ const content = {
     finalCta1: "Xem tất cả sản phẩm",
     finalCta2: "Liên hệ tư vấn size",
     heroSlides: [
+      {
+        type: "video",
+        src: "/videos/mule-rose-ad.mp4",
+        poster: "/images/home/promo-ad-clip-poster.webp",
+        alt: "CloudS Mule — video giới thiệu",
+      },
+      {
+        type: "video",
+        src: "/videos/mule-two-colors.mp4",
+        poster: "/images/mule-rose/video-poster.webp",
+        alt: "CloudS Mule — 2 màu thay đổi",
+      },
+      {
+        type: "video",
+        src: "/videos/mule-vanilla-selfie.mp4",
+        poster: "/images/mule-vanilla/video-poster-2.webp",
+        alt: "CloudS Mule Vanilla Cream — video thực tế",
+      },
+      { src: "/images/home/promo-collage-full.webp", alt: "CloudS Mule — Light on feet, easy on you" },
+      { src: "/images/mule-rose/lifestyle-7.webp", alt: "Cloud Mule 1 Rose — trải nghiệm thực tế" },
+      { src: "/images/mule-rose/lifestyle-8.webp", alt: "Cloud Mule 1 Rose — trải nghiệm thực tế" },
+      { src: "/images/mule-rose/lifestyle-9.webp", alt: "Cloud Mule 1 Rose — trải nghiệm thực tế" },
+      { src: "/images/mule-rose/lifestyle-10.webp", alt: "Cloud Mule 1 Rose — trải nghiệm thực tế" },
+      { src: "/images/mule-rose/lifestyle-11.webp", alt: "Cloud Mule 1 Rose — trải nghiệm thực tế" },
       { src: "/images/home/hero-grand-opening.webp", alt: "CloudS Grand Opening — Bước nhẹ mỗi ngày" },
       { src: "/images/cloudstride/hero-banner.webp", alt: "CloudStride 1 — Từ sáng đến cuối ngày" },
       { src: "/images/mule-rose/hero-banner.webp", alt: "Cloud Mule 1 Rose — Sáng vội vẫn xỏ giày kịp" },
@@ -95,7 +123,7 @@ const content = {
       { src: "/images/home/promo-pink-vibes-2.webp", alt: "Cloud Mule 1 Rose — Năng động mỗi ngày với CloudS" },
       { src: "/images/home/promo-white-mood.webp", alt: "Cloud Mule 1 Vanilla Cream — White Mood Only" },
       { src: "/images/home/promo-pink-steps.webp", alt: "Cloud Mule 1 Rose — Bước nhẹ mỗi ngày" },
-    ],
+    ] satisfies HeroSlide[],
     carouselLabel: "Bộ sưu tập CloudS",
   },
   en: {
@@ -151,6 +179,30 @@ const content = {
     finalCta1: "See all products",
     finalCta2: "Get size advice",
     heroSlides: [
+      {
+        type: "video",
+        src: "/videos/mule-rose-ad.mp4",
+        poster: "/images/home/promo-ad-clip-poster.webp",
+        alt: "CloudS Mule — intro video",
+      },
+      {
+        type: "video",
+        src: "/videos/mule-two-colors.mp4",
+        poster: "/images/mule-rose/video-poster.webp",
+        alt: "CloudS Mule — 2 colors",
+      },
+      {
+        type: "video",
+        src: "/videos/mule-vanilla-selfie.mp4",
+        poster: "/images/mule-vanilla/video-poster-2.webp",
+        alt: "CloudS Mule Vanilla Cream — real-life video",
+      },
+      { src: "/images/home/promo-collage-full.webp", alt: "CloudS Mule — Light on feet, easy on you" },
+      { src: "/images/mule-rose/lifestyle-7.webp", alt: "Cloud Mule 1 Rose — real life" },
+      { src: "/images/mule-rose/lifestyle-8.webp", alt: "Cloud Mule 1 Rose — real life" },
+      { src: "/images/mule-rose/lifestyle-9.webp", alt: "Cloud Mule 1 Rose — real life" },
+      { src: "/images/mule-rose/lifestyle-10.webp", alt: "Cloud Mule 1 Rose — real life" },
+      { src: "/images/mule-rose/lifestyle-11.webp", alt: "Cloud Mule 1 Rose — real life" },
       { src: "/images/home/hero-grand-opening.webp", alt: "CloudS Grand Opening — light steps every day" },
       { src: "/images/cloudstride/hero-banner.webp", alt: "CloudStride 1 — from morning to night" },
       { src: "/images/mule-rose/hero-banner.webp", alt: "Cloud Mule 1 Rose — slip on even in a rush" },
@@ -159,7 +211,7 @@ const content = {
       { src: "/images/home/promo-pink-vibes-2.webp", alt: "Cloud Mule 1 Rose — energetic every day with CloudS" },
       { src: "/images/home/promo-white-mood.webp", alt: "Cloud Mule 1 Vanilla Cream — White Mood Only" },
       { src: "/images/home/promo-pink-steps.webp", alt: "Cloud Mule 1 Rose — light steps every day" },
-    ],
+    ] satisfies HeroSlide[],
     carouselLabel: "CloudS collection",
   },
 };
@@ -189,18 +241,31 @@ export default async function HomePage() {
             aspectClassName="aspect-[4/5] sm:aspect-[16/9]"
             className="overflow-hidden rounded-3xl border border-line"
             autoPlayMs={5500}
-            slides={t.heroSlides.map((slide) => (
-              <div key={slide.src} className="relative size-full bg-brand-cream">
-                <Image
-                  src={slide.src}
-                  alt={slide.alt}
-                  fill
-                  sizes="100vw"
-                  className="object-contain"
-                  priority={slide.src === t.heroSlides[0].src}
-                />
-              </div>
-            ))}
+            slides={t.heroSlides.map((slide, i) =>
+              slide.type === "video" ? (
+                <div key={slide.src} className="relative size-full bg-brand-cream">
+                  <video
+                    className="size-full object-contain"
+                    src={slide.src}
+                    poster={slide.poster}
+                    controls
+                    playsInline
+                    preload="none"
+                  />
+                </div>
+              ) : (
+                <div key={slide.src} className="relative size-full bg-brand-cream">
+                  <Image
+                    src={slide.src}
+                    alt={slide.alt}
+                    fill
+                    sizes="100vw"
+                    className="object-contain"
+                    priority={i === t.heroSlides.findIndex((s) => s.type !== "video")}
+                  />
+                </div>
+              )
+            )}
           />
         </Container>
         <Container className="pb-14 text-center sm:pb-20">
