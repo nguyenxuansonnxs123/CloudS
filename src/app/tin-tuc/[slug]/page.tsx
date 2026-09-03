@@ -46,17 +46,18 @@ function Block({ block, locale }: { block: NewsBlock; locale: "vi" | "en" }) {
       return (
         <p>
           {block.text}
-          {block.linkHref && block.linkText && (
-            <>
+          {block.links?.map((link, i) => (
+            <span key={link.href}>
               {" "}
               <Link
-                href={block.linkHref}
+                href={link.href}
                 className="font-semibold text-ink underline underline-offset-4"
               >
-                {block.linkText}
+                {link.text}
               </Link>
-            </>
-          )}
+              {i < block.links!.length - 1 && ","}
+            </span>
+          ))}
         </p>
       );
     case "note":

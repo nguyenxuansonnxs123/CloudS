@@ -4,7 +4,7 @@ export type NewsListItem = { title?: string; text: string; image?: string };
 export type NewsGalleryImage = { src: string; alt: string; credit?: string };
 
 export type NewsBlock =
-  | { type: "paragraph"; text: string; linkText?: string; linkHref?: string }
+  | { type: "paragraph"; text: string; links?: { text: string; href: string }[] }
   | { type: "heading"; level?: 2 | 3; text: string }
   | { type: "note"; text: string }
   | { type: "list"; items: NewsListItem[] }
@@ -26,7 +26,7 @@ export const newsPosts: NewsPost[] = [
   {
     slug: "ha-noi-thang-9-su-kien-am-thuc",
     date: "2026-09-02",
-    coverImage: "/images/sd-housing/rooftop-view.webp",
+    coverImage: "/images/news/ho-tay-chieu-hoang-hon.webp",
     translations: {
       vi: {
         title: "Hà Nội Tháng 9: Lễ Hội, Quán Ngon Và Gợi Ý Sống Chất",
@@ -36,6 +36,15 @@ export const newsPosts: NewsPost[] = [
           {
             type: "paragraph",
             text: "Tháng 9 này, Hà Nội bước vào mùa thu với không khí rộn ràng của lễ hội văn hóa, một làn sóng quán cà phê – ẩm thực mới đang \"làm mưa làm gió\" trên mạng xã hội, và vô vàn lý do để bạn xách máy ảnh xuống phố. Dưới đây là những cập nhật đáng chú ý nhất, cùng vài gợi ý nhỏ để bạn tận hưởng trọn vẹn mùa thu Hà Nội.",
+          },
+          {
+            type: "gallery",
+            images: [
+              { src: "/images/news/ho-tay-chieu-hoang-hon.webp", alt: "Hoàng hôn Hồ Tây, bóng chùa Trấn Quốc" },
+              { src: "/images/news/ho-tay-hoang-hon.webp", alt: "Hoàng hôn rực rỡ trên Hồ Tây" },
+              { src: "/images/news/ho-tay-cay-ven-ho.webp", alt: "Hồ Tây lúc hoàng hôn, cây ven hồ" },
+            ],
+            credit: "Ảnh: NKSTTSSHNVN, Rungbachduong — Wikimedia Commons (CC BY-SA)",
           },
           { type: "heading", level: 2, text: "1. Sự kiện nổi bật trong tháng" },
           { type: "heading", level: 3, text: "Festival Thăng Long – Hà Nội lần thứ II năm 2026" },
@@ -199,8 +208,7 @@ export const newsPosts: NewsPost[] = [
           {
             type: "paragraph",
             text: "Nếu bạn đang tìm một nơi lưu trú tại khu vực Tây Hồ để tiện ghé các quán cà phê hot vừa nhắc ở trên và tham gia trọn vẹn không khí Festival Thăng Long – Hà Nội, Four Season Serenity tại 53E, Ngõ 31 Xuân Diệu là một gợi ý đáng cân nhắc.",
-            linkText: "Xem chi tiết SD Housing (Four Season Serenity)",
-            linkHref: "/sd-housing",
+            links: [{ text: "Xem chi tiết SD Housing (Four Season Serenity)", href: "/sd-housing" }],
           },
           {
             type: "list",
@@ -227,9 +235,12 @@ export const newsPosts: NewsPost[] = [
           { type: "heading", level: 2, text: "5. Vài gợi ý nhỏ khi xuống phố" },
           {
             type: "paragraph",
-            text: "Mùa này lịch trình khá dày: sáng cà phê, chiều dạo Festival, tối lại di chuyển liên tục giữa các điểm check-in. Một đôi giày êm chân, dễ phối đồ sẽ giúp cả ngày rong ruổi nhẹ nhàng hơn hẳn — đó cũng là lý do nhiều bạn trẻ Hà Nội đang chọn các mẫu giày tối giản, êm nhẹ như của CloudS để đồng hành trong những ngày này, vừa hợp street style vừa đủ thoải mái để đi bộ cả ngày mà không mỏi chân.",
-            linkText: "Xem sản phẩm CloudS",
-            linkHref: "/san-pham",
+            text: "Mùa này lịch trình khá dày: sáng cà phê, chiều dạo Festival, tối lại di chuyển liên tục giữa các điểm check-in. Một đôi giày êm chân, dễ phối đồ sẽ giúp cả ngày rong ruổi nhẹ nhàng hơn hẳn — đó cũng là lý do nhiều bạn trẻ Hà Nội đang chọn các mẫu giày tối giản, êm nhẹ như của CloudS để đồng hành trong những ngày này, vừa hợp street style vừa đủ thoải mái để đi bộ cả ngày mà không mỏi chân. Vài mẫu đáng thử:",
+            links: [
+              { text: "CloudStride 1", href: "/san-pham/cloudstride-1" },
+              { text: "Mule Rose", href: "/san-pham/cloud-mule-1-rose" },
+              { text: "Mule Vanilla Cream", href: "/san-pham/cloud-mule-1-vanilla-cream" },
+            ],
           },
           {
             type: "paragraph",
@@ -245,6 +256,15 @@ export const newsPosts: NewsPost[] = [
           {
             type: "paragraph",
             text: "This September, Hanoi eases into autumn with a lively cultural festival, a fresh wave of cafés and eateries taking over social media, and endless reasons to grab your camera and head out. Here's the roundup, plus a few tips to make the most of a Hanoi autumn.",
+          },
+          {
+            type: "gallery",
+            images: [
+              { src: "/images/news/ho-tay-chieu-hoang-hon.webp", alt: "Sunset over West Lake, Tran Quoc Pagoda silhouette" },
+              { src: "/images/news/ho-tay-hoang-hon.webp", alt: "Vivid sunset over West Lake" },
+              { src: "/images/news/ho-tay-cay-ven-ho.webp", alt: "West Lake at dusk, trees along the shore" },
+            ],
+            credit: "Photos: NKSTTSSHNVN, Rungbachduong — Wikimedia Commons (CC BY-SA)",
           },
           { type: "heading", level: 2, text: "1. This month's highlight events" },
           { type: "heading", level: 3, text: "Thang Long – Hanoi Festival, 2nd edition, 2026" },
@@ -408,8 +428,7 @@ export const newsPosts: NewsPost[] = [
           {
             type: "paragraph",
             text: "Looking for a place to stay around West Lake, close to the cafés above and within easy reach of the Thang Long Festival? Four Season Serenity at 53E, Alley 31 Xuan Dieu is well worth considering.",
-            linkText: "See SD Housing (Four Season Serenity)",
-            linkHref: "/sd-housing",
+            links: [{ text: "See SD Housing (Four Season Serenity)", href: "/sd-housing" }],
           },
           {
             type: "list",
@@ -435,9 +454,12 @@ export const newsPosts: NewsPost[] = [
           { type: "heading", level: 2, text: "5. A small tip for getting around" },
           {
             type: "paragraph",
-            text: "The schedule this season is packed — coffee in the morning, the Festival in the afternoon, then hopping between check-in spots at night. A comfortable, easy-to-style pair of shoes makes all that walking a lot easier — which is why a lot of young Hanoians are reaching for minimal, lightweight styles like CloudS these days: on-trend enough for street style, comfortable enough to walk all day without tired feet.",
-            linkText: "Browse CloudS shoes",
-            linkHref: "/san-pham",
+            text: "The schedule this season is packed — coffee in the morning, the Festival in the afternoon, then hopping between check-in spots at night. A comfortable, easy-to-style pair of shoes makes all that walking a lot easier — which is why a lot of young Hanoians are reaching for minimal, lightweight styles like CloudS these days: on-trend enough for street style, comfortable enough to walk all day without tired feet. A few worth checking out:",
+            links: [
+              { text: "CloudStride 1", href: "/san-pham/cloudstride-1" },
+              { text: "Mule Rose", href: "/san-pham/cloud-mule-1-rose" },
+              { text: "Mule Vanilla Cream", href: "/san-pham/cloud-mule-1-vanilla-cream" },
+            ],
           },
           {
             type: "paragraph",
