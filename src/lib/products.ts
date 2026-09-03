@@ -1,6 +1,7 @@
 import type { Locale } from "@/lib/locale";
 
 export type SizedImage = { src: string; width: number; height: number };
+export type SizedVideo = { src: string; poster: string; width: number; height: number };
 
 export type Product = {
   slug: string;
@@ -34,6 +35,8 @@ export type Product = {
     gallery: string[];
     /** Ảnh trải nghiệm thực tế — giữ nguyên kích thước gốc để không bị crop */
     lifestyle: SizedImage[];
+    /** Video ngắn thực tế (unboxing, thử giày...) — hiện cùng hàng với lifestyle */
+    videos?: SizedVideo[];
   };
   care: string[];
   /** slug của các phiên bản màu khác cùng dáng giày, để hiện swatch chuyển đổi */
@@ -216,6 +219,14 @@ export const products: Product[] = [
         { src: "/images/mule-rose/lifestyle-4.webp", width: 1024, height: 1024 },
         { src: "/images/mule-rose/lifestyle-5.webp", width: 1024, height: 1024 },
         { src: "/images/mule-rose/lifestyle-6.webp", width: 1024, height: 1024 },
+        { src: "/images/mule-rose/lifestyle-7.webp", width: 1400, height: 1867 },
+        { src: "/images/mule-rose/lifestyle-8.webp", width: 1400, height: 1006 },
+        { src: "/images/mule-rose/lifestyle-9.webp", width: 1400, height: 2087 },
+        { src: "/images/mule-rose/lifestyle-10.webp", width: 1400, height: 1400 },
+        { src: "/images/mule-rose/lifestyle-11.webp", width: 1400, height: 1400 },
+      ],
+      videos: [
+        { src: "/videos/mule-two-colors.mp4", poster: "/images/mule-rose/video-poster.webp", width: 720, height: 1280 },
       ],
     },
     care: [
@@ -310,6 +321,10 @@ export const products: Product[] = [
         { src: "/images/mule-vanilla/lifestyle-4.webp", width: 1400, height: 1867 },
         { src: "/images/mule-vanilla/lifestyle-5.webp", width: 1400, height: 1867 },
         { src: "/images/mule-vanilla/lifestyle-6.webp", width: 1400, height: 1867 },
+      ],
+      videos: [
+        { src: "/videos/mule-two-colors.mp4", poster: "/images/mule-vanilla/video-poster-1.webp", width: 720, height: 1280 },
+        { src: "/videos/mule-vanilla-selfie.mp4", poster: "/images/mule-vanilla/video-poster-2.webp", width: 720, height: 1280 },
       ],
     },
     care: [

@@ -296,7 +296,7 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
       </section>
 
       {/* Lifestyle gallery */}
-      {product.images.lifestyle.length > 0 && (
+      {(product.images.lifestyle.length > 0 || (product.images.videos?.length ?? 0) > 0) && (
         <section className="bg-brand-cream">
           <Container className="py-14 sm:py-20">
             <SectionHeading eyebrow={t.lifestyleEyebrow} title={t.lifestyleTitle} />
@@ -315,6 +315,18 @@ export default async function ProductPage(props: PageProps<"/san-pham/[slug]">) 
                     className="object-cover"
                   />
                 </div>
+              ))}
+              {product.images.videos?.map((video) => (
+                <video
+                  key={video.src}
+                  className="h-72 shrink-0 snap-start rounded-3xl object-cover sm:h-96"
+                  style={{ aspectRatio: `${video.width} / ${video.height}` }}
+                  src={video.src}
+                  poster={video.poster}
+                  controls
+                  playsInline
+                  preload="none"
+                />
               ))}
             </ScrollRow>
           </Container>
