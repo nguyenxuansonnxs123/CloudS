@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { Menu, ShoppingBag, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, Menu, ShoppingBag, X } from "lucide-react";
 import { clsx } from "clsx";
 import { Container } from "./Container";
 import { siteConfig } from "@/lib/site-config";
@@ -33,11 +33,28 @@ function CartLink({ onClick, label }: { onClick?: () => void; label: string }) {
   );
 }
 
+const moreHrefs = ["/uu-dai", "/ctv", "/sd-housing"];
+
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const t = useDictionary();
   const navLinks = getNavLinks(t);
+  const primaryLinks = navLinks.filter((link) => !moreHrefs.includes(link.href));
+  const moreLinks = navLinks.filter((link) => moreHrefs.includes(link.href));
+
+  useEffect(() => {
+    if (!moreOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [moreOpen]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-brand-cream/90 backdrop-blur">
@@ -46,15 +63,15 @@ export function Header() {
           <Image
             src="/images/logo-cloudS.png"
             alt={siteConfig.name}
-            width={1135}
-            height={189}
+            width={624}
+            height={143}
             priority
-            className="h-7 w-auto sm:h-8"
+            className="h-8 w-auto sm:h-9"
           />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
+        <nav className="hidden items-center gap-7 md:flex">
+          {primaryLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -66,6 +83,37 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <div className="relative" ref={moreRef}>
+            <button
+              type="button"
+              onClick={() => setMoreOpen((v) => !v)}
+              aria-expanded={moreOpen}
+              className={clsx(
+                "flex items-center gap-1 text-sm font-medium text-ink-soft transition-colors hover:text-ink",
+                moreLinks.some((link) => pathname === link.href) && "text-ink"
+              )}
+            >
+              {t.nav.more}
+              <ChevronDown className={clsx("size-3.5 transition-transform", moreOpen && "rotate-180")} aria-hidden />
+            </button>
+            {moreOpen && (
+              <div className="absolute right-0 top-full z-10 mt-3 w-48 rounded-2xl border border-line bg-brand-cream p-1.5 shadow-lg">
+                {moreLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMoreOpen(false)}
+                    className={clsx(
+                      "block rounded-xl px-3 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-surface hover:text-ink",
+                      pathname === link.href && "text-ink"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
