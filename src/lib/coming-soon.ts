@@ -17,12 +17,12 @@ export const comingSoonCategories: ComingSoonCategory[] = [
     slug: "giay-bup-be",
     name: "Giày búp bê",
     description:
-      "Giày búp bê nữ dáng tròn, êm chân, dễ phối đồ đi học đi làm — phù hợp sinh viên khu vực Cầu Giấy, Hà Nội.",
+      "Giày búp bê nữ dáng tròn, êm chân, dễ phối đồ đi học đi làm — dành cho các bạn trẻ năng động.",
     translations: {
       en: {
         name: "Ballet flats",
         description:
-          "Round-toe ballet flats for women — comfortable and easy to pair with school or office outfits, made for students around Cau Giay, Hanoi.",
+          "Round-toe ballet flats for women — comfortable and easy to pair with school or office outfits, made for active young people.",
       },
     },
   },

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Wind, Footprints, Wallet } from "lucide-react";
+import { ArrowRight, ShieldCheck, Wind, Footprints, Wallet, RotateCcw, PackageCheck, MessageCircle } from "lucide-react";
 import { Container } from "@/components/Container";
 import { Button } from "@/components/Button";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -48,21 +48,20 @@ const content = {
       },
       {
         icon: Footprints,
-        title: "Êm chân, dễ xỏ",
+        title: "Êm ái, tiện dụng",
         detail: "Lót EVA giảm chấn, kiểu mule dễ xỏ nhanh cho buổi sáng vội vã.",
       },
       {
         icon: Wallet,
-        title: "Giá hợp lý",
-        detail: "Chất lượng ổn định với mức giá dễ tiếp cận hơn các thương hiệu ngoại.",
+        title: "Giá trị xứng đáng",
+        detail: "Chất lượng ổn định, thiết kế chỉnh chu với mức giá dễ tiếp cận cho người trẻ.",
       },
     ],
     tagline: "Move a little. Feel a lot.",
     h1: "Nhẹ như mây, bước cả ngày.",
     heroP1:
       "CloudS là sneaker hiệu năng cho vận động hàng ngày — thoáng khí, êm chân, dễ đi từ lúc ra khỏi nhà đến khi kết thúc một ngày dài.",
-    heroP2:
-      "Giày thể thao, giày sneaker, giày mule nữ dành cho sinh viên và giới trẻ khu vực Cầu Giấy, các trường đại học Hà Nội.",
+    heroP2: "Sinh ra cho những bước chân trẻ — từ giảng đường đến mọi cuộc hẹn trong ngày.",
     exploreProducts: "Khám phá sản phẩm",
     openingOffer: "Ưu đãi khai trương",
     posterAlt: "3 lý do chọn CloudS — Bước nhẹ mỗi ngày: nhẹ & thoáng, bền & bám tốt, tối giản dễ phối",
@@ -76,14 +75,24 @@ const content = {
     lifestyleDesc: "Đi làm, đi bộ, cà phê cuối tuần — CloudS đồng hành trong mọi khoảnh khắc.",
     lifestyleAlt: "Khoảnh khắc cùng CloudS",
     trustTitle: "Lỡ sai size cũng đừng lo.",
-    trustDesc:
-      "Chế độ An Tâm Mua Sắm: hoàn tiền 100% nếu sai mô tả, đổi màu/size miễn phí trong 5 ngày, bảo hành 6 tháng lỗi keo đế. Mọi yêu cầu phản hồi trong 24 giờ.",
+    trustSubtitle: "Chúng tôi luôn đồng hành cùng bạn, để mỗi đôi giày đều vừa vặn và trọn vẹn.",
+    trustPoints: [
+      { icon: RotateCcw, title: "Đổi size miễn phí", detail: "Trong 5 ngày kể từ khi nhận hàng" },
+      { icon: PackageCheck, title: "Đổi màu/size linh hoạt", detail: "Sản phẩm còn mới, nguyên tem" },
+      { icon: ShieldCheck, title: "Bảo hành 6 tháng", detail: "Lỗi keo, đế, đường chỉ từ nhà sản xuất" },
+      { icon: MessageCircle, title: "Hỗ trợ nhanh chóng", detail: "Mọi yêu cầu phản hồi trong 24 giờ" },
+    ],
+    trustTagline: "Mua sắm an tâm · Trải nghiệm trọn vẹn",
     trustCta: "Xem chính sách đổi trả",
     clubEyebrow: "CloudS Walking Club",
     clubTitle: "Một cộng đồng nhỏ, cùng nhau bước đều mỗi ngày.",
     clubDesc:
       "CloudS khuyến khích thói quen đi bộ hằng ngày — không chỉ là một đôi giày, mà là động lực để bạn duy trì vận động cùng những người có cùng chí hướng.",
     clubCta: "Tìm hiểu thêm",
+    clubImages: [
+      { src: "/images/cloudstride/lifestyle-3.webp", alt: "CloudStride 1 — bước đều cùng CloudS" },
+      { src: "/images/mule-rose/gallery-model-1.webp", alt: "Cloud Mule 1 Rose — bước đều cùng CloudS" },
+    ],
     finalTitle: "Sẵn sàng cho một đôi CloudS?",
     finalCta1: "Xem tất cả sản phẩm",
     finalCta2: "Liên hệ tư vấn size",
@@ -145,15 +154,15 @@ const content = {
       },
       {
         icon: Wallet,
-        title: "Fair price",
-        detail: "Consistent quality at a price more accessible than foreign brands.",
+        title: "Real value",
+        detail: "Consistent quality, thoughtful design, at a price young people can access.",
       },
     ],
     tagline: "Move a little. Feel a lot.",
     h1: "Light as a cloud, all day long.",
     heroP1:
       "CloudS is a performance sneaker for everyday movement — breathable, comfortable, easy to wear from the moment you step out to the end of a long day.",
-    heroP2: "Sneakers and mules for students and young people around Cau Giay and Hanoi's university area.",
+    heroP2: "Made for young feet on the move — from lecture halls to every appointment in your day.",
     exploreProducts: "Explore products",
     openingOffer: "Opening offer",
     posterAlt: "3 reasons to choose CloudS — light every day: light & breathable, durable & grippy, easy to style",
@@ -167,14 +176,24 @@ const content = {
     lifestyleDesc: "Work, walks, weekend coffee — CloudS goes with you through every moment.",
     lifestyleAlt: "A moment with CloudS",
     trustTitle: "Picked the wrong size? No worries.",
-    trustDesc:
-      "Peace of Mind guarantee: 100% refund if not as described, free color/size exchange within 5 days, 6-month warranty on sole defects. We respond to every request within 24 hours.",
+    trustSubtitle: "We've got you covered, so every pair fits right and feels complete.",
+    trustPoints: [
+      { icon: RotateCcw, title: "Free size exchange", detail: "Within 5 days of delivery" },
+      { icon: PackageCheck, title: "Flexible color/size swap", detail: "Item still new, tags attached" },
+      { icon: ShieldCheck, title: "6-month warranty", detail: "Manufacturing defects on glue, sole, stitching" },
+      { icon: MessageCircle, title: "Fast support", detail: "Every request answered within 24 hours" },
+    ],
+    trustTagline: "Shop with peace of mind · A complete experience",
     trustCta: "See return policy",
     clubEyebrow: "CloudS Walking Club",
     clubTitle: "A small community, walking steadily together every day.",
     clubDesc:
       "CloudS encourages a daily walking habit — not just a pair of shoes, but motivation to keep moving alongside like-minded people.",
     clubCta: "Learn more",
+    clubImages: [
+      { src: "/images/cloudstride/lifestyle-3.webp", alt: "CloudStride 1 — walking steadily with CloudS" },
+      { src: "/images/mule-rose/gallery-model-1.webp", alt: "Cloud Mule 1 Rose — walking steadily with CloudS" },
+    ],
     finalTitle: "Ready for a pair of CloudS?",
     finalCta1: "See all products",
     finalCta2: "Get size advice",
@@ -272,7 +291,7 @@ export default async function HomePage() {
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-ink">
             {t.tagline}
           </p>
-          <h1 className="mx-auto mt-3 max-w-xl font-display text-4xl leading-[1.05] text-ink sm:text-5xl">
+          <h1 className="mx-auto mt-3 max-w-2xl text-balance font-display text-4xl leading-[1.05] text-ink sm:text-5xl">
             {t.h1}
           </h1>
           <p className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-ink-soft sm:text-lg">
@@ -367,22 +386,55 @@ export default async function HomePage() {
 
       {/* Trust / return policy teaser */}
       <section className="border-y border-line bg-blush-tint">
-        <Container className="grid gap-8 py-14 sm:grid-cols-[1.4fr_1fr] sm:items-center">
-          <div>
-            <h2 className="font-display text-2xl text-ink sm:text-3xl">{t.trustTitle}</h2>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft sm:text-base">{t.trustDesc}</p>
+        <Container className="py-14 text-center sm:py-20">
+          <h2 className="mx-auto max-w-xl text-balance font-display text-2xl text-ink sm:text-3xl">
+            {t.trustTitle}
+          </h2>
+          <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-ink-soft sm:text-base">
+            {t.trustSubtitle}
+          </p>
+          <div className="mx-auto mt-10 grid max-w-4xl gap-8 sm:grid-cols-4">
+            {t.trustPoints.map((point) => (
+              <div key={point.title} className="flex flex-col items-center gap-3">
+                <span className="flex size-12 items-center justify-center rounded-full bg-surface text-ink">
+                  <point.icon className="size-5" aria-hidden />
+                </span>
+                <div>
+                  <p className="font-display text-sm font-semibold uppercase tracking-wide text-ink">
+                    {point.title}
+                  </p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{point.detail}</p>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="sm:justify-self-end">
-            <Button href="/chinh-sach-doi-tra" variant="primary" size="lg">
-              {t.trustCta}
-            </Button>
-          </div>
+          <Button href="/chinh-sach-doi-tra" variant="primary" size="lg" className="mt-10">
+            {t.trustCta}
+          </Button>
+          <p className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-ink-soft/70">
+            {t.trustTagline}
+          </p>
         </Container>
       </section>
 
       {/* Walking club teaser */}
       <section className="bg-brand-black">
-        <Container className="py-16 text-center sm:py-20">
+        <Container className="pt-16 text-center sm:pt-20">
+          <div className="mx-auto grid max-w-2xl grid-cols-2 gap-3 sm:gap-4">
+            {t.clubImages.map((img) => (
+              <div key={img.src} className="relative aspect-[3/4] overflow-hidden rounded-3xl bg-brand-black">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(min-width: 640px) 320px, 45vw"
+                  className="object-cover object-bottom opacity-90"
+                />
+              </div>
+            ))}
+          </div>
+        </Container>
+        <Container className="pb-16 pt-10 text-center sm:pb-20">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blush">{t.clubEyebrow}</p>
           <h2 className="mx-auto mt-3 max-w-xl font-display text-3xl leading-tight text-brand-cream sm:text-4xl">
             {t.clubTitle}
