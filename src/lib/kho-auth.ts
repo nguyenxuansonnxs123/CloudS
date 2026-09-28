@@ -5,7 +5,7 @@ import { createHmac, scryptSync, timingSafeEqual } from "node:crypto";
 export const KHO_COOKIE_NAME = "clouds_kho_session";
 const KHO_USERNAME = "quanlykho";
 const KHO_PASSWORD_HASH =
-  "scrypt$751b89e44430377c3ae8e7ad95613ac4$7eb6e1d3c11e3c8a342d941129154fc0928ca5abdf1e2ccc14049b56a25b62d1";
+  "scrypt$3cbc1653509eaef138f6095662a05fe8$57b84ee36f2c0224cec03e8f3281b48a017e3ea36a9636188a6addcd1979e79b";
 const SESSION_TTL_MS = 12 * 60 * 60 * 1000; // 12 giờ
 
 function getSecret() {
@@ -13,7 +13,8 @@ function getSecret() {
 }
 
 function sign(value: string) {
-  return createHmac("sha256", getSecret()).update(`kho:${value}`).digest("hex");
+  // Gắn hash mật khẩu vào chữ ký: đổi mật khẩu sẽ làm mọi phiên đăng nhập cũ hết hiệu lực ngay.
+  return createHmac("sha256", getSecret()).update(`kho:${KHO_PASSWORD_HASH}:${value}`).digest("hex");
 }
 
 function safeEqual(a: Buffer, b: Buffer) {
